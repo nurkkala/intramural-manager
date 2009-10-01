@@ -5,3 +5,5 @@ from django.http import HttpResponse
 def dish_out_template(request, file_name):
 	return render_to_response(file_name)
 	
+def index(request):
+    return HttpResponse("hello world")
