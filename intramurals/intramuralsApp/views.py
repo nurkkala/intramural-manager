@@ -7,3 +7,4 @@ def dish_out_template(request, file_name):
 	
 def index(request):
     return HttpResponse("hello world")
+
