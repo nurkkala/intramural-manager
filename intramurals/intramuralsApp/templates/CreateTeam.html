@@ -44,19 +44,20 @@
 		<option value="TheHack">The Hack</option>
 		<option value="FOSO">FOSO</option>
 	</select>
-	<input type="button" value="Next" id="step1Next" />
+	<input type="button" value="Next" class="nextButton"/>
 </div>
-<div id="step2">
+<div id="step2" class="hide">
 	<h4>Team Captain</h4>
 	<input type="text" name="teamcaptain"/>
 	<h4>Captain's School ID</h4>
 	<input type="text" name="CaptainID"/>
 	<h4>Captain's Email Address</h4>
 	<input type="text" name="CaptainEmail"/>
-	<input type="button" value="Next" id="step2Next" />
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
 
 </div>
-<div id="step3">
+<div id="step3" class="hide">
 	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">PLEASE NOTE
 
 		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
@@ -85,18 +86,46 @@
 	</textarea>
     <input name="Agree" type="checkbox" value="I Agree" />
 	<h4>I Agree</h4>
-	<input type="button" value="Next" id="step3Next" />
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
 </div>
-<div id="step4">
+<div id="step4" class="hide">
 	<img src="paypal.png" width="498" height="450"  align="middle" />
-	<input type="button" value="Next" id="step4Next" />
+[Paypal stuff goes here]
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
 </div>
-<div id="step5">
-
+<div id="step5" class="hide">
+[inviting people goes here]
+	<input type="button" value="Back" class="backButton"/>
+	<input id="complete" type="submit" value="Complete"/>
 </div>
 <div id="footer">
 
 </div>
-<script src="createTeam.js"> </script>
+
+
+
+
+<script src="createTeam.js"></script>
+<script src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+<script src="http://plugins.jquery.com/files/jquery.dump.js.txt"></script>
+<style>
+.hide
+{
+  display:none;
+}
+</style>
+<script>
+  showStep = function(e, fn) {
+    var $div = $(e.target).parents('div');
+    var $div2 = fn.apply($div);
+    $($div).addClass('hide');
+    $($div2).removeClass('hide');
+  }
+  $('.nextButton').click(function(e){  showStep(e, $.fn.next) } );
+  $('.backButton').click(function(e){  showStep(e, $.fn.prev) } );
+  $('#complete').click(function(){  })
+</script>
 </body>
 </html>
