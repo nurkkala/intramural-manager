@@ -6,6 +6,7 @@
 <title>Create Intramural Team</title>
 </head>
 <body>
+<form action="/createTeam" method="post">
 <div id="header">
 	<table class="mainlayout" align="center">
 		<tr class="titlehead">
@@ -35,7 +36,7 @@
 </div>
 <div id="step1">
 	<h4>Team name</h4>
-	<input type="text" name="teamname"/>
+	<input type="text" name="teamName"/>
 	<h4>Floor/Wing</h4>
 	<select name="Floor/Wing">
 		<option value="SammyMorris">Sammy Morris</option>
@@ -48,11 +49,11 @@
 </div>
 <div id="step2" class="hide">
 	<h4>Team Captain</h4>
-	<input type="text" name="teamcaptain"/>
+	<input type="text" name="teamCaptain"/>
 	<h4>Captain's School ID</h4>
-	<input type="text" name="CaptainID"/>
+	<input type="text" name="captainId"/>
 	<h4>Captain's Email Address</h4>
-	<input type="text" name="CaptainEmail"/>
+	<input type="text" name="captainEmail"/>
 	<input type="button" value="Back" class="backButton"/>
 	<input type="button" value="Next" class="nextButton"/>
 
@@ -84,7 +85,7 @@
 
 		i. The laws of the State of California, excluding its conflicts of law rules, govern this license and your use of the Licensed Application. Your use of the Licensed Application may also be subject to other local, state, national, or international laws. 
 	</textarea>
-    <input name="Agree" type="checkbox" value="I Agree" />
+    <input name="agree" type="checkbox" value="I Agree" />
 	<h4>I Agree</h4>
 	<input type="button" value="Back" class="backButton"/>
 	<input type="button" value="Next" class="nextButton"/>
@@ -97,6 +98,10 @@
 </div>
 <div id="step5" class="hide">
 [inviting people goes here]
+	Team password: <input type="text" name="teamPassword"/><br/>
+	Verify password: <input type="text" name="teamPasswordVerify"/><br/>
+	who do you want to invite on your team?<br/>
+	<textarea name="invitees"/>
 	<input type="button" value="Back" class="backButton"/>
 	<input id="complete" type="submit" value="Complete"/>
 </div>
@@ -104,11 +109,11 @@
 
 </div>
 
+</form>
 
 
 
 <script src="createTeam.js"></script>
-<script src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
 <script src="http://plugins.jquery.com/files/jquery.dump.js.txt"></script>
 <style>
 .hide
@@ -127,5 +132,6 @@
   $('.backButton').click(function(e){  showStep(e, $.fn.prev) } );
   $('#complete').click(function(){  })
 </script>
+<script src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
 </body>
 </html>
