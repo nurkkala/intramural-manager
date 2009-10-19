@@ -16,11 +16,26 @@ class Attribute(models.Model):
 
 class League(models.Model):
 	attributes = models.ManyToManyField(Attribute)
+	league_name = models.CharField(max_length = 50)
 
 class Team(models.Model):
+	members = models.ManyToManyField(Person)
 	team_name = models.CharField(max_length = 50)
-	password = models.CharField(max_length = 51)
+	password = models.CharField(max_length = 50)
 	captain = models.ForeignKey(Person)
 	league = models.ForeignKey(League)
 	living_unit = models.CharField(max_length = 50)
 
+class Location(models.Model):
+	location_name = models.CharField(max_length = 50)
+	location_description = models.TextField();
+
+class Game(models.Model):
+	start_time = models.DateTimeField()
+	location = models.ForeignKey(Location)
+	game_type = models.TextField()
+	home_team = models.ForeignKey(Team)
+	away_team = models.ForeignKey(Team)
+	home_team_score = models.PositiveIntegerField()
+	away_team_score = models.PositiveIntegerField()
+	
