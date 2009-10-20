@@ -10,6 +10,10 @@ class Person(models.Model):
 	ShirtSize = models.CharField(max_length = 30)
 	Address = models.TextField()
 
+class Sport(models.Model):
+	Sport_Name = models.CharField(max_length = 50)
+	rules = models.TextField()
+
 class Attribute(models.Model):
 	Name = models.TextField()
 	Value = models.TextField()
