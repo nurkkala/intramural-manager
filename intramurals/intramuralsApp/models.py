@@ -10,9 +10,9 @@ class Persons(models.Model):
 	ShirtSize = models.CharField(max_length = 30)
 	Address = models.TextField()
 
-class Sports(models.Model):
-	Sport_Name = models.CharField(max_length = 50)
-	rules = models.TextField()
+class Sport(models.Model):
+	SportName = models.CharField(max_length = 50)
+	Rules = models.TextField()
 
 class Attributes(models.Model):
 	Name = models.TextField()
@@ -35,6 +35,7 @@ class Locations(models.Model):
 	LocationDescription = models.TextField();
 
 class Games(models.Model):
+	Referees = models.ManyToMany(Referee)
 	StartTime = models.DateTimeField()
 	Location = models.ForeignKey(Location)
 	GameType = models.TextField()
@@ -53,3 +54,9 @@ class Referees(models.Model):
 	
 class Divisions(models.Model):
 	DivisionName = models.TestField()
+
+class Seasons(models.Model):
+	SeasonStart = models.DateTimeField()
+	SeasonName = models.CharField(max_length = 50)
+	RegistrationStart = models.DateTimeField()
+	RegistrationEnd = models.DateTimeField()
