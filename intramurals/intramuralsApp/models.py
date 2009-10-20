@@ -11,8 +11,8 @@ class Person(models.Model):
 	Address = models.TextField()
 
 class Sport(models.Model):
-	Sport_Name = models.CharField(max_length = 50)
-	rules = models.TextField()
+	SportName = models.CharField(max_length = 50)
+	Rules = models.TextField()
 
 class Attribute(models.Model):
 	Name = models.TextField()
@@ -35,6 +35,7 @@ class Location(models.Model):
 	LocationDescription = models.TextField();
 
 class Game(models.Model):
+	Referees = models.ManyToMany(Referee)
 	StartTime = models.DateTimeField()
 	Location = models.ForeignKey(Location)
 	GameType = models.TextField()
@@ -50,4 +51,9 @@ class Admin(models.Model):
 class Referee(models.Model):
 	 PersonID = models.ForeignKey(Person)
 	 AttributeGroupID = models.ForeignKey(AttributeGroup)
-	 
+
+class Seasons(models.Model):
+	SeasonStart = models.DateTimeField()
+	SeasonName = models.CharField(max_length = 50)
+	RegistrationStart = models.DateTimeField()
+	RegistrationEnd = models.DateTimeField()
