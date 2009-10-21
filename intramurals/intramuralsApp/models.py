@@ -10,53 +10,63 @@ class Persons(models.Model):
 	ShirtSize = models.CharField(max_length = 30)
 	Address = models.TextField()
 
-class Sport(models.Model):
-	SportName = models.CharField(max_length = 50)
-	Rules = models.TextField()
+class AttributeGroups(models.Model):
+	AttributeGroupName = models.CharField(max_length = 50)
+	AttributeGroupDescription = models.TextField()
 
 class Attributes(models.Model):
-	Name = models.TextField()
-	Value = models.TextField()
+	AttributeGroupID = models.ForeignKey(AttributeGroups)
+	AttributeValue = models.CharField(max_length = 50)
 
-class Leagues(models.Model):
-	Attributes = models.ManyToManyField(Attribute)
-	LeagueName = models.CharField(max_length = 50)
-
+class Divisions(models.Model):
+	DivisionName = models.TextField()
+	
 class Teams(models.Model):
-	Members = models.ManyToManyField(Person)
 	TeamName = models.CharField(max_length = 50)
 	Password = models.CharField(max_length = 50)
-	CaptainID = models.ForeignKey(Person)
-	LeagueID = models.ForeignKey(League)
+	CaptainID = models.ForeignKey(Persons, related_name = 'IntramuralsAppTeamsCaptainID')
+	DivisionID = models.ForeignKey(Divisions)
 	LivingUnit = models.CharField(max_length = 50)
-
-class Locations(models.Model):
-	LocationName = models.CharField(max_length = 50)
-	LocationDescription = models.TextField();
-
-class Games(models.Model):
-	Referees = models.ManyToMany(Referee)
-	StartTime = models.DateTimeField()
-	Location = models.ForeignKey(Location)
-	GameType = models.TextField()
-	HomeTeamID = models.ForeignKey(Team)
-	AwayTeamID = models.ForeignKey(Team)
-	HomeTeamScore = models.PositiveIntegerField()
-	AwayTeamScore = models.PositiveIntegerField()
+	Members = models.ManyToManyField(Persons, related_name = 'IntramuralsAppTeamsMembers')
 	
-class Admins(models.Model):
-	UserName = models.CharField(max_length = 50)
-	Password = models.CharField(max_length = 50)
-
 class Referees(models.Model):
-	PersonID = models.ForeignKey(Person)
-	AttributeGroupID = models.ForeignKey(AttributeGroup)
+	PersonID = models.ForeignKey(Persons)
+	AttributeGroupID = models.ForeignKey(AttributeGroups)
 	
-class Divisions(models.Model):
-	DivisionName = models.TestField()
-
 class Seasons(models.Model):
 	SeasonStart = models.DateTimeField()
 	SeasonName = models.CharField(max_length = 50)
 	RegistrationStart = models.DateTimeField()
 	RegistrationEnd = models.DateTimeField()
+	
+class Leagues(models.Model):
+	LeagueName = models.CharField(max_length = 50)
+	Attributes = models.ManyToManyField(Attributes)
+	Divisions = models.ManyToManyField(Divisions)
+	Referees = models.ManyToManyField(Referees)
+	
+class Sports(models.Model):
+	SportName = models.CharField(max_length = 50)
+	SportRules = models.TextField()
+	Leagues = models.ManyToManyField(Leagues)
+	Seasons = models.ManyToManyField(Seasons)
+	
+class Locations(models.Model):
+	LocationName = models.CharField(max_length = 50)
+	LocationDescription = models.TextField()
+	Sports = models.ManyToManyField(Sports)
+	
+class Games(models.Model):
+	StartTime = models.DateTimeField()
+	Location = models.ForeignKey(Locations)
+	GameType = models.TextField()
+	HomeTeamID = models.ForeignKey(Teams, related_name = 'IntramuralsAppGamesHomeTeamID')
+	AwayTeamID = models.ForeignKey(Teams, related_name = 'IntramuralsAppGamesAwayTeamID')
+	HomeTeamScore = models.PositiveIntegerField()
+	AwayTeamScore = models.PositiveIntegerField()
+	WinLossTie = models.CharField(max_length = 30)
+	Referees = models.ManyToManyField(Referees)
+
+class Admins(models.Model):
+	UserName = models.CharField(max_length = 50)
+	Password = models.CharField(max_length = 50)
