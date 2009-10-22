@@ -24,6 +24,8 @@ var PROP_NAME = 'datepicker';
 
 function Datepicker() {
 	this.debug = false; // Change this to true to start debugging
+	//TODO: js memoization
+	this.dayData = {};
 	this._curInst = null; // The current instance in use
 	this._keyEvent = false; // If the last event was a key event
 	this._disabledInputs = []; // List of date picker inputs that have been disabled
@@ -1396,7 +1398,7 @@ $.extend(Datepicker.prototype, {
 							(printDate.getTime() == today.getTime() ? ' ui-state-highlight' : '') +
 							(printDate.getTime() >= currentDate.getTime() && printDate.getTime() <= endDate.getTime() ? // in current range
 							' ui-state-active' : '') + // highlight selected day
-							 '" href="#">' + printDate.getDate() + '</a>')) + '</td>'; // display for this month
+							 '" href="#">' + ($.datepicker.dayData[printDate] ? $.datepicker.dayData[printDate]:':)') + '</a>')) + '</td>'; // display for this month
 						printDate.setDate(printDate.getDate() + 1);
 						printDate = this._daylightSavingAdjust(printDate);
 					}
@@ -1628,6 +1630,7 @@ $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
 $.datepicker.version = "1.7.2";
+
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers
