@@ -59,12 +59,12 @@ class Locations(models.Model):
 class Games(models.Model):
 	StartTime = models.DateTimeField()
 	Location = models.ForeignKey(Locations)
-	GameType = models.ForeignKey(AttributeGroups)
+	GameType = models.ForeignKey(Attributes)
 	HomeTeamID = models.ForeignKey(Teams, related_name = 'IntramuralsAppGamesHomeTeamID')
 	AwayTeamID = models.ForeignKey(Teams, related_name = 'IntramuralsAppGamesAwayTeamID')
 	HomeTeamScore = models.PositiveIntegerField()
 	AwayTeamScore = models.PositiveIntegerField()
-	Outcome = models.ForeignKey(AttributeGroups)
+	Outcome = models.ForeignKey(Attributes)
 	Referees = models.ManyToManyField(Referees)
 
 class Admins(models.Model):
