@@ -1,3 +1,8 @@
+/* Persons */
+INSERT INTO `intramuralsApp_persons` (`id`, `StudentID`, `FirstName`, `LastName`, `Email`, `PhoneNumber`, `ShirtSize`, `Address`) VALUES(1, 123456, 'Bogus', 'Dude', 'bogusdude@gmail.com', '123-456-7890', 'XL', 'Bergwall Hall 123');
+
+
+/* Sports */
 INSERT INTO `cos371-dlaskows`.`intramuralsApp_sports` (
 `id` ,
 `SportName` ,
@@ -36,7 +41,7 @@ VALUES (
 
 
 
-
+/* Seasons */
 INSERT INTO `cos371-dlaskows`.`intramuralsApp_seasons` (
 `id` ,
 `SeasonStart` ,
@@ -69,3 +74,14 @@ INSERT INTO `cos371-dlaskows`.`intramuralsApp_seasons` (
 VALUES (
 '3', '2009-09-21 17:53:18', 'Basketball 2009-2010', '2009-09-08 17:52:24', '2009-09-15 17:52:41'
 );
+
+/* Sports to Seasons */
+
+/* Referees */
+INSERT INTO `intramuralsApp_referees` (`id`, `Person_id`, `Attribute_id`) VALUES(1, 1, 1);
+
+/* Attributes */
+INSERT INTO `intramuralsApp_attributes` VALUES(1, 1, 'Soccer');
+
+/* AttributeGroups */
+INSERT INTO `intramuralsApp_attributegroups` (`id`, `AttributeGroupName`, `AttributeGroupDescription`) VALUES(1, 'Level', 'The level at which the referee is authorized to referee');
