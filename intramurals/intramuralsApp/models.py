@@ -48,6 +48,9 @@ class Team(models.Model):
 	Members = models.ManyToManyField(Person, related_name = 'IntramuralsAppTeamsMembers')
 	
 	def __unicode__(self):
+		return self.TeamName
+	class Meta:
+		ordering = ['Division']
 
 class Referee(models.Model):
 	Person = models.ForeignKey(Person)
@@ -71,23 +74,11 @@ class Season(models.Model):
 	class Meta:
 		ordering = ['SeasonStart']
 
-class League(models.Model):
-	LeagueName = models.CharField(max_length = 50)
-	Attribute = models.ManyToManyField(Attribute)
-	Division = models.ManyToManyField(Division)
-	Referee = models.ManyToManyField(Referee)
-	
-	def __unicode__(self):
-		return self.LeagueName
-
-	class Meta:
-
 class Sport(models.Model):
 	SportName = models.CharField(max_length = 50)
 	SportRules = models.ImageField(upload_to='SportRules')
 	SportLogo = models.ImageField(upload_to='SportLogos')
 	#TODO: Complete discussion about what will need to store images in the database
-	League = models.ManyToManyField(League)
 	Season = models.ManyToManyField(Season)
 	
 	def __unicode__(self):
@@ -95,6 +86,23 @@ class Sport(models.Model):
 
 	class Meta:
 		ordering = ['SportName']
+
+# Each league is part of one sport. For example, there might be a Men's A League
+#   for basketball and a separate Men's A League in the database for soccer. This
+#   allows clear division of which sports different divisions, and thus teams are
+#   associated with
+class League(models.Model):
+	LeagueName = models.CharField(max_length = 50)
+	Attribute = models.ManyToManyField(Attribute)
+	Division = models.ManyToManyField(Division)
+	Referee = models.ManyToManyField(Referee)
+	Sport = models.ForeignKey(Sport)
+	
+	def __unicode__(self):
+		return self.LeagueName
+
+	class Meta:
+		ordering = ['Sport']
 
 class Location(models.Model):
 	LocationName = models.CharField(max_length = 50)
