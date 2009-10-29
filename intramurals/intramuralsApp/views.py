@@ -13,5 +13,4 @@ def dish_out_template(request, file_name):
 	return render_to_response(file_name)
 	
 def index(request):
-    return HttpResponse("Welcome to the Taylor intramurals website!")
-
+    return render_to_response("home.html")
