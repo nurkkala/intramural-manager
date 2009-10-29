@@ -129,13 +129,3 @@ class Game(models.Model):
 	class Meta:
 		ordering = ['StartTime']
 
-class Admin(models.Model):
-	UserName = models.CharField(max_length = 50)
-	Password = models.CharField(max_length = 50)
-
-	def __unicode__(self):
-		return self.UserName
-
-	class Meta:
-		ordering = ['UserName']
-
