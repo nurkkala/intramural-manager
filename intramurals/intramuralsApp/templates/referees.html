@@ -10,18 +10,18 @@
 	    <span class = "pageTitle"> Referees </span>
     </div>
     <div class="mainlayout">  	
-	  	{% for sport in sportList %}
+  	{% for sport in sportList %}
 	    	<!-- insert sport icon/photo here -->
 	    	<span class="sportName">{{sport.name}}</span>
-	  		{% for league in sport.leagueList %}
+	  	{% for league in sport.leagueList %}
                 <span class = "leagueName">{{ league.name }}</span>
-	 	 		<ul>
-                {% for referee in league.referees %}
+	 	    <ul>
+		    {% for referee in league.referees %}
                 	<li><a href = "/referees/{{referee.id}}/">{{referee.name}}</a></li>
-                {% endfor %}
-                </ul>
-			{% endfor %}
+		    {% endfor %}
+                    </ul>
 		{% endfor %}
+	{% endfor %}
       </div>
     </div>
     <ul>
