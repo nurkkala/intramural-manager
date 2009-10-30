@@ -17,5 +17,15 @@
 <ul>
   <li><a href="home.html">Home</a></li>
 </ul>
+{% for sport in sportList %}
+<div class="sportList">
+  <div class="sportPhoto">
+    {{ sport.photo }}
+  </div>
+  <div>
+    {{ sport.minilogo
+  </div>
+</div>
+{% endfor %}
 </body>
 </html>

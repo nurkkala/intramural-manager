@@ -38,11 +38,9 @@
 	<input type="text" name="teamname"/>
 	<h4>Floor/Wing</h4>
 	<select name="Floor/Wing">
-		<option value="SammyMorris">Sammy Morris</option>
-		<option value="SigmaBeta">Sigma Beta</option>
-		<option value="Wengatz">Wengatz</option>
-		<option value="TheHack">The Hack</option>
-		<option value="FOSO">FOSO</option>
+	{% for location in locationList %}
+		<option value="{{ location }}">{{ location }}</option>
+	{% endfor %}
 	</select>
 	<input type="button" value="Next" class="nextButton"/>
 </div>
@@ -58,7 +56,7 @@
 
 </div>
 <div id="step3" class="hide">
-	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">PLEASE NOTE
+	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
 
 		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
 
@@ -96,6 +94,11 @@
 	<input type="button" value="Next" class="nextButton"/>
 </div>
 <div id="step5" class="hide">
+[making password stuff goes here]
+	<input type="button" value="Back" class="backButton"/>
+	<input id="complete" type="submit" value="Complete"/>
+</div>
+<div id="step6" class="hide">
 [inviting people goes here]
 	<input type="button" value="Back" class="backButton"/>
 	<input id="complete" type="submit" value="Complete"/>
