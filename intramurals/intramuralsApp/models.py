@@ -48,6 +48,7 @@ class Team(models.Model):
 	Members = models.ManyToManyField(Person, related_name = 'IntramuralsAppTeamsMembers')
 	
 	def __unicode__(self):
+		return self.TeamName
 
 class Referee(models.Model):
 	Person = models.ForeignKey(Person)
@@ -81,6 +82,7 @@ class League(models.Model):
 		return self.LeagueName
 
 	class Meta:
+		ordering = ['LeagueName']
 
 class Sport(models.Model):
 	SportName = models.CharField(max_length = 50)
