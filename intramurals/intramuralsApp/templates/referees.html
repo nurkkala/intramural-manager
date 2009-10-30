@@ -1,22 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html>
-<head>
-<title>Referees</title>
-</head>
+  	<head>
+  		<title>Referees</title>
+	</head>
 <body>
-<div id="header">
-	<table class="mainlayout" align="center">
-		<tr class="titlehead">
-			<td colspan="250">
-			<h1 align="center">Referees</h1>
-			</td>
-                </tr>
-	</table>
-<ul>
-  <li><a href="home.html">Home</a></li>
-  <li><a href="refereeSchedule.html">Referee Schedule</a></li>
-</ul>
+  <div>
+    <div id="header">
+	    <span class = "pageTitle"> Referees </span>
+    </div>
+    <div class="mainlayout">  	
+	  	{% for sport in sportList %}
+	    	<!-- insert sport icon/photo here -->
+	    	<span class="sportName">{{sport.name}}</span>
+	  		{% for league in sport.leagueList %}
+                <span class = "leagueName">{{ league.name }}</span>
+	 	 		<ul>
+                {% for referee in league.referees %}
+                	<li><a href = "/referees/{{referee.id}}/">{{referee.name}}</a></li>
+                {% endfor %}
+                </ul>
+			{% endfor %}
+		{% endfor %}
+      </div>
+    </div>
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="refereeSchedule.html">Referee Schedule</a></li>
+    </ul>
+  </div>
 </body>
-</html>
+</html>  
