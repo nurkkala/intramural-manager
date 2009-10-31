@@ -23,7 +23,7 @@ class Person(models.Model):
 	FirstName = models.CharField(max_length = 50)
 	LastName = models.CharField(max_length = 50)
 	Email = models.EmailField()
-	PhoneNumber = PhoneNumberField.null()
+	PhoneNumber = PhoneNumberField().null
 	ShirtSize = models.CharField(max_length = 50)
 	Address = models.TextField()
 	def __unicode__(self):
