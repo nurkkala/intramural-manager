@@ -20,11 +20,11 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 
 class Person(models.Model):
 	StudentID = models.PositiveIntegerField()
-	FirstName = models.CharField(max_length = 30)
-	LastName = models.CharField(max_length = 30)
+	FirstName = models.CharField(max_length = 50)
+	LastName = models.CharField(max_length = 50)
 	Email = models.EmailField()
-	PhoneNumber = PhoneNumberField()
-	ShirtSize = models.CharField(max_length = 30)
+	PhoneNumber = PhoneNumberField.null()
+	ShirtSize = models.CharField(max_length = 50)
 	Address = models.TextField()
 	def __unicode__(self):
 		return u'%s, %s' % (self.LastName, self.FirstName)
@@ -85,7 +85,7 @@ class League(models.Model):
 		ordering = ['Season']
 
 class Division(models.Model):
-	DivisionName = models.TextField()
+	DivisionName = models.CharField(max_length = 50)
 	League = models.ForeignKey(League)
 	def __unicode__(self):
 		return self.DivisionName
