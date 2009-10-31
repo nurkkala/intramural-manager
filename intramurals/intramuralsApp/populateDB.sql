@@ -13,6 +13,36 @@ INSERT INTO `intramuralsApp_person` VALUES
 (11, 123456, 'Stuart', 'Effort', 'seffort@gmail.com', '123-456-7890', 'XL', 'Gerig Hall 412'),
 (12, 123456, 'Charles', 'Esperanto', 'cesperanto@gmail.com', '123-456-7890', 'M', 'Bergwall Hall 123');
 
+/* Divisions */
+INSERT INTO `intramuralsApp_division` VALUES
+(1, 'Unassigned', 1),
+(2, 'Unassigned', 2),
+(3, 'Unassigned', 3),
+(4, 'Unassigned', 4);
+
+/* Teams */
+INSERT INTO `intramuralsApp_team` VALUES
+(1, 'Test team', 'password', 10, 1, '2nd North English'),
+(2, 'Wizard of Oz', 'password', 9, 1, 'Off campus'),
+(3, 'Oldies', 'password', 4, 1, '1st West Olson'),
+(4, 'Blackjacks', 'password', 6, 1, '1st Swallow Robin'),
+(5, 'Live Comfort Eagle', 'password', 5, 1, 'Foundation'),
+(6, 'Test team', 'password', 10, 2, '2nd North English'),
+(7, 'Wizard of Oz', 'password', 9, 2, 'Off campus'),
+(8, 'Oldies', 'password', 4, 2, '1st West Olson'),
+(9, 'Blackjacks', 'password', 6, 2, '1st Swallow Robin'),
+(10, 'Live Comfort Eagle', 'password', 5, 2, 'Foundation'),
+(11, 'Test team', 'password', 10, 3, '2nd North English'),
+(12, 'Wizard of Oz', 'password', 9, 3, 'Off campus'),
+(13, 'Oldies', 'password', 4, 3, '1st West Olson'),
+(14, 'Blackjacks', 'password', 6, 3, '1st Swallow Robin'),
+(15, 'Live Comfort Eagle', 'password', 5, 3, 'Foundation'),
+(16, 'Test team', 'password', 10, 4, '2nd North English'),
+(17, 'Wizard of Oz', 'password', 9, 4, 'Off campus'),
+(18, 'Oldies', 'password', 4, 4, '1st West Olson'),
+(19, 'Blackjacks', 'password', 6, 4, '1st Swallow Robin'),
+(20, 'Live Comfort Eagle', 'password', 5, 4, 'Foundation');
+
 /* Leagues */
 INSERT INTO `intramuralsApp_league` VALUES
 (1, 'Men''s League', 1),
