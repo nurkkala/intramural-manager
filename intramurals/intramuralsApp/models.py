@@ -27,7 +27,7 @@ class Person(models.Model):
 	ShirtSize = models.CharField(max_length = 50)
 	Address = models.TextField()
 	def __unicode__(self):
-		return u'%s, %s' % (self.LastName, self.FirstName)
+		return u'%s %s' % (self.FirstName, self.LastName)
 	class Meta:
 		ordering = ['LastName']
 
@@ -76,8 +76,8 @@ class Season(models.Model):
 
 class League(models.Model):
 	LeagueName = models.CharField(max_length = 50)
-	Attribute = models.ManyToManyField(Attribute)
-	Referee = models.ManyToManyField(Referee)
+	Attributes = models.ManyToManyField(Attribute)
+	Referees = models.ManyToManyField(Referee)
 	Season = models.ForeignKey(Season)
 	def __unicode__(self):
 		return self.LeagueName
@@ -107,7 +107,7 @@ class Team(models.Model):
 class Location(models.Model):
 	LocationName = models.CharField(max_length = 50)
 	LocationDescription = models.TextField()
-	Sport = models.ManyToManyField(Sport)
+	Sports = models.ManyToManyField(Sport)
 	def __unicode__(self):
 		return self.LocationName
 	class Meta:

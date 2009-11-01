@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
-from intramuralsApp.views import dish_out_template, index
-urlpatterns = patterns('',
-    url('^mynameis/(.*)', 'intramuralsApp.views.say_hi'),
-    url('^$', index),
-    url('^(.*)', dish_out_template),
+urlpatterns = patterns('intramuralsApp.views',
+    url('^mynameis/(.*)', 'say_hi'),
+    url('^$', 'index'),
+    url('^referees/$', 'referees'),
+    url('^(.*)', 'dish_out_template'),
 )
