@@ -1398,7 +1398,7 @@ $.extend(Datepicker.prototype, {
 							(printDate.getTime() == today.getTime() ? ' ui-state-highlight' : '') +
 							(printDate.getTime() >= currentDate.getTime() && printDate.getTime() <= endDate.getTime() ? // in current range
 							' ui-state-active' : '') + // highlight selected day
-							 '" href="#">' + ($.datepicker.dayData[printDate] ? $.datepicker.dayData[printDate]:':)') + '</a>')) + '</td>'; // display for this month
+							 '" href="#">' + '<span class="ui-cal-date">' + printDate.getDate() + "</span>" + ((inst.dayData && inst.dayData[printDate.getDate()]) ? inst.dayData[printDate]:':)') + '</a>')) + '</td>'; // display for this month
 						printDate.setDate(printDate.getDate() + 1);
 						printDate = this._daylightSavingAdjust(printDate);
 					}
