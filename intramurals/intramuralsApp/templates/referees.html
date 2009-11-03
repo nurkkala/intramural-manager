@@ -1,22 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html>
-<head>
-<title>Referees</title>
-</head>
+  	<head>
+	  <link rel="stylesheet" type="text/css" href="CSS/intramurals.css" />
+  		<title>Referees</title>
+	</head>
 <body>
-<div id="header">
-	<table class="mainlayout" align="center">
-		<tr class="titlehead">
-			<td colspan="250">
-			<h1 align="center">Referees</h1>
-			</td>
-                </tr>
-	</table>
-<ul>
-  <li><a href="home.html">Home</a></li>
-  <li><a href="refereeSchedule.html">Referee Schedule</a></li>
-</ul>
+  <div>
+    <div id="header">
+	    <span class="titlehead"> Referees </span>
+    </div>
+    <div class="navigation">
+      <span class="pageLink"><a href="home.html">Home</a></span>
+      <span><a href="refereeSchedule.html">Referee Schedule</a></span>
+    </div>
+
+    <div class="mainbody">  	
+  	<ul>{% for sport in sportList %}
+	<!-- insert sport icon/photo here -->
+	<li><span class="sportName">{{sport.SportName}}<br /></span>
+  	      <ul>{% for season in sport.seasonList %}
+        <li><span class="seasonName">{{ season.SeasonName }}<br /></span></li>
+	  	     <ul>{% for league in season.leagueList %}
+              <li><span class="leagueName">{{ league.LeagueName }}<br /></span></li>
+	                  <ul>{% for referee in league.refereeList %}
+                  <li><span class="refereeLink"><a href="/referees/{{referee.id}}/">{{referee}}<br /></a></span></li>
+			    <!-- don't forget divisions -->
+			    {% endfor %}
+			    </ul>
+	             {% endfor %}
+		     </ul>
+		{% endfor %}
+		</ul>
+	{% endfor %}
+	</ul>
+      </div>
+    </div>
+  </div>
 </body>
-</html>
+</html>  
