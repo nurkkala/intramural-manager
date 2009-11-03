@@ -1,4 +1,4 @@
-# Create your views here.
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.http import HttpResponse
@@ -13,8 +13,7 @@ def say_hi(request, name):
     html = t.render(c)
     return HttpResponse(html)
 
-def dish_out_template(request, file_name):
-    return render_to_response(file_name)
+#"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
 	
 def referees(request):
     sportList = Sport.objects.all()
