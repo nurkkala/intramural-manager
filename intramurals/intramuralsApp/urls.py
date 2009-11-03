@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
-from intramuralsApp.views import index
 
-urlpatterns = patterns('',
-    url('^$', index),
-    #url('', ),
+urlpatterns = patterns('intramuralsApp.views',
+    url('^mynameis/(.*)', 'say_hi'),
+    url('^$', 'index'),
+    url('^referees/$', 'referees'),
 )

@@ -7,7 +7,7 @@ from intramurals import dish_out_template
 
 urlpatterns = patterns('',
     # Example:
-    url('^templates/(.*)', dish_out_template),
+    url('^templates/(.*)', dish_out_template), #TODO: we need to make this secure (we can't allow .. directory)
     (r'', include('intramurals.intramuralsApp.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
