@@ -25,7 +25,7 @@ class Person(models.Model):
 	Email = models.EmailField()
 	PhoneNumber = PhoneNumberField(null=True)
 	ShirtSize = models.CharField(max_length = 50)
-	Address = models.TextField()
+	Address = models.CharField(max_length = 50)
 	def __unicode__(self):
 		return u'%s %s' % (self.FirstName, self.LastName)
 	class Meta:
