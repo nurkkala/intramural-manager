@@ -60,6 +60,51 @@ INSERT INTO `intramuralsApp_league` VALUES
 (13, 'Women''s A League', 4),
 (14, 'Women''s B League', 4);
 
+/* Locations */
+INSERT INTO `intramuralsApp_location` VALUES
+(1, 'Field 1', 'Eastmost intramural football field on southeast corner of campus'),
+(2, 'Field 2', 'Center intramural football field on southeast corner of campus');
+
+/* Games */
+INSERT INTO `intramuralsApp_game` VALUES
+(1, '2009-09-16 16:00:00', 1, 0, 1, 2, 0, 0, 0),
+(2, '2009-09-16 17:00:00', 1, 0, 3, 4, 0, 0, 0),
+(3, '2009-09-18 16:00:00', 1, 0, 1, 5, 0, 0, 0),
+(4, '2009-09-18 17:00:00', 1, 0, 3, 2, 0, 0, 0),
+(5, '2009-09-16 16:00:00', 2, 0, 6, 7, 0, 0, 0),
+(6, '2009-09-16 17:00:00', 2, 0, 8, 9, 0, 0, 0),
+(7, '2009-09-18 16:00:00', 2, 0, 8, 6, 0, 0, 0),
+(8, '2009-09-18 17:00:00', 2, 0, 9, 7, 0, 0, 0);
+
+/* Referees */
+INSERT INTO `intramuralsApp_referee` VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1);
+
+/* Games to Referees */
+INSERT INTO `intramuralsApp_game_Referees` VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 1),
+(4, 2, 2),
+(5, 3, 1),
+(6, 4, 1),
+(7, 5, 3),
+(8, 6, 3),
+(9, 7, 2),
+(10, 8, 2),
+(11, 8, 3);
+
+/* Leagues to Referees */
+INSERT INTO `intramuralsApp_league_Referees` VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 2, 1),
+(5, 2, 2),
+(6, 3, 4);
+
 /* Sports */
 INSERT INTO `intramuralsApp_sport` VALUES
 (1, 'Football', 'Grab ball and run.', ''),
@@ -73,22 +118,6 @@ INSERT INTO `intramuralsApp_season` VALUES
 (2, 'Tennis 2009-2010', '2009-09-16 17:53:18', '2009-08-30 17:52:24', '2009-09-12 17:52:41', 2),
 (3, 'Soccer 2009-2010', '2009-10-13 17:53:18', '2009-09-08 17:52:24', '2009-09-15 17:52:41', 3),
 (4, 'Basketball 2009-2010', '2010-04-24 17:53:18', '2010-04-08 17:52:24', '2010-04-21 17:52:41', 4);
-
-
-/* Referees */
-INSERT INTO `intramuralsApp_referee` VALUES
-(1, 1, 1),
-(2, 2, 1),
-(3, 3, 1);
-
-/* Leagues to Referees */
-INSERT INTO `intramuralsApp_league_Referees` VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 1, 3),
-(4, 2, 1),
-(5, 2, 2),
-(6, 3, 4);
 
 /* Attributes */
 INSERT INTO `intramuralsApp_attribute` VALUES
