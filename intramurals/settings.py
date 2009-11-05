@@ -4,8 +4,10 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+    # ('aubrown', 'agustinmichaelbrown@gmail.com'),
 )
+
+APPEND_SLASH = True
 
 MANAGERS = ADMINS
 
