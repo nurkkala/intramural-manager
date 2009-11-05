@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
-    (r'^admin/(.*)', admin.site.root),
+	(r'^admin/(.*)', admin.site.root),
 	(r'', include('intramurals.intramuralsApp.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
