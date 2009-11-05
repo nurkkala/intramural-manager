@@ -75,10 +75,17 @@ class Season(models.Model):
 		ordering = ['Sport']
 
 class League(models.Model):
+	GENDER = (
+		(0, 'Male'),
+		(1, 'Female'),
+		(2, 'Coed')
+	)
+
 	Name = models.CharField(max_length = 50) # Name of League
 	Attributes = models.ManyToManyField(Attribute) # Attributes of League
 	Referees = models.ManyToManyField(Referee)
 	Season = models.ForeignKey(Season)
+	Gender = models.IntegerField(choices=GENDER)
 	def __unicode__(self):
 		return self.Name
 	class Meta:
