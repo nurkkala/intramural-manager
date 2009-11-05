@@ -33,6 +33,7 @@
 	</table>
 
 </div>
+<form action="/registerTeam" method="post">
 <div id="step1">
 	<h4>Team name</h4>
 	<input type="text" name="teamname"/>
@@ -103,6 +104,7 @@
 	<input type="button" value="Back" class="backButton"/>
 	<input id="complete" type="submit" value="Complete"/>
 </div>
+</form>
 <div id="footer">
 
 </div>
@@ -128,7 +130,6 @@
   }
   $('.nextButton').click(function(e){  showStep(e, $.fn.next) } );
   $('.backButton').click(function(e){  showStep(e, $.fn.prev) } );
-  $('#complete').click(function(){  })
 </script>
 </body>
 </html>

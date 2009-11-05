@@ -7,16 +7,24 @@
 </head>
 <body>
 <div id="header">
-	<table class="mainlayout" align="center">
+  	<table class="mainlayout">
 		<tr class="titlehead">
 			<td colspan="250">
-			<h1 align="center">Referee Schedule</h1>
+			<h1>Referee Schedule</h1>
 			</td>
                 </tr>
 	</table>
 <ul>
-  <li><a href="home.html">Home</a></li>
-  <li><a href="referees.html">Referees</a></li>
+  <li><a href="/home">Home</a></li>
+  <li><a href="/referees">Referees</a></li>
+</ul>
+<ul>
+  <h2>Games for {{referee.Person.FirstName}}</h2>
+  {% for game in gameList %}
+  <h3>{{game.HomeTeam}} vs. {{game.AwayTeam}}</h3>
+  <li>Time: {{game.StartTime}}</li>
+  <li>Location: {{game.Location}}</li>
+  {% endfor %}
 </ul>
 </body>
 </html>

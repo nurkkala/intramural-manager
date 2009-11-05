@@ -115,16 +115,22 @@ class Location(models.Model):
 
 class Game(models.Model):
 	OUTCOME = (
-		(0, 'Won'),
-		(1, 'Lost'),
-		(2, 'Tied'),
-		(3, 'Cancelled'),
-		(4, 'Postponed')
+		(0, 'Unplayed'),
+		(1, 'Won'),
+		(2, 'Lost'),
+		(3, 'Tied'),
+		(4, 'Cancelled'),
+		(5, 'Postponed')
 	)
 
+	GAMETYPE = (
+		(0, 'Regular'),
+		(1, 'Playoff'),
+		(2, 'Championship')
+	)
 	StartTime = models.DateTimeField()
 	Location = models.ForeignKey(Location)
-	GameType = models.ForeignKey(Attribute, related_name = 'IntramuralsAppGamesGameType')
+	GameType = models.IntegerField(choices=GAMETYPE)
 	HomeTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesHomeTeam')
 	AwayTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesAwayTeam')
 	HomeTeamScore = models.PositiveIntegerField()
@@ -132,7 +138,7 @@ class Game(models.Model):
 	Outcome = models.IntegerField(choices=OUTCOME)
 	Referee = models.ManyToManyField(Referee)
 	def __unicode__(self):
-		return u'%s vs. %s %s' % (self.HomeTeam.TeamName, self.AwayTeam.TeamName, self.StartTime)
+		return u'%s vs. %s %s' % (self.HomeTeam.TeamName, self.AwayTeam.TeamName, self.Location)
 	class Meta:
 		ordering = ['StartTime']
 

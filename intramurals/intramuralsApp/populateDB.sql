@@ -83,7 +83,7 @@ INSERT INTO `intramuralsApp_referee` VALUES
 (3, 3, 1);
 
 /* Games to Referees */
-INSERT INTO `intramuralsApp_game_Referees` VALUES
+INSERT INTO `intramuralsApp_game_Referee` VALUES
 (1, 1, 1),
 (2, 1, 2),
 (3, 2, 1),
