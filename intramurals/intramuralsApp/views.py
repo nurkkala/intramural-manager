@@ -58,8 +58,6 @@ def refereeSchedule(request, refId):
    #     game.sport = teamToSport(game.HomeTeam)
     return render_to_response("refereeSchedule.html", locals())
 
-
-
 def teamToSport(teamName):
     team = Team.objects.get(TeamName=teamName)
     sport = team.division.league.season.sport

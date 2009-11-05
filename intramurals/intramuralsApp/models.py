@@ -143,7 +143,7 @@ class Game(models.Model):
 	HomeTeamScore = models.PositiveIntegerField()
 	AwayTeamScore = models.PositiveIntegerField()
 	Outcome = models.IntegerField(choices=OUTCOME)
-	Referee = models.ManyToManyField(Referee)
+	Referees = models.ManyToManyField(Referee)
 	def __unicode__(self):
 		return u'%s vs. %s %s' % (self.HomeTeam.TeamName, self.AwayTeam.TeamName, self.Location)
 	class Meta:
