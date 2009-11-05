@@ -15,7 +15,21 @@ def say_hi(request, name):
 
 def dish_out_template(request, file_name):
     return render_to_response(file_name)
-	
+
+def schedule(request):
+    return render_to_response("schedule.html", locals())
+
+def sports(request):
+    sportList = Sport.objects.all()
+    season = currentSeason() #This needs to be implemented!
+    return render_to_response("sports.html", locals())
+
+def register(request):
+    return render_to_response("register.html", locals())
+
+def standings(request):
+    return render_to_response("standings.html", locals())
+
 def referees(request):
     sportList = Sport.objects.all()
     for sport in sportList:
@@ -25,3 +39,9 @@ def referees(request):
             for league in season.leagueList:
                 league.refereeList = league.Referees.all()
     return render_to_response("referees.html", locals())
+
+def about(request):
+    return render_to_response("about.html", locals())
+
+def admin(request):
+    return render_to_response("admin.html", locals())
