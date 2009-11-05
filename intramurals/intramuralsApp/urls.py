@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('intramuralsApp.views',
     url('^mynameis/(.*)', 'say_hi'),
     url(r'^$', 'index'),
-    url(r'^schedule/$', 'schedule'),
+    url(r'^schedule$', 'schedule'),
     url('^sports$', 'sports'),
     url('^register$', 'register'),
     url('^registerTeam', 'registerTeam'),
