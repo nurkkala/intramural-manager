@@ -74,3 +74,4 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 	'intramurals.intramuralsApp',
 )
+
