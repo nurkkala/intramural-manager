@@ -2,28 +2,33 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html>
-<head>
-<title>Sports</title>
-</head>
-<body>
-<div id="header">
-	<table class="mainlayout" align="center">
-		<tr class="titlehead">
-			<td colspan="250">
-			<h1 align="center">Sports</h1>
-			</td>
-                </tr>
-	</table>
-<ul>
-  <li><a href="home.html">Home</a></li>
-</ul>
+  <head>
+    <link rel="stylesheet" type="text/css" href="CSS/intramurals.css" />
+	  <title>Sports</title>
+  </head>
+  <body>
+    <div id="header">
+	<span class="titlehead">Sports</span>
+    </div>
+    <div class="navigation">
+      <span class="pageLink"><a href="/">Home</a></span>
+    </div>
 {% for sport in sportList %}
 <div class="sportList">
   <div class="sportPhoto">
-    {{ sport.photo }}
+    {{ sport.Photo }}
   </div>
-  <div>
-    {{ sport.minilogo
+  <div class="sportLogo">
+    {{ sport.Logo }}
+  </div>
+  <div class="sportName">
+    {{ sport.Name }}
+  </div>
+  <div class="registration">
+    Registration: {{ season.RegistrationStart|date:"M j, Y" }} - {{ season.RegistrationEnd|date:"M j, Y" }}
+  </div>
+  <div class="sportRules">
+    <a href="{{ sport.Rules }}" target="_blank">Official rules</a>
   </div>
 </div>
 {% endfor %}
