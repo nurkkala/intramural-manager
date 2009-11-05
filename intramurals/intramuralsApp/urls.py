@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 urlpatterns = patterns('intramuralsApp.views',
     url('^mynameis/(.*)', 'say_hi'),
-    url(r'^home/$', 'index'),
+    url(r'^$', 'index'),
     url(r'^schedule/$', 'schedule'),
     url('^sports$', 'sports'),
     url('^register$', 'register'),
