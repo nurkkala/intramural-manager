@@ -44,7 +44,7 @@ INSERT INTO `intramuralsApp_team` VALUES
 (20, 'Live Comfort Eagle', 'password', 5, 4, 'Foundation');
 
 /* Leagues */
-INSERT INTO `intramuralsApp_league` VALUES
+INSERT INTO `intramuralsApp_league` (id, Name, Season_id) VALUES
 (1, 'Men''s League', 1),
 (2, 'Women''s League', 1),
 (3, 'Men''s Singles', 2),
