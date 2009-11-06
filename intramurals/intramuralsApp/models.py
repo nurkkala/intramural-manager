@@ -15,8 +15,10 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 # Each season has one or more leagues.
 # Each season is part of one sport.
 # Each sport has one or more seasons.
+# Each location is part of one location group.
+# Each location group has one or more locations
+# Each location group is used for one or more sports.
 # Each sport uses one or more locations.
-# Each location is used for one or more sports.
 
 class Person(models.Model):
 	StudentID = models.PositiveIntegerField()
@@ -57,6 +59,7 @@ class Sport(models.Model):
 	Name = models.CharField(max_length = 50) # Name of Sport
 	Rules = models.ImageField(upload_to='SportRules') # Rules for Sport
 	Logo = models.ImageField(upload_to='SportLogos') # Logo for Sport
+	Photo = models.ImageField(upload_to='SportPhotos') # Photo for Sport
 	#TODO: Complete discussion about what we will need to store images in the database
 	def __unicode__(self):
 		return self.Name
@@ -111,10 +114,19 @@ class Team(models.Model):
 	class Meta:
 		ordering = ['Division']
 
+class LocationGroup(models.Model):
+	Name = models.CharField(max_length = 50)
+	Sports = models.ManyToManyField(Sport)
+	Map = models.ImageField(upload_to='LocationMaps')
+	def __unicode__(self):
+		return self.Name
+	class Meta:
+		ordering = ['Name']
+
 class Location(models.Model):
 	Name = models.CharField(max_length = 50) # Name of Location
 	Description = models.TextField() # Description of Location
-	Sports = models.ManyToManyField(Sport)
+	LocationGroup = models.ForeignKey(LocationGroup)
 	def __unicode__(self):
 		return self.Name
 	class Meta:
