@@ -136,9 +136,10 @@ class Team(models.Model):
 		ordering = ['Division']
 
 class TeamAdmin(admin.ModelAdmin):
-	list_display = ('Name', 'Division', 'LivingUnit', 'Captain', 'LivingUnit')
+	list_display = ('Name', 'Division', 'LivingUnit', 'Captain',)
 	list_filter = ('Division', 'Name',)
 	filter_horizontal = ('Members',)
+	search_fields = ('Name', 'LivingUnit',)
 
 class LocationGroup(models.Model):
 	Name = models.CharField('Location Name', max_length = 50)
