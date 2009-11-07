@@ -27,7 +27,7 @@ def sports(request):
 # I Need To Get The
 # hard-coded copies to be
 # created dynamically!!!!
-def registerTeam(request):
+def createTeam(request):
     form = CreateTeamForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
