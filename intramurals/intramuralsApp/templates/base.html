@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="CSS/intramurals.css" />
+    <title>Taylor Intramurals - {% block pagetitle %}{% endblock %}</title>
+  </head>
+  <body>
+    <div id="header">Taylor Intramurals</div>
+    <div id="navigation">
+      <span class="pageLink"><a href="/">Home</a></span>
+      <span class="pageLink"><a href="sports">Sports</a></span>
+      <span class="pageLink"><a href="schedule">Schedule</a></span>
+      <span class="pageLink"><a href="standings">Standings</a></span>
+      <span class="pageLink"><a href="register">Register</a></span>
+      <span class="pageLink"><a href="referees">Referees</a></span>
+      <span class="pageLink"><a href="about">About</a></span>
+    </div>
+    <div id="content">
+      <h1>{% block title %}{% endblock %}</h1>
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
