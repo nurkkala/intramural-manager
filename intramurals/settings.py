@@ -70,8 +70,10 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.admin',
+	'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
 	'intramurals.intramuralsApp',
 )
+
