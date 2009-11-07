@@ -1,3 +1,17 @@
+/* Sports */
+INSERT INTO `intramuralsApp_sport` VALUES
+(1, 'Football', 'Grab ball and run.', '', ''),
+(2, 'Tennis', 'Hit the ball over the net into the court with the racket.', '', ''),
+(3, 'Soccer', 'Kick ball into goal.', '', ''),
+(4, 'Basketball', 'Throw the ball through the hoop.', '', '');
+
+/* Seasons */
+INSERT INTO `intramuralsApp_season` VALUES
+(1, 'Fall Football 2009-2010', '2009-09-16 17:53:18', '2009-08-30 17:52:24', '2009-09-12 17:52:41', 1),
+(2, 'Tennis 2009-2010', '2009-09-16 17:53:18', '2009-08-30 17:52:24', '2009-09-12 17:52:41', 2),
+(3, 'Soccer 2009-2010', '2009-10-13 17:53:18', '2009-09-08 17:52:24', '2009-09-15 17:52:41', 3),
+(4, 'Basketball 2009-2010', '2010-04-24 17:53:18', '2010-04-08 17:52:24', '2010-04-21 17:52:41', 4);
+
 /* Persons */
 INSERT INTO `intramuralsApp_person` VALUES
 (1, 123456, 'Bogus', 'Dude', 'bogusdude@gmail.com', '123-456-7890', 'XL', 'Bergwall Hall 123'),
@@ -45,25 +59,52 @@ INSERT INTO `intramuralsApp_team` VALUES
 
 /* Leagues */
 INSERT INTO `intramuralsApp_league` VALUES
-(1, 'Men''s League', 1),
-(2, 'Women''s League', 1),
-(3, 'Men''s Singles', 2),
-(4, 'Women''s Singles', 2),
-(5, 'Co-ed Doubles', 2),
-(6, 'Men''s A League', 3),
-(7, 'Men''s B League', 3),
-(8, 'Women''s A League', 3),
-(9, 'Women''s B League', 3),
-(10, 'Men''s A League', 4),
-(11, 'Men''s B League', 4),
-(12, 'Men''s C League', 4),
-(13, 'Women''s A League', 4),
-(14, 'Women''s B League', 4);
+(1, 'Men''s League', 1, 0),
+(2, 'Women''s League', 1, 1),
+(3, 'Men''s Singles', 2, 0),
+(4, 'Women''s Singles', 2, 1),
+(5, 'Co-ed Doubles', 2, 2),
+(6, 'Men''s A League', 3, 0),
+(7, 'Men''s B League', 3, 0),
+(8, 'Women''s A League', 3, 1),
+(9, 'Women''s B League', 3, 1),
+(10, 'Men''s A League', 4, 0),
+(11, 'Men''s B League', 4, 0),
+(12, 'Men''s C League', 4, 0),
+(13, 'Women''s A League', 4, 1),
+(14, 'Women''s B League', 4, 1);
 
 /* Locations */
 INSERT INTO `intramuralsApp_location` VALUES
-(1, 'Field 1', 'Eastmost intramural football field on southeast corner of campus'),
-(2, 'Field 2', 'Center intramural football field on southeast corner of campus');
+(1, 'Field 1', 'Eastmost intramural football field on southeast corner of campus', 1),
+(2, 'Field 2', 'Center intramural football field on southeast corner of campus', 1),
+(3, 'Field 3', 'Westmost intramural football field on southeast corner of campus', 1),
+(4, 'Court 1', 'Tennis courts closest to Rediger Auditorium', 2),
+(5, 'Court 2', 'Tennis courts 2nd closest to Rediger Auditorium', 2),
+(6, 'Court 3', 'Tennis courts 3rd closest to Rediger Auditorium', 2),
+(7, 'Court 4', 'Tennis courts 4th closest to Rediger Auditorium', 2),
+(8, 'Field 1', 'Soccer field closest to campus', 3),
+(9, 'Field 2', 'Soccer field 2nd closest to campus', 3),
+(10, 'Field 3', 'Soccer field 2nd furthest from campus', 3),
+(11, 'Field 4', 'Soccer field furthest from campus', 3),
+(12, 'Court 1', 'Basketball court in the KSAC closest to the lobby', 4),
+(13, 'Court 2', 'Basketball court in the KSAC 2nd closest to the lobby', 4),
+(14, 'Court 3', 'Basketball court in the KSAC 2nd furthest from the lobby', 4),
+(15, 'Court 4', 'Basketball court in the KSAC furthest from the lobby', 4);
+
+/* Location Groups */
+INSERT INTO `intramuralsApp_locationgroup` VALUES
+(1, 'Football fields', ''),
+(2, 'Tennis courts', ''),
+(3, 'Soccer fields', ''),
+(4, 'KSAC courts', '');
+
+/* Location Groups to Sports */
+INSERT INTO `intramuralsApp_locationgroup_Sports` VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4);
 
 /* Games */
 INSERT INTO `intramuralsApp_game` VALUES
@@ -83,7 +124,7 @@ INSERT INTO `intramuralsApp_referee` VALUES
 (3, 3, 1);
 
 /* Games to Referees */
-INSERT INTO `intramuralsApp_game_Referee` VALUES
+INSERT INTO `intramuralsApp_game_Referees` VALUES
 (1, 1, 1),
 (2, 1, 2),
 (3, 2, 1),
@@ -104,20 +145,6 @@ INSERT INTO `intramuralsApp_league_Referees` VALUES
 (4, 2, 1),
 (5, 2, 2),
 (6, 3, 4);
-
-/* Sports */
-INSERT INTO `intramuralsApp_sport` VALUES
-(1, 'Football', 'Grab ball and run.', ''),
-(2, 'Tennis', 'Hit the ball over the net into the court with the racket.', ''),
-(3, 'Soccer', 'Kick ball into goal.', ''),
-(4, 'Basketball', 'Throw the ball through the hoop.', '');
-
-/* Seasons */
-INSERT INTO `intramuralsApp_season` VALUES
-(1, 'Fall Football 2009-2010', '2009-09-16 17:53:18', '2009-08-30 17:52:24', '2009-09-12 17:52:41', 1),
-(2, 'Tennis 2009-2010', '2009-09-16 17:53:18', '2009-08-30 17:52:24', '2009-09-12 17:52:41', 2),
-(3, 'Soccer 2009-2010', '2009-10-13 17:53:18', '2009-09-08 17:52:24', '2009-09-15 17:52:41', 3),
-(4, 'Basketball 2009-2010', '2010-04-24 17:53:18', '2010-04-08 17:52:24', '2010-04-21 17:52:41', 4);
 
 /* Attributes */
 INSERT INTO `intramuralsApp_attribute` VALUES

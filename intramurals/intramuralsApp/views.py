@@ -50,6 +50,17 @@ def createTeam(request):
 def standings(request):
     return render_to_response("standings.html", locals())
 
+def register(request):
+    return render_to_response("register.html", locals())
+
+def registerTeam(request):
+    if(request.POST):
+        teamcaptain = request.POST["teamcaptain"]
+        teamname = request.POST["teamname"]
+       # teampassword = request.POST["teampassword"]
+    
+    return render_to_response("congrats.html", locals())
+
 def referees(request):
     sportList = Sport.objects.all()
     for sport in sportList:
@@ -72,8 +83,6 @@ def refereeSchedule(request, refId):
    # for game in gameList:
    #     game.sport = teamToSport(game.HomeTeam)
     return render_to_response("refereeSchedule.html", locals())
-
-
 
 def teamToSport(teamName):
     team = Team.objects.get(TeamName=teamName)

@@ -15,8 +15,10 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 # Each season has one or more leagues.
 # Each season is part of one sport.
 # Each sport has one or more seasons.
+# Each location is part of one location group.
+# Each location group has one or more locations
+# Each location group is used for one or more sports.
 # Each sport uses one or more locations.
-# Each location is used for one or more sports.
 
 class Person(models.Model):
 	StudentID = models.PositiveIntegerField()
@@ -25,17 +27,17 @@ class Person(models.Model):
 	Email = models.EmailField()
 	PhoneNumber = PhoneNumberField(null=True)
 	ShirtSize = models.CharField(max_length = 50)
-	Address = models.TextField()
+	Address = models.CharField(max_length = 50)
 	def __unicode__(self):
 		return u'%s %s' % (self.FirstName, self.LastName)
 	class Meta:
 		ordering = ['LastName']
 
 class AttributeGroup(models.Model):
-	AttributeGroupName = models.CharField(max_length = 50)
-	AttributeGroupDescription = models.TextField()
+	Name = models.CharField(max_length = 50) # Name of AttributeGroup
+	Description = models.TextField() # Description of AttributeGroup
 	def __unicode__(self):
-		return self.AttributeGroupName
+		return self.Name
 
 class Attribute(models.Model):
 	AttributeGroup = models.ForeignKey(AttributeGroup)
@@ -54,64 +56,81 @@ class Referee(models.Model):
 		ordering = ['Person']
 
 class Sport(models.Model):
-	SportName = models.CharField(max_length = 50)
-	SportRules = models.ImageField(upload_to='SportRules')
-	SportLogo = models.ImageField(upload_to='SportLogos')
-	#TODO: Complete discussion about what will need to store images in the database
+	Name = models.CharField(max_length = 50) # Name of Sport
+	Rules = models.ImageField(upload_to='SportRules') # Rules for Sport
+	Logo = models.ImageField(upload_to='SportLogos') # Logo for Sport
+	Photo = models.ImageField(upload_to='SportPhotos') # Photo for Sport
+	#TODO: Complete discussion about what we will need to store images in the database
 	def __unicode__(self):
-		return self.SportName
+		return self.Name
 	class Meta:
-		ordering = ['SportName']
+		ordering = ['Name']
 
 class Season(models.Model):
-	SeasonName = models.CharField(max_length = 50)
-	SeasonStart = models.DateTimeField()
+	Name = models.CharField(max_length = 50) # Name of Season
+	Start = models.DateTimeField() # Start time of Season
 	RegistrationStart = models.DateTimeField()
 	RegistrationEnd = models.DateTimeField()
 	Sport = models.ForeignKey(Sport)
 	def __unicode__(self):
-		return self.SeasonName
+		return self.Name
 	class Meta:
 		ordering = ['Sport']
 
 class League(models.Model):
-	LeagueName = models.CharField(max_length = 50)
-	Attributes = models.ManyToManyField(Attribute)
+	GENDER = (
+		(0, 'Male'),
+		(1, 'Female'),
+		(2, 'Coed')
+	)
+
+	Name = models.CharField(max_length = 50) # Name of League
+	Attributes = models.ManyToManyField(Attribute) # Attributes of League
 	Referees = models.ManyToManyField(Referee)
 	Season = models.ForeignKey(Season)
+	Gender = models.IntegerField(choices=GENDER)
 	def __unicode__(self):
-		return self.LeagueName
+		return self.Name
 	class Meta:
 		ordering = ['Season']
 
 class Division(models.Model):
-	DivisionName = models.CharField(max_length = 50)
+	Name = models.CharField(max_length = 50) # Name of Division
 	League = models.ForeignKey(League)
 	def __unicode__(self):
-		return self.DivisionName
+		return self.Name
 	class Meta:
 		ordering = ['League']
 
 class Team(models.Model):
-	TeamName = models.CharField(max_length = 50)
-	Password = models.CharField(max_length = 50)
+	Name = models.CharField(max_length = 50) # Name of Team
+	Password = models.CharField(max_length = 50) # Team password
 	Captain = models.ForeignKey(Person, related_name = 'IntramuralsAppTeamsCaptain')
 	Division = models.ForeignKey(Division)
 	LivingUnit = models.CharField(max_length = 50)
 	Members = models.ManyToManyField(Person, related_name = 'IntramuralsAppTeamsMembers')
 	def __unicode__(self):
-		return self.TeamName
+		return self.Name
 	class Meta:
 		ordering = ['Division']
 
-class Location(models.Model):
-	LocationName = models.CharField(max_length = 50)
-	LocationDescription = models.TextField()
+class LocationGroup(models.Model):
+	Name = models.CharField(max_length = 50)
 	Sports = models.ManyToManyField(Sport)
+	Map = models.ImageField(upload_to='LocationMaps')
 	def __unicode__(self):
-		return self.LocationName
+		return self.Name
 	class Meta:
-		ordering = ['LocationName']
+		ordering = ['Name']
+
+class Location(models.Model):
+	Name = models.CharField(max_length = 50) # Name of Location
+	Description = models.TextField() # Description of Location
+	LocationGroup = models.ForeignKey(LocationGroup)
+	def __unicode__(self):
+		return self.Name
+	class Meta:
+		ordering = ['Name']
 
 class Game(models.Model):
 	OUTCOME = (
@@ -136,7 +155,7 @@ class Game(models.Model):
 	HomeTeamScore = models.PositiveIntegerField()
 	AwayTeamScore = models.PositiveIntegerField()
 	Outcome = models.IntegerField(choices=OUTCOME)
-	Referee = models.ManyToManyField(Referee)
+	Referees = models.ManyToManyField(Referee)
 	def __unicode__(self):
 		return u'%s vs. %s %s' % (self.HomeTeam.TeamName, self.AwayTeam.TeamName, self.Location)
 	class Meta:
