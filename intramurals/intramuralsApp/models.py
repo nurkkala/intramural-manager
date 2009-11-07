@@ -60,7 +60,7 @@ class Referee(models.Model):
 	Person = models.ForeignKey(Person, verbose_name='Referee Name')
 	Attribute = models.ForeignKey(Attribute, verbose_name='Classification')
 	def __unicode__(self):
-		return u'%s %s' % (self.Person, self.Person.LastName)
+		return u'%s %s' % (self.Person.FirstName, self.Person.LastName)
 	class Meta:
 		ordering = ['Person']
 
@@ -110,6 +110,11 @@ class League(models.Model):
 	class Meta:
 		ordering = ['Season']
 
+class LeagueAdmin(admin.ModelAdmin):
+	list_display = ('Name', 'Season', 'Gender',)
+	list_filter = ('Gender', 'Season',)
+	filter_horizontal = ('Attributes', 'Referees',)
+
 class Division(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of Division
 	League = models.ForeignKey(League)
@@ -143,6 +148,9 @@ class LocationGroup(models.Model):
 		return self.Name
 	class Meta:
 		ordering = ['Name']
+
+class LocationGroupAdmin(admin.ModelAdmin):
+	filter_horizontal = ('Sports',)
 
 class Location(models.Model):
 	Name = models.CharField('Name', max_length = 50)
@@ -190,4 +198,5 @@ class Game(models.Model):
 class GameAdmin(admin.ModelAdmin):
 	list_display = ('StartTime', 'HomeTeam', 'AwayTeam',)
 	list_filter = ('StartTime',)
+	filter_horizontal = ('Referees',)
 	date_hierarchy = 'StartTime'
