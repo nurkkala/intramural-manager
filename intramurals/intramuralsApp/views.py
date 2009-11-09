@@ -15,13 +15,13 @@ def say_hi(request, name):
     html = t.render(c)
     return HttpResponse(html)
 
-def currentSeason(sport):#still not working
+def currentSeason(sport):
     seasonList = sport.season_set.order_by("Start")
     now = datetime.now()
     s1 = seasonList[0]
-    minimum = (abs(s1.Start - now))
+    minimum = (abs(s1.Start - now)).days
     for season in seasonList:
-        difference = (abs(season.Start - now))
+        difference = (abs(season.Start - now)).days
         if difference < minimum:
             minimum = difference
             currentSeason = season
