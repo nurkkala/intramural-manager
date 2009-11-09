@@ -4,6 +4,7 @@ from django.template import Template, Context
 from django.http import HttpResponse
 from datetime import datetime
 from models import *
+from forms import *
 
 def index(request):
     return render_to_response("home.html")
@@ -34,18 +35,36 @@ def schedule(request):
 
 def sports(request):
     sportList = Sport.objects.all()
+<<<<<<< local
+=======
     for sport in sportList:
         sport.currentSeason = currentSeason(sport)
+>>>>>>> other
     return render_to_response("sports.html", locals())
 
-def registerTeam(request):
-    if(request.POST):
-        teamcaptain = request.POST["teamcaptain"]
-        teamname = request.POST["teamname"]
-       # teampassword = request.POST["teampassword"]
-    
-    return render_to_response("congrats.html", locals())
+# I Need To Get The
+# hard-coded copies to be
+# created dynamically!!!!
+def createTeam(request):
+    form = CreateTeamForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
+                cd = form.cleaned_data
+                division = Division.objects.get(DivisionName = "Unassigned")
+                captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
+                captain.save()
+                team = Team(TeamName=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
+                team.save()
+                return render_to_response("congrats.html", locals())
 
+            else: 
+                return render_to_response("createTeam.html", {"pword_error":True})
+        else:   
+            return render_to_response("createTeam.html", locals())
+    else:
+        return render_to_response("createTeam.html")
+ 
 def standings(request):
     return render_to_response("standings.html", locals())
 
