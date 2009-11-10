@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.http import HttpResponse
+from datetime import datetime
 from models import *
 
 def index(request):
@@ -13,6 +14,18 @@ def say_hi(request, name):
     html = t.render(c)
     return HttpResponse(html)
 
+def currentSeason(sport):#still not working
+    seasonList = sport.season_set.order_by("Start")
+    now = datetime.now()
+    s1 = seasonList[0]
+    minimum = (abs(s1.Start - now))
+    for season in seasonList:
+        difference = (abs(season.Start - now))
+        if difference < minimum:
+            minimum = difference
+            currentSeason = season
+    return currentSeason;
+        
 def dish_out_template(request, file_name):
     return render_to_response(file_name)
 
@@ -21,7 +34,8 @@ def schedule(request):
 
 def sports(request):
     sportList = Sport.objects.all()
-    season = currentSeason() #This needs to be implemented!
+    for sport in sportList:
+        sport.currentSeason = currentSeason(sport)
     return render_to_response("sports.html", locals())
 
 def registerTeam(request):
