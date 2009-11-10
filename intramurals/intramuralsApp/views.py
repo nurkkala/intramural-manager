@@ -3,6 +3,8 @@ from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.http import HttpResponse
 from models import *
+from django.core import serializers
+import json
 
 def index(request):
     return render_to_response("home.html")
@@ -24,3 +26,13 @@ def referees(request):
             for league in season.leagueList:
                 league.refereeList = league.Referees.all()
     return render_to_response("referees.html", locals())
+
+def sortScheduleByName():
+    return 42
+
+def getX(request):
+    #json_serializer = serializers.get_serializer("json")()
+    #json_serializer.serialize(Game.objects().all())
+
+    return HttpResponse(json.dumps({'a':9}));
+
