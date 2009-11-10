@@ -38,6 +38,7 @@ class Person(models.Model):
 
 class PersonAdmin(admin.ModelAdmin):
 	list_display = ('name', 'Email',)	
+	fields = ('StudentID', 'FirstName', 'LastName', 'Email', 'PhoneNumber', 'Address', 'ShirtSize',)
 
 class AttributeGroup(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of AttributeGroup
