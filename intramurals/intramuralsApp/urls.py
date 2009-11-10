@@ -4,4 +4,5 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^mynameis/(.*)', 'say_hi'),
     url('^$', 'index'),
     url('^referees/$', 'referees'),
+    url('^getX$','getX'),
 )

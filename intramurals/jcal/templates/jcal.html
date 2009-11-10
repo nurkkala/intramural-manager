@@ -3,98 +3,100 @@
 </head>
 <body>
 
-<div id="before">
-this is information holder<br/>
-I like cheese.
-</div>
-<div id="frame">
-<span><span>one</span></span>
-<span>two</span>
-<span>three</span>
-<span>four</span>
-<span>five</span>
-<span>six</span>
-<span>seven</span>
-<span>one</span>
-<span>two</span>
-<span>three</span>
-<span>four</span>
-<span>five</span>
-<span>six</span>
-<span>seven</span>
-<span>one</span>
-<span>two</span>
-<span>three</span>
-<span>four</span>
-<span>five</span>
-<span>six</span>
-<span>seven</span>
-<span>one</span>
-<span>two</span>
-<span>three</span>
-<span>four</span>
-<span>five</span>
-<span>six</span>
-<span>seven</span>
-<span>one</span>
-<span>two</span>
-<span>three</span>
-<span>four</span>
-<span>five</span>
-<span>six</span>
-<span>seven</span>
-</div>
-<div id="after">
-spam, spam, spam, spam.<br/>
-the points don't matter!!
+
+<div class="cal-div">
+<table id="cal">
+</table>
 </div>
 
 
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script src="http://plugins.jquery.com/files/jquery.dump.js.txt"></script>
+<script src="http://cse.taylor.edu/~sbird/js/jquery-ui-1.7.2/ui/jquery-ui.js"></script>
+<script src="http://datejs.googlecode.com/files/date.js"></script>
+<script src="http://cse.taylor.edu/~sbird/js/std.js"></script>
+<script src="http://cse.taylor.edu/~sbird/js/date2.js"></script>
+
+<script>
+var iterate = function(next, go) {
+  var n;
+  while(n = next()) {
+    go(n)
+  }
+};
+
+var makeDay = function(date, tr) {
+  $('<td class="day">' + date.getDate() + '</td>').appendTo(tr);
+};
+
+var iterateTimeSegmentFn = function(s,e, next) {
+  var start = s;
+  var end = e;
+  var date = new Date(start);
+  next = next || function(date) { date.next().day() };
+
+  var firsttime = true;
+
+  return function() {
+    if(firsttime) {
+      firsttime = false;
+      return date;
+    } else if(date >= start && date < end) {
+      next(date);
+      return date;
+    }
+    return false;
+  };
+};
+
+var iterateWeekFn = function(w) {
+  w.thisWeek();
+
+  var start = new Date(w);
+  var end = new Date(w.next().fri());
+
+  return iterateTimeSegmentFn(start, end);
+
+};
+
+var makeWeek = function(w) {
+  var tr = $('<tr/>')[0];
+  $('#cal').append(tr);
+  iterate(iterateWeekFn(w), function(date) {makeDay(date, tr)});
+}
+
+var iterateWistFn = function(start, end) {
+
+  var next = function(date) { date.next().mon(); }
+
+  return iterateTimeSegmentFn(start, end, next);
+
+}
+
+var makeWist = function(start, end) {
+  iterate(iterateWistFn(start.thisWeek(),
+                        end.thisWeek() ),
+          makeWeek);
+};
+
+
+</script>
 
 <style>
-#before
+.cal-div
+{
+}
+#cal td
 {
   border-style:solid;
 }
-#after
+#cal
 {
-  border-style:solid;
+  border-collapse:collapse;
 }
-#frame
-{
-  border-style:solid;
-  height:240px;
-}
-ul
-{
-  spanst-style-type:none;
-  margin: 0;
-  padding: 0;
-}
-#frame span
-{
-  float:left;
-  width:13%;
-  height:20%;
-  background-color:blue;
-//  padding:2px;
-}
-#frame span span
-{
-  color:red;
-  background-color:green;
-//  float:left;
-//  position:relative;
-  width:100%;
-  height:100%;
-}
-</style>
-
-
-
-
-
-
+</styl>
 
 </body>
 </html>
