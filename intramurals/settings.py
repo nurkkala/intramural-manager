@@ -4,8 +4,10 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+    # ('aubrown', 'agustinmichaelbrown@gmail.com'),
 )
+
+APPEND_SLASH = True
 
 MANAGERS = ADMINS
 
@@ -60,13 +62,11 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'intramurals.urls'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+#TEMPLATE_DIRS has been moved to sandbox.py
 
 INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -74,3 +74,4 @@ INSTALLED_APPS = (
     'intramurals.jcal',
     'intramurals.jquery_ui',
 )
+

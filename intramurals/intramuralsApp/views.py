@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.http import HttpResponse
+from datetime import datetime
 from models import *
 from django.core import serializers
 import json
@@ -17,6 +18,52 @@ def say_hi(request, name):
 
 #"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
 	
+def currentSeason(sport):#still not working
+    seasonList = sport.season_set.order_by("Start")
+    now = datetime.now()
+    s1 = seasonList[0]
+    minimum = (abs(s1.Start - now))
+    for season in seasonList:
+        difference = (abs(season.Start - now))
+        if difference < minimum:
+            minimum = difference
+            currentSeason = season
+    return currentSeason;
+        
+def dish_out_template(request, file_name):
+    return render_to_response(file_name)
+
+def schedule(request):
+    return render_to_response("schedule.html", locals())
+
+def sports(request):
+    sportList = Sport.objects.all()
+    for sport in sportList:
+        sport.currentSeason = currentSeason(sport)
+    return render_to_response("sports.html", locals())
+
+def registerTeam(request):
+    if(request.POST):
+        teamcaptain = request.POST["teamcaptain"]
+        teamname = request.POST["teamname"]
+       # teampassword = request.POST["teampassword"]
+    
+    return render_to_response("congrats.html", locals())
+
+def standings(request):
+    return render_to_response("standings.html", locals())
+
+def register(request):
+    return render_to_response("register.html", locals())
+
+def registerTeam(request):
+    if(request.POST):
+        teamcaptain = request.POST["teamcaptain"]
+        teamname = request.POST["teamname"]
+       # teampassword = request.POST["teampassword"]
+    
+    return render_to_response("congrats.html", locals())
+
 def referees(request):
     sportList = Sport.objects.all()
     for sport in sportList:
@@ -27,12 +74,25 @@ def referees(request):
                 league.refereeList = league.Referees.all()
     return render_to_response("referees.html", locals())
 
-def sortScheduleByName():
-    return 42
+def about(request):
+    return render_to_response("about.html", locals())
 
 def getX(request):
     #json_serializer = serializers.get_serializer("json")()
     #json_serializer.serialize(Game.objects().all())
-
     return HttpResponse(json.dumps({'a':9}));
 
+def admin(request):
+    return render_to_response("admin.html", locals())
+
+def refereeSchedule(request, refId):
+    referee = Referee.objects.get(id=refId)
+    gameList = referee.game_set.all()
+   # for game in gameList:
+   #     game.sport = teamToSport(game.HomeTeam)
+    return render_to_response("refereeSchedule.html", locals())
+
+def teamToSport(teamName):
+    team = Team.objects.get(TeamName=teamName)
+    sport = team.division.league.season.sport
+    return sport

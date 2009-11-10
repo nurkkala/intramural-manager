@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.contrib.localflavor.us.models import PhoneNumberField
 
 # Each person is part of one or more teams and/or is a referee.
@@ -15,124 +16,188 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 # Each season has one or more leagues.
 # Each season is part of one sport.
 # Each sport has one or more seasons.
+# Each location is part of one location group.
+# Each location group has one or more locations
+# Each location group is used for one or more sports.
 # Each sport uses one or more locations.
-# Each location is used for one or more sports.
 
 class Person(models.Model):
-	StudentID = models.PositiveIntegerField()
-	FirstName = models.CharField(max_length = 50)
-	LastName = models.CharField(max_length = 50)
+	StudentID = models.PositiveIntegerField('Student ID')
+	FirstName = models.CharField('First Name', max_length = 50)
+	LastName = models.CharField('Last Name', max_length = 50)
 	Email = models.EmailField()
-	PhoneNumber = PhoneNumberField(null=True)
-	ShirtSize = models.CharField(max_length = 50)
-	Address = models.TextField()
+	PhoneNumber = PhoneNumberField('Phone Number', null=True)
+	ShirtSize = models.CharField('Shirt Size', max_length = 50)
+	Address = models.CharField('Address', max_length = 50)
 	def __unicode__(self):
 		return u'%s %s' % (self.FirstName, self.LastName)
+	def name(obj):
+		return ("%s %s" % (obj.FirstName, obj.LastName))
 	class Meta:
 		ordering = ['LastName']
 
+class PersonAdmin(admin.ModelAdmin):
+	list_display = ('name', 'Email',)	
+
 class AttributeGroup(models.Model):
-	AttributeGroupName = models.CharField(max_length = 50)
-	AttributeGroupDescription = models.TextField()
+	Name = models.CharField('Name', max_length = 50) # Name of AttributeGroup
+	Description = models.TextField('Description') # Description of AttributeGroup
 	def __unicode__(self):
-		return self.AttributeGroupName
+		return self.Name
 
 class Attribute(models.Model):
-	AttributeGroup = models.ForeignKey(AttributeGroup)
-	AttributeValue = models.CharField(max_length = 50)
+	AttributeGroup = models.ForeignKey(AttributeGroup, verbose_name='Group Name')
+	AttributeValue = models.CharField('Value', max_length = 50)
 	def __unicode__(self):
-		return u'%s = %s' % (self.AttributeGroup.AttributeGroupName, self.Value)
+		return u'%s = %s' % (self.AttributeGroup, self.AttributeValue)
 	class Meta:
 		ordering = ['AttributeGroup']
 
+class AttributeAdmin(admin.ModelAdmin):
+	list_display = ('AttributeGroup',)
+
 class Referee(models.Model):
-	Person = models.ForeignKey(Person)
-	Attribute = models.ForeignKey(Attribute)
+	Person = models.ForeignKey(Person, verbose_name='Referee Name')
+	Attribute = models.ForeignKey(Attribute, verbose_name='Classification')
 	def __unicode__(self):
 		return u'%s %s' % (self.Person.FirstName, self.Person.LastName)
 	class Meta:
 		ordering = ['Person']
 
+class RefereeAdmin(admin.ModelAdmin):
+	list_display = ('Person', 'Attribute')
+
 class Sport(models.Model):
-	SportName = models.CharField(max_length = 50)
-	SportRules = models.ImageField(upload_to='SportRules')
-	SportLogo = models.ImageField(upload_to='SportLogos')
+	Name = models.CharField('Name', max_length = 50)
+	Rules = models.ImageField('Rules File', upload_to='SportRules', blank=True)
+	Logo = models.ImageField('Logo File', upload_to='SportLogos', blank=True)
+	Photo = models.ImageField('Sport Photo', upload_to='SportPhotos', blank=True) # Photo for Sport
 	#TODO: Complete discussion about what will need to store images in the database
 	def __unicode__(self):
-		return self.SportName
+		return self.Name
 	class Meta:
-		ordering = ['SportName']
+		ordering = ['Name']
 
 class Season(models.Model):
-	SeasonName = models.CharField(max_length = 50)
-	SeasonStart = models.DateTimeField()
-	RegistrationStart = models.DateTimeField()
-	RegistrationEnd = models.DateTimeField()
+	Name = models.CharField('Season Name', max_length = 50)
+	Start = models.DateTimeField('Season Start')
+	RegistrationStart = models.DateTimeField('Registration Start')
+	RegistrationEnd = models.DateTimeField('Registration End')
 	Sport = models.ForeignKey(Sport)
 	def __unicode__(self):
-		return self.SeasonName
+		return self.Name
 	class Meta:
 		ordering = ['Sport']
 
+class SeasonAdmin(admin.ModelAdmin):
+	list_display = ('Name', 'Start', 'Sport',)
+	date_hierarchy = 'Start'
+
 class League(models.Model):
-	LeagueName = models.CharField(max_length = 50)
-	Attributes = models.ManyToManyField(Attribute)
-	Referees = models.ManyToManyField(Referee)
+	GENDER = (
+		(0, 'Male'),
+		(1, 'Female'),
+		(2, 'Coed')
+	)
+
+	Name = models.CharField('Name', max_length = 50) # Name of League
+	Attributes = models.ManyToManyField(Attribute, verbose_name='League Classification') # Attributes of League
+	Referees = models.ManyToManyField(Referee, verbose_name='Referee(s)')
 	Season = models.ForeignKey(Season)
+	Gender = models.IntegerField(choices=GENDER)
 	def __unicode__(self):
-		return self.LeagueName
+		return self.Name
 	class Meta:
 		ordering = ['Season']
 
+class LeagueAdmin(admin.ModelAdmin):
+	list_display = ('Name', 'Season', 'Gender',)
+	list_filter = ('Gender', 'Season',)
+	filter_horizontal = ('Attributes', 'Referees',)
+
 class Division(models.Model):
-	DivisionName = models.CharField(max_length = 50)
+	Name = models.CharField('Name', max_length = 50) # Name of Division
 	League = models.ForeignKey(League)
 	def __unicode__(self):
-		return self.DivisionName
+		return self.Name
 	class Meta:
 		ordering = ['League']
 
 class Team(models.Model):
-	TeamName = models.CharField(max_length = 50)
-	Password = models.CharField(max_length = 50)
-	Captain = models.ForeignKey(Person, related_name = 'IntramuralsAppTeamsCaptain')
+	Name = models.CharField('Name', max_length = 50) # Name of Team
+	Password = models.CharField('Access Key', max_length = 50) # Team password
+	Captain = models.ForeignKey(Person, related_name = 'IntramuralsAppTeamsCaptain', verbose_name='Team Captain')
 	Division = models.ForeignKey(Division)
-	LivingUnit = models.CharField(max_length = 50)
-	Members = models.ManyToManyField(Person, related_name = 'IntramuralsAppTeamsMembers')
+	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
+	Members = models.ManyToManyField(Person, related_name = 'IntramuralsAppTeamsMembers', verbose_name='Team Members')
 	def __unicode__(self):
-		return self.TeamName
+		return self.Name
 	class Meta:
 		ordering = ['Division']
 
-class Location(models.Model):
-	LocationName = models.CharField(max_length = 50)
-	LocationDescription = models.TextField()
-	Sports = models.ManyToManyField(Sport)
+class TeamAdmin(admin.ModelAdmin):
+	list_display = ('Name', 'Division', 'LivingUnit', 'Captain',)
+	list_filter = ('Division', 'Name',)
+	filter_horizontal = ('Members',)
+	search_fields = ('Name', 'LivingUnit',)
+
+class LocationGroup(models.Model):
+	Name = models.CharField('Location Name', max_length = 50)
+	Sports = models.ManyToManyField(Sport, verbose_name='Sports Played')
+	Map = models.ImageField('Location Map', upload_to='LocationMaps', blank=True)
 	def __unicode__(self):
-		return self.LocationName
+		return self.Name
 	class Meta:
-		ordering = ['LocationName']
+		ordering = ['Name']
+
+class LocationGroupAdmin(admin.ModelAdmin):
+	filter_horizontal = ('Sports',)
+
+class Location(models.Model):
+	Name = models.CharField('Name', max_length = 50)
+	Description = models.TextField('Description')
+	LocationGroup = models.ForeignKey(LocationGroup, verbose_name='Location')
+	def __unicode__(self):
+		return self.Name
+	class Meta:
+		ordering = ['Name']
+
+class LocationAdmin(admin.ModelAdmin):
+	list_display = ('Name', 'LocationGroup')
+	fields = ('Name', 'LocationGroup', 'Description',)
+	list_filter = ('LocationGroup',)
 
 class Game(models.Model):
 	OUTCOME = (
-		(0, 'Won'),
-		(1, 'Lost'),
-		(2, 'Tied'),
-		(3, 'Cancelled'),
-		(4, 'Postponed')
+		(0, 'Unplayed'),
+		(1, 'Home Win'),
+		(2, 'Away Win'),
+		(3, 'Tie'),
+		(4, 'Cancelled'),
+		(5, 'Postponed')
 	)
 
-	StartTime = models.DateTimeField()
+	GAMETYPE = (
+		(0, 'Regular'),
+		(1, 'Playoff'),
+		(2, 'Championship')
+	)
+	StartTime = models.DateTimeField('Game Start Time')
 	Location = models.ForeignKey(Location)
-	GameType = models.ForeignKey(Attribute, related_name = 'IntramuralsAppGamesGameType')
-	HomeTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesHomeTeam')
-	AwayTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesAwayTeam')
-	HomeTeamScore = models.PositiveIntegerField()
-	AwayTeamScore = models.PositiveIntegerField()
+	GameType = models.IntegerField(choices=GAMETYPE, verbose_name='Game Type')
+	HomeTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesHomeTeam', verbose_name='Home Team')
+	AwayTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesAwayTeam', verbose_name='Away Team')
+	HomeTeamScore = models.PositiveIntegerField('Home Team Score')
+	AwayTeamScore = models.PositiveIntegerField('Away Team Score')
 	Outcome = models.IntegerField(choices=OUTCOME)
-	Referee = models.ManyToManyField(Referee)
+	Referees = models.ManyToManyField(Referee, verbose_name='Referee(s)')
 	def __unicode__(self):
-		return u'%s vs. %s %s' % (self.HomeTeam.TeamName, self.AwayTeam.TeamName, self.StartTime)
+		return u'%s vs. %s %s' % (self.HomeTeam, self.AwayTeam, self.Location)
 	class Meta:
 		ordering = ['StartTime']
 
+class GameAdmin(admin.ModelAdmin):
+	list_display = ('StartTime', 'HomeTeam', 'AwayTeam',)
+	list_filter = ('StartTime',)
+	filter_horizontal = ('Referees',)
+	date_hierarchy = 'StartTime'
