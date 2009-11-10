@@ -18,8 +18,8 @@ def say_hi(request, name):
 def currentSeason(sport):
     seasonList = sport.season_set.order_by("Start")
     now = datetime.now()
-    s1 = seasonList[0]
-    minimum = (abs(s1.Start - now)).days
+    currentSeason = seasonList[0]
+    minimum = (abs(currentSeason.Start - now)).days
     for season in seasonList:
         difference = (abs(season.Start - now)).days
         if difference < minimum:
@@ -35,11 +35,8 @@ def schedule(request):
 
 def sports(request):
     sportList = Sport.objects.all()
-<<<<<<< local
-=======
     for sport in sportList:
         sport.currentSeason = currentSeason(sport)
->>>>>>> other
     return render_to_response("sports.html", locals())
 
 # I Need To Get The
