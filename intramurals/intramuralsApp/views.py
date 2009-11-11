@@ -48,7 +48,8 @@ def createTeam(request):
         if form.is_valid():
             if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
                 cd = form.cleaned_data
-                division = Division.objects.get(DivisionName = "Unassigned")
+                league = League.objects.get(id=leagueId)
+                division = league.division_set.filter(name = "Unassigned")
                 captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
                 captain.save()
                 team = Team(TeamName=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
@@ -60,21 +61,13 @@ def createTeam(request):
         else:   
             return render_to_response("createTeam.html", locals())
     else:
-        return render_to_response("createTeam.html")
+        return render_to_response("createTeam.html", locals())
  
 def standings(request):
     return render_to_response("standings.html", locals())
 
 def register(request):
     return render_to_response("register.html", locals())
-
-def registerTeam(request):
-    if(request.POST):
-        teamcaptain = request.POST["teamcaptain"]
-        teamname = request.POST["teamname"]
-       # teampassword = request.POST["teampassword"]
-    
-    return render_to_response("congrats.html", locals())
 
 def referees(request):
     sportList = Sport.objects.all()
