@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Sports{% endblock %}
+{% block title %}Sports{% endblock %}
+{% block content %}
+{% for sport in sportList %}
+<div class="sportList">
+  <div class="sportPhoto">
+    {{ sport.Photo }}
+  </div>
+  <div class="sportLogo">
+    {{ sport.Logo }}
+  </div>
+  <div class="sportName">
+    {{ sport.Name }}
+  </div>
+  <div class="registration">
+    Registration: {{ season.RegistrationStart|date:"M j, Y" }} - {{ season.RegistrationEnd|date:"M j, Y" }}
+  </div>
+  <div class="sportRules">
+    <a href="{{ sport.Rules }}" target="_blank">Official rules</a>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
