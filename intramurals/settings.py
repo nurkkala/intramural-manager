@@ -7,7 +7,7 @@ ADMINS = (
     # ('aubrown', 'agustinmichaelbrown@gmail.com'),
 )
 
-APPEND_SLASH = True
+
 
 MANAGERS = ADMINS
 
