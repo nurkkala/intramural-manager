@@ -122,3 +122,8 @@ ol {
 #content{ 
         
 }
+
+.error {
+	color: red;
+	font-weight: bold;
+}
