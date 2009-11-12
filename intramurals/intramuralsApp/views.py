@@ -84,9 +84,20 @@ def about(request):
     return render_to_response("about.html", locals())
 
 def getX(request):
+    # A serializer turns database objects into a javascript dictionary
+    # This uses javascript because otherwise it would involve multiple page reloads
     json_serializer = serializers.get_serializer("json")()
-    json_serializer.serialize(Game.objects.all())
-    return HttpResponse(json_serializer.getvalue());
+    gameList = Game.objects.all()
+#    for game in gameList:
+#        game.homeName = game.HomeTeam.Name
+#        game.homeId = game.HomeTeam.id
+#        game.awayName = game.AwayTeam.Name
+#        game.awayId = game.AwayTeam.id
+#        game.sportId = game.HomeTeam.Division.League.Season.Sport.id
+#        game.sportLogo = game.HomeTeam.Division.League.Season.Sport.id
+    json_serializer.serialize(gameList)
+    val = json_serializer.getvalue()
+    return HttpResponse(val);
 
 def admin(request):
     return render_to_response("admin.html", locals())
