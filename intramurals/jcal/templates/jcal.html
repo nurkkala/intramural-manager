@@ -20,6 +20,10 @@
 <script src="http://cse.taylor.edu/~sbird/js/date2.js"></script>
 
 <script>
+// 'next' is the function passed to iterate that will 
+//   return false when the iteration is complete
+// 'go' is the function passed to iterate that will
+//   generate the next day or week
 var iterate = function(next, go) {
   var n;
   while(n = next()) {
@@ -35,6 +39,7 @@ var iterateTimeSegmentFn = function(s,e, next) {
   var start = s;
   var end = e;
   var date = new Date(start);
+  
   next = next || function(date) { date.next().day() };
 
   var firsttime = true;
@@ -51,22 +56,26 @@ var iterateTimeSegmentFn = function(s,e, next) {
   };
 };
 
+// This is a helper function for makeWeek
+// w is the day of which we are displaying the week
 var iterateWeekFn = function(w) {
-  w.thisWeek();
+  w.thisWeek().prev().sun(); //sets w to Sunday of the week it is in
 
   var start = new Date(w);
-  var end = new Date(w.next().fri());
+  var end = new Date(w.next().sat()); //sets end to the Saturday of the week it is in
 
   return iterateTimeSegmentFn(start, end);
 
 };
 
+// displays a calendar view of the week of given date
 var makeWeek = function(w) {
   var tr = $('<tr/>')[0];
   $('#cal').append(tr);
   iterate(iterateWeekFn(w), function(date) {makeDay(date, tr)});
 }
 
+// This is a helper function for makeWist
 var iterateWistFn = function(start, end) {
 
   var next = function(date) { date.next().mon(); }
@@ -75,6 +84,7 @@ var iterateWistFn = function(start, end) {
 
 }
 
+// displays a calendar view from given start date to given end date
 var makeWist = function(start, end) {
   iterate(iterateWistFn(start.thisWeek(),
                         end.thisWeek() ),
@@ -96,7 +106,7 @@ var makeWist = function(start, end) {
 {
   border-collapse:collapse;
 }
-</styl>
+</style>
 
 </body>
 </html>
