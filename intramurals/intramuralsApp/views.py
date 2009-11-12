@@ -78,9 +78,9 @@ def about(request):
     return render_to_response("about.html", locals())
 
 def getX(request):
-    #json_serializer = serializers.get_serializer("json")()
-    #json_serializer.serialize(Game.objects().all())
-    return HttpResponse(json.dumps({'a':9}));
+    json_serializer = serializers.get_serializer("json")()
+    json_serializer.serialize(Game.objects.all())
+    return HttpResponse(json_serializer.getvalue());
 
 def admin(request):
     return render_to_response("admin.html", locals())
