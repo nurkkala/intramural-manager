@@ -67,9 +67,11 @@ ROOT_URLCONF = 'intramurals.urls'
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.admin',
-	'django.contrib.contenttypes',
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-	'intramurals.intramuralsApp',
+    'intramurals.intramuralsApp',
+    'intramurals.jcal',
+    'intramurals.jquery_ui',
 )
 
