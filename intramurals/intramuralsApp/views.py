@@ -38,6 +38,7 @@ def sports(request):
     sportList = Sport.objects.all()
     for sport in sportList:
         sport.currentSeason = currentSeason(sport)
+#    sportList = sorted(sportList, key=sportList.sport.currentSeason)
     return render_to_response("sports.html", locals())
 
 # I Need To Get The
@@ -63,14 +64,35 @@ def createTeam(request):
             return render_to_response("createTeam.html", locals())
     else:
         return render_to_response("createTeam.html", locals())
- 
-def standings(request):
+
+# sport is an optional parameter for viewing the standings of a specific sport
+def standings(request, sportId=None):
+    if sportId is None:
+        sportList = Sport.objects.all()
+        for sport in sportList:
+            sport.seasonList = sport.season_set.all()
+            for season in sport.seasonList:
+                season.leagueList = season.league_set.all()
+                for league in season.leagueList:
+                    league.divisionList = league.division_set.all()
+                    for division in league.divisionList:
+                        division.teamList = division.team_set.all()
+    else:
+        sport = Sport.objects.get(id=sportId)
+        sport.seasonList = sport.season_set.all()
+        for season in sport.seasonList:
+            season.leagueList = season.league_set.all()
+            for league in season.leagueList:
+                league.divisionList = league.division_set.all()
+                for division in league.divisionList:
+                    division.teamList = division.team_set.all()
     return render_to_response("standings.html", locals())
 
 def register(request):
     return render_to_response("register.html", locals())
 
-def referees(request):
+# sport is an optional parameter for viewing the referees of a specific sport
+def referees(request, sport):
     sportList = Sport.objects.all()
     for sport in sportList:
         sport.seasonList = sport.season_set.all()

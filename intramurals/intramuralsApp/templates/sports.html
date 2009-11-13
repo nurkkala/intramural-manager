@@ -15,7 +15,7 @@
     {{ sport.Name }}
   </div>
   <div class="registration">
-    Registration: {{ season.RegistrationStart|date:"M j, Y" }} - {{ season.RegistrationEnd|date:"M j, Y" }}
+    Registration: {{ sport.currentSeason.RegistrationStart|date:"M j, Y" }} - {{ sport.currentSeason.RegistrationEnd|date:"M j, Y" }}
   </div>
   <div class="sportRules">
     <a href="{{ sport.Rules }}" target="_blank">Official rules</a>
