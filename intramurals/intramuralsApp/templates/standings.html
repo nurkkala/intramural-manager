@@ -15,7 +15,7 @@
 	<ul>{% for division in league.divisionList %}
           <li><span class="divisionName">{{ division.Name }}<br /></span></li>
 	  <ul>{% for team in division.teamList %}
-            <li><span class="teamLink"><a href="/teams/{{team.id}}/">{{team}}<br /></a></span></li>
+            <li><span class="teamLink"><a href="../teams/{{team.id}}/">{{team}}<br /></a></span></li>
 	    {% endfor %}
 	  </ul>
 	  {% endfor %}
@@ -25,8 +25,24 @@
       {% endfor %}
     </ul>
     {% endfor %}
-    {% elif %}
-    <!-- insert one sport standings display here -->
+    {% else %}
+    <li><span class="sportName">{{sport.Name}}<br /></span></li>
+    <ul>{% for season in sport.seasonList %}
+      <li><span class="seasonName">{{ season.Name }}<br /></span></li>
+      <ul>{% for league in season.leagueList %}
+        <li><span class="leagueName">{{ league.Name }}<br /></span></li>
+	<ul>{% for division in league.divisionList %}
+          <li><span class="divisionName">{{ division.Name }}<br /></span></li>
+	  <ul>{% for team in division.teamList %}
+            <li><span class="teamLink"><a href="../teams/{{team.id}}/">{{team}}<br /></a></span></li>
+	    {% endfor %}
+	  </ul>
+	  {% endfor %}
+	</ul>
+	{% endfor %}
+      </ul>
+      {% endfor %}
+    </ul>
     {% endif %}
   </ul>
 </div>

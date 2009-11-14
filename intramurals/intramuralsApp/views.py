@@ -66,8 +66,8 @@ def createTeam(request):
         return render_to_response("createTeam.html", locals())
 
 # sport is an optional parameter for viewing the standings of a specific sport
-def standings(request, sportId=None):
-    if sportId is None:
+def standings(request, sportName=None):
+    if sportName is None: # generate information for all the sports
         sportList = Sport.objects.all()
         for sport in sportList:
             sport.seasonList = sport.season_set.all()
@@ -77,8 +77,8 @@ def standings(request, sportId=None):
                     league.divisionList = league.division_set.all()
                     for division in league.divisionList:
                         division.teamList = division.team_set.all()
-    else:
-        sport = Sport.objects.get(id=sportId)
+    else: # generate information for the specified sport
+        sport = Sport.objects.get(Name=sportName)
         sport.seasonList = sport.season_set.all()
         for season in sport.seasonList:
             season.leagueList = season.league_set.all()
@@ -87,6 +87,31 @@ def standings(request, sportId=None):
                 for division in league.divisionList:
                     division.teamList = division.team_set.all()
     return render_to_response("standings.html", locals())
+
+def record(teamId):
+    team = Team.objects.get(id=teamId)
+    homeWins = len(Game.objects.filter(HomeTeam__id=teamId).filter(Outcome=1)) # games won as home team
+    awayWins = len(Game.objects.filter(AwayTeam__id=teamId).filter(Outcome=2)) # games won as away team
+    homeLosses = len(Game.objects.filter(HomeTeam__id=teamId).filter(Outcome=2)) # games lost as home team
+    awayLosses = len(Game.objects.filter(AwayTeam__id=teamId).filter(Outcome=1)) # games lost as away team
+    homeTies = len(Game.objects.filter(HomeTeam__id=teamId).filter(Outcome=3)) # games tied as home team
+    awayTies = len(Game.objects.filter(AwayTeam__id=teamId).filter(Outcome=3)) # games tied as away team
+    wins = homeWins + awayWins
+    losses = homeLosses + awayLosses
+    ties = homeTies + awayTies
+    record = str(wins) + "-" + str(losses)
+    if ties > 0:
+        record = record + "-" + str(ties)
+    return record
+
+def teamHomepage(request, teamId):
+    team = Team.objects.get(id=teamId)
+    team.record = record(team)
+    opponentList = team.Division.team_set.all()
+    memberList = team.Members.all()
+    for opponent in opponentList:
+        opponent.record = record(opponent)
+    return render_to_response("teamHomepage.html", locals())
 
 def register(request):
     return render_to_response("register.html", locals())
