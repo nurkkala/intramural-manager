@@ -13,7 +13,7 @@
       <ul>{% for league in season.leagueList %}
         <li><span class="leagueName">{{ league.Name }}<br /></span></li>
 	<ul>{% for referee in league.refereeList %}
-          <li><span class="refereeLink"><a href="/referees/{{referee.id}}/">{{referee}}<br /></a></span></li>
+          <li><span class="refereeLink"><a href="/referees/{{referee.id}}/">{{referee}}</a><br /></span></li>
 	  <!-- don't forget divisions -->
 	  {% endfor %}
 	</ul>

@@ -68,7 +68,7 @@ class RefereeAdmin(admin.ModelAdmin):
 	list_display = ('Person', 'Attribute')
 
 class Sport(models.Model):
-	Name = models.CharField('Name', max_length = 50)
+	Name = models.CharField('Name', max_length = 50, unique=True)
 	Rules = models.ImageField('Rules File', upload_to='SportRules', blank=True)
 	Logo = models.ImageField('Logo File', upload_to='SportLogos', blank=True)
 	Photo = models.ImageField('Sport Photo', upload_to='SportPhotos', blank=True) # Photo for Sport
