@@ -3,7 +3,6 @@
 {% block pagetitle %}Standings{% endblock %}
 {% block title %}Standings{% endblock %}
 {% block content %}
-<span class="pageLink"><a href="refereeSchedule.html">Referee Schedule</a></span>
 <div class="mainbody">  	
   <ul>{% if sportList %}{% for sport in sportList %}
     <!-- insert sport icon/photo here -->
@@ -15,7 +14,7 @@
 	<ul>{% for division in league.divisionList %}
           <li><span class="divisionName">{{ division.Name }}<br /></span></li>
 	  <ul>{% for team in division.teamList %}
-            <li><span class="teamLink"><a href="../teams/{{team.id}}/">{{team}}<br /></a></span></li>
+            <li><span class="teamLink"><a href="index/teams/{{team.id}}/">{{team}}<br /></a></span></li>
 	    {% endfor %}
 	  </ul>
 	  {% endfor %}

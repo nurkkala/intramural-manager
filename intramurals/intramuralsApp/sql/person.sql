@@ -71,6 +71,37 @@ INSERT INTO `intramuralsApp_team` VALUES
 (19, 'Blackjacks', 'password', 6, 4, '1st Swallow Robin'),
 (20, 'Live Comfort Eagle', 'password', 5, 4, 'Foundation');
 
+/* Teams to Members */
+INSERT INTO `intramuralsApp_team_Members` VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 3),
+(4, 3, 7),
+(5, 4, 8),
+(6, 5, 11),
+(7, 5, 12),
+(8, 6, 1),
+(9, 6, 2),
+(10, 7, 3),
+(11, 8, 7),
+(12, 9, 8),
+(13, 10, 11),
+(14, 10, 12),
+(15, 11, 1),
+(16, 11, 2),
+(17, 12, 3),
+(18, 13, 7),
+(19, 14, 8),
+(20, 15, 11),
+(21, 15, 12),
+(22, 16, 1),
+(23, 16, 2),
+(24, 17, 3),
+(25, 18, 7),
+(26, 19, 8),
+(27, 20, 11),
+(28, 20, 12);
+
 /* Leagues */
 INSERT INTO `intramuralsApp_league` VALUES
 (1, 'Men''s League', 1, 0),
