@@ -22,12 +22,22 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 # Each sport uses one or more locations.
 
 class Person(models.Model):
+	SHIRTSIZE = (
+		('XS', 'XS'),
+		('S', 'S'),
+		('M', 'M'),
+		('L', 'L'),
+		('XL', 'XL'),
+		('XXL', 'XXL'),
+		('XXXL', 'XXXL')
+	)
+
 	StudentID = models.PositiveIntegerField('Student ID')
 	FirstName = models.CharField('First Name', max_length = 50)
 	LastName = models.CharField('Last Name', max_length = 50)
 	Email = models.EmailField()
 	PhoneNumber = PhoneNumberField('Phone Number', null=True)
-	ShirtSize = models.CharField('Shirt Size', max_length = 50)
+	ShirtSize = models.CharField('Shirt Size', choices=SHIRTSIZE, max_length = 5)
 	Address = models.CharField('Address', max_length = 50)
 	def __unicode__(self):
 		return u'%s %s' % (self.FirstName, self.LastName)
@@ -38,6 +48,7 @@ class Person(models.Model):
 
 class PersonAdmin(admin.ModelAdmin):
 	list_display = ('name', 'Email',)	
+	fields = ('StudentID', 'FirstName', 'LastName', 'Email', 'PhoneNumber', 'Address', 'ShirtSize',)
 
 class AttributeGroup(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of AttributeGroup
