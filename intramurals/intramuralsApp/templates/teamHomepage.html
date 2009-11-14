@@ -5,8 +5,8 @@
 {% block content %}
 <span class="teamName">Team Name: {{ team.Name }} </span><br />
 <span class="teamLivingUnit">Floor/Wing: {{ team.LivingUnit }} </span><br />
-<span class="sportName">: {{ team.Division.League.Season.Sport }} </span><br />
-<span class="leagueName">: {{ team.Division.League }} </span><br />
+<span class="sportName">Sport: {{ team.Division.League.Season.Sport }} </span><br />
+<span class="leagueName">League: {{ team.Division.League }} </span><br />
 <span class="pageLink">Standings</span><br />
 <div class="standings">
   <ul>
@@ -15,7 +15,8 @@
   {% endfor %}
   </ul>
 </div>
-<div class="teamRoster">Team Roster  
+<span class="teamCaptain">Team Captain: {{ team.Captain }} </span><br />
+<div class="teamMembers">Team Members 
   <ul>
   {% for member in memberList %}
       <li>{{ forloop.counter }}. {{ member }}</li>

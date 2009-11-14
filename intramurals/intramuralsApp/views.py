@@ -88,14 +88,13 @@ def standings(request, sportName=None):
                     division.teamList = division.team_set.all()
     return render_to_response("standings.html", locals())
 
-def record(teamId):
-    team = Team.objects.get(id=teamId)
-    homeWins = len(Game.objects.filter(HomeTeam__id=teamId).filter(Outcome=1)) # games won as home team
-    awayWins = len(Game.objects.filter(AwayTeam__id=teamId).filter(Outcome=2)) # games won as away team
-    homeLosses = len(Game.objects.filter(HomeTeam__id=teamId).filter(Outcome=2)) # games lost as home team
-    awayLosses = len(Game.objects.filter(AwayTeam__id=teamId).filter(Outcome=1)) # games lost as away team
-    homeTies = len(Game.objects.filter(HomeTeam__id=teamId).filter(Outcome=3)) # games tied as home team
-    awayTies = len(Game.objects.filter(AwayTeam__id=teamId).filter(Outcome=3)) # games tied as away team
+def record(team):
+    homeWins = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=1)) # games won as home team
+    awayWins = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=2)) # games won as away team
+    homeLosses = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=2)) # games lost as home team
+    awayLosses = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=1)) # games lost as away team
+    homeTies = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=3)) # games tied as home team
+    awayTies = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=3)) # games tied as away team
     wins = homeWins + awayWins
     losses = homeLosses + awayLosses
     ties = homeTies + awayTies
