@@ -83,10 +83,14 @@ def referees(request):
 def about(request):
     return render_to_response("about.html", locals())
 
-def getX(request):
+def getGames(request):
+    if(not request.POST or request.POST['start'] == "" or request.POST['end'] == ""):
+        return HttpResponse('"start" and "end" get values need to be passed')
     json_serializer = serializers.get_serializer("json")()
-    json_serializer.serialize(Game.objects.all())
-    return HttpResponse(json_serializer.getvalue());
+    o = Game.objects.select_related(depth=1).extra(where=["%s <= date(StartTime) and date(StartTime) <= %s"], params=[request.POST['start'], request.POST['end']])
+    json_serializer.serialize(o, relations=('HomeTeam', 'AwayTeam',))
+    val = json_serializer.getvalue()
+    return HttpResponse(val);
 
 def admin(request):
     return render_to_response("admin.html", locals())

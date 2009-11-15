@@ -20,6 +20,8 @@
 <script src="http://cse.taylor.edu/~sbird/js/date2.js"></script>
 
 <script>
+var glob;
+
 var iterate = function(next, go) {
   var n;
   while(n = next()) {
@@ -27,8 +29,8 @@ var iterate = function(next, go) {
   }
 };
 
-var makeDay = function(date, tr) {
-  $('<td class="day">' + date.getDate() + '</td>').appendTo(tr);
+var makeDay = function(weekDOM, payload) {
+  $('<td class="day">' + (payload?payload:'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;') + '</td>').appendTo(weekDOM);
 };
 
 var iterateTimeSegmentFn = function(s,e, next) {
@@ -42,20 +44,24 @@ var iterateTimeSegmentFn = function(s,e, next) {
   return function() {
     if(firsttime) {
       firsttime = false;
+      std.prompt('first time: ' + date);
       return date;
     } else if(date >= start && date < end) {
       next(date);
+      std.prompt(date);
       return date;
     }
+    std.prompt('false :(');
     return false;
   };
 };
+var iterateDistFn = iterateTimeSegmentFn;
 
 var iterateWeekFn = function(w) {
-  w.thisWeek();
+  w.thisWeek().prev().sun();
 
   var start = new Date(w);
-  var end = new Date(w.next().fri());
+  var end = new Date(w.next().sat());
 
   return iterateTimeSegmentFn(start, end);
 
@@ -64,7 +70,7 @@ var iterateWeekFn = function(w) {
 var makeWeek = function(w) {
   var tr = $('<tr/>')[0];
   $('#cal').append(tr);
-  iterate(iterateWeekFn(w), function(date) {makeDay(date, tr)});
+  iterate(iterateWeekFn(w), function(date) { makeDay(tr, payload.get(date))});
 }
 
 var iterateWistFn = function(start, end) {
@@ -81,7 +87,79 @@ var makeWist = function(start, end) {
           makeWeek);
 };
 
+var payload = {};
+payload.get = function(date) {
+  if(! payload[date] ) {
+    payload[date] = date.getDate() + '<hr/>';
+  }
+  return payload[date];
+};
+payload.inc = function(date, value) {
+  payload.get(date);
+  payload[date] += value;
+};
 
+</script>
+
+<div id="alpha"></div>
+<script>
+var ajax_gameJson2Html = function(data, textStatus) {
+  var json = eval(data);
+  var args = this.args;
+  var start = Date.parse(args.start);
+  start.setHours(0);
+  var end = Date.parse(args.end);
+  start.setHours(0);
+  std.prompt(start + '  ' + end);
+
+  /*
+  iterate(iterateTimeSegmentFn(start, end), function(date) {
+    if(! payload.get(date))
+      payload.get(date) = date.getDate() + '<hr/>';
+  });
+  */
+
+
+  std.prompt('after');
+
+  for(k in json) {
+    var game = json[k]
+    var date = Date.parse(game.fields.StartTime);
+    date.setHours(0); //makeDay function assumes that all indexes have a zero hour.
+    payload.inc(date, '<a href="#">' + game.fields.HomeTeam.fields.Name + '<br/>' +
+                                       game.fields.AwayTeam.fields.Name + '</a><hr/>');
+  }
+
+  makeWist(start, end);
+};
+
+var makeDayFn = function(date, weekDOM, pl) {
+  var payload = pl;
+
+  return function() {
+    makeDay(weekDOM, payload.get(date))
+  };
+};
+
+var getGames = function(start, end, fn) {
+  fn = fn || ajax_gameJson2Html;
+
+  $.ajax({
+    url:"/getGames",
+    type: "post",
+    data: {
+      'start':start,
+      'end':end
+    },
+    args: {
+      "start":start,
+      "end":end
+    },
+    success: fn
+  });
+};
+
+getGames('2009-9-16', '2009-9-18');
 </script>
 
 <style>
@@ -90,7 +168,8 @@ var makeWist = function(start, end) {
 }
 #cal td
 {
-  border-style:solid;
+  border-style: solid;
+  vertical-align: top;
 }
 #cal
 {

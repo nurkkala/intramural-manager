@@ -75,3 +75,6 @@ INSTALLED_APPS = (
     'intramurals.jquery_ui',
 )
 
+SERIALIZATION_MODULES = {
+    'json': 'wadofstuff.django.serializers.json',
+}
