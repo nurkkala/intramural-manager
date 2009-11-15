@@ -29,8 +29,10 @@ var iterate = function(next, go) {
   }
 };
 
-var makeDay = function(weekDOM, payload) {
-  $('<td class="day">' + (payload?payload:'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;') + '</td>').appendTo(weekDOM);
+var makeDay = function(weekDOM, date) {
+  var _class = 'cal-day cal-' + date.getMonthName();
+  date.setHours(0);
+$('<td class="'+_class+'" >'+payload.get(date)+'</td>').appendTo(weekDOM);
 };
 
 var iterateTimeSegmentFn = function(s,e, next) {
@@ -44,14 +46,11 @@ var iterateTimeSegmentFn = function(s,e, next) {
   return function() {
     if(firsttime) {
       firsttime = false;
-      std.prompt('first time: ' + date);
       return date;
     } else if(date >= start && date < end) {
       next(date);
-      std.prompt(date);
       return date;
     }
-    std.prompt('false :(');
     return false;
   };
 };
@@ -70,7 +69,7 @@ var iterateWeekFn = function(w) {
 var makeWeek = function(w) {
   var tr = $('<tr/>')[0];
   $('#cal').append(tr);
-  iterate(iterateWeekFn(w), function(date) { makeDay(tr, payload.get(date))});
+  iterate(iterateWeekFn(w), function(date) { makeDay(tr, date)});
 }
 
 var iterateWistFn = function(start, end) {
@@ -95,7 +94,7 @@ payload.get = function(date) {
   return payload[date];
 };
 payload.inc = function(date, value) {
-  payload.get(date);
+  payload.get(date); //this is to set payload[date] if it is undefined.
   payload[date] += value;
 };
 
@@ -110,17 +109,6 @@ var ajax_gameJson2Html = function(data, textStatus) {
   start.setHours(0);
   var end = Date.parse(args.end);
   start.setHours(0);
-  std.prompt(start + '  ' + end);
-
-  /*
-  iterate(iterateTimeSegmentFn(start, end), function(date) {
-    if(! payload.get(date))
-      payload.get(date) = date.getDate() + '<hr/>';
-  });
-  */
-
-
-  std.prompt('after');
 
   for(k in json) {
     var game = json[k]
@@ -130,15 +118,6 @@ var ajax_gameJson2Html = function(data, textStatus) {
                                        game.fields.AwayTeam.fields.Name + '</a><hr/>');
   }
 
-  makeWist(start, end);
-};
-
-var makeDayFn = function(date, weekDOM, pl) {
-  var payload = pl;
-
-  return function() {
-    makeDay(weekDOM, payload.get(date))
-  };
 };
 
 var getGames = function(start, end, fn) {
@@ -159,7 +138,10 @@ var getGames = function(start, end, fn) {
   });
 };
 
-getGames('2009-9-16', '2009-9-18');
+//getGames('2009-9-16', '2009-9-18');
+gstart = '2009-9-16';
+gend = '2009-9-18';
+
 </script>
 
 <style>
@@ -174,6 +156,10 @@ getGames('2009-9-16', '2009-9-18');
 #cal
 {
   border-collapse:collapse;
+}
+.cal-September
+{
+  background-color:blue;
 }
 </styl>
 
