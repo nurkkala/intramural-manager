@@ -70,6 +70,7 @@ def standings(request, sportName=None):
     if sportName is None: # generate information for all the sports
         sportList = Sport.objects.all()
         for sport in sportList:
+            sport.lwr = sport.Name.lower()
             sport.seasonList = sport.season_set.all()
             for season in sport.seasonList:
                 season.leagueList = season.league_set.all()
@@ -78,8 +79,11 @@ def standings(request, sportName=None):
                     for division in league.divisionList:
                         division.teamList = division.team_set.all()
     else: # generate information for the specified sport
-        sport = Sport.objects.get(Name=sportName)
-        sport.seasonList = sport.season_set.all()
+        sportList = Sport.objects.filter(Name!=sportName)
+        for sport in sportList:
+            sport.lwr = sport.Name.lower()
+        thisSport = Sport.objects.get(Name=sportName)
+        thisSport.seasonList = sport.season_set.all()
         for season in sport.seasonList:
             season.leagueList = season.league_set.all()
             for league in season.leagueList:
@@ -116,7 +120,7 @@ def register(request):
     return render_to_response("register.html", locals())
 
 # sport is an optional parameter for viewing the referees of a specific sport
-def referees(request, sportName):
+def referees(request, sportName=None):
     if sportName is None: # generate information for all the sports
         sportList = Sport.objects.all()
         for sport in sportList:

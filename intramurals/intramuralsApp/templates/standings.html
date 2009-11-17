@@ -2,17 +2,29 @@
 
 {% block pagetitle %}Standings{% endblock %}
 {% block title %}Standings{% endblock %}
+{% block javascript %}
+<!--
+function UpdateSport() {
+    var sportChoices = document.getElementById("sportDropDown");
+    var newPage = sportChoices.options[sportChoices.selectedIndex].value
+    window.location.href=newPage
+}
+//-->
+{% endblock %}
 {% block content %}
 <div class="mainbody">  	
-  <form name="sportDropDown">
-    <select onClick="UpdateSport(this.form)">
+  <form>
+    <select id="sportDropDown" onchange="UpdateSport()">
+      {% if sportName %}
+      <option>{{sportName}}</option>
+      {% endif %}
       <option value="http://127.0.0.1:8000/standings">All Sports</option>
 	{% for sport in sportList %}
-      <option value="{{sport.lower}}">{{sport}}</option>
+      <option value="http://127.0.0.1:8000/standings/{{sport.lwr}}">{{sport}}</option>
 	{% endfor %}
     </select>
   </form>
-  <ul>{% if sportList %}{% for sport in sportList %}
+  <ul>{% if sportName %}{% for sport in sportList %}
     <!-- insert sport icon/photo here -->
     <li><span class="sportName">{{sport}}<br /></span></li>
     <ul>{% for season in sport.seasonList %}
@@ -33,8 +45,8 @@
     </ul>
     {% endfor %}
     {% else %}
-    <li><span class="sportName">{{sport}}<br /></span></li>
-    <ul>{% for season in sport.seasonList %}
+    <li><span class="sportName">{{thisSport}}<br /></span></li>
+    <ul>{% for season in thisSport.seasonList %}
       <li><span class="seasonName">{{ season }}<br /></span></li>
       <ul>{% for league in season.leagueList %}
         <li><span class="leagueName">{{ league }}<br /></span></li>
