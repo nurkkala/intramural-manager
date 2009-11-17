@@ -65,7 +65,7 @@ def createTeam(request):
     else:
         return render_to_response("createTeam.html", locals())
 
-# sport is an optional parameter for viewing the standings of a specific sport
+# sportName is an optional parameter for viewing the standings of a specific sport
 def standings(request, sportName=None):
     if sportName is None: # generate information for all the sports
         sportList = Sport.objects.all()
@@ -116,9 +116,17 @@ def register(request):
     return render_to_response("register.html", locals())
 
 # sport is an optional parameter for viewing the referees of a specific sport
-def referees(request, sport):
-    sportList = Sport.objects.all()
-    for sport in sportList:
+def referees(request, sportName):
+    if sportName is None: # generate information for all the sports
+        sportList = Sport.objects.all()
+        for sport in sportList:
+            sport.seasonList = sport.season_set.all()
+            for season in sport.seasonList:
+                season.leagueList = season.league_set.all()
+                for league in season.leagueList:
+                    league.refereeList = league.Referees.all()
+    else: # generate information for the specified sport
+        sport = Sport.objects.get(Name=sportName)
         sport.seasonList = sport.season_set.all()
         for season in sport.seasonList:
             season.leagueList = season.league_set.all()
