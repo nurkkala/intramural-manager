@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="CSS/intramurals.css" />
+    <title>Taylor Intramurals - {% block pagetitle %}{% endblock %}</title>
+  </head>
+  <body>
+    <div id="header">Taylor Intramurals</div>
+    <div id="navigation"><!-- We need to change these links once we are actually on the web -->
+      <span class="pageLink"><a href="http://127.0.0.1:8000/">Home</a></span>
+      <span class="pageLink"><a href="http://127.0.0.1:8000/sports">Sports</a></span>
+      <span class="pageLink"><a href="http://127.0.0.1:8000/schedule">Schedule</a></span>
+      <span class="pageLink"><a href="http://127.0.0.1:8000/standings">Standings</a></span>
+      <span class="pageLink"><a href="http://127.0.0.1:8000/register">Register</a></span>
+      <span class="pageLink"><a href="http://127.0.0.1:8000/referees">Referees</a></span>
+      <span class="pageLink"><a href="http://127.0.0.1:8000/about">About</a></span>
+    </div>
+    <div id="content">
+      <h1>{% block title %}{% endblock %}</h1>
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
