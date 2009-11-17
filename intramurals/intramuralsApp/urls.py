@@ -1,8 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('intramuralsApp.views',
-    url('^mynameis/(.*)', 'say_hi'),
-    url('^getX$','getX'),
+    url('^getX$','getX'),# used for the json serializer (rename!)
     url(r'^$', 'index'),
     url(r'^schedule$', 'schedule'),
     url('^sports$', 'sports'),
