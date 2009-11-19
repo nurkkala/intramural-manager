@@ -7,12 +7,16 @@
 </head>
 <body>
 <div id="header">
-	<table class="mainlayout" align="center">
-		<tr class="titlehead">
-			<td colspan="250">
-			<h1 align="center">Join a Team</h1>
-			</td>
-                </tr>
-	</table>
+</div>
+<div>
+  <form action="/joinTeam" method="post">
+  <div><h3>Join a Team</h3></div>
+  {% for item in form %}
+  <span>{{item.label}} {{item}}</span><br />
+  {% if item.errors %} <span class="errors">{{item.errors}}</span>{% endif %}
+  {% endfor %}
+  <input type="submit" value="Submit" />
+  </form>
+</div>
 </body>
 </html>

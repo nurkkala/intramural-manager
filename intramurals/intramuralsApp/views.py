@@ -11,11 +11,6 @@ import json
 def index(request):
     return render_to_response("home.html")
 
-def say_hi(request, name):
-    t = Template("<html><body>Well hi there {{ name_of_person }}!</body></html>")
-    c = Context({'name_of_person': name})
-    html = t.render(c)
-    return HttpResponse(html)
 
 def currentSeason(sport):
     seasonList = sport.season_set.order_by("Start")
@@ -40,30 +35,6 @@ def sports(request):
         sport.currentSeason = currentSeason(sport)
 #    sportList = sorted(sportList, key=sportList.sport.currentSeason)
     return render_to_response("sports.html", locals())
-
-# I Need To Get The
-# hard-coded copies to be
-# created dynamically!!!!
-def createTeam(request):
-    form = CreateTeamForm(request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
-                cd = form.cleaned_data
-                league = League.objects.get(id=leagueId)
-                division = league.division_set.filter(name = "Unassigned")
-                captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
-                captain.save()
-                team = Team(TeamName=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
-                team.save()
-                return render_to_response("congrats.html", locals())
-
-            else: 
-                return render_to_response("createTeam.html", {"pword_error":True})
-        else:   
-            return render_to_response("createTeam.html", locals())
-    else:
-        return render_to_response("createTeam.html", locals())
 
 # sport is an optional parameter for viewing the standings of a specific sport
 def standings(request, sportName=None):
@@ -152,10 +123,61 @@ def refereeSchedule(request, refId):
     referee = Referee.objects.get(id=refId)
     gameList = referee.game_set.all()
    # for game in gameList:
-   #     game.sport = teamToSport(game.HomeTeam)
+   # game.sport = teamToSport(game.HomeTeam)
     return render_to_response("refereeSchedule.html", locals())
 
 def teamToSport(teamName):
     team = Team.objects.get(TeamName=teamName)
     sport = team.division.league.season.sport
     return sport
+
+
+def say_hi(request, name):
+    t = Template("<html><body>Well hi there {{ name_of_person }}!</body></html>")
+    c = Context({'name_of_person': name})
+    html = t.render(c)
+    return HttpResponse(html)
+
+def joinTeam(request):
+    if request.method  == 'POST':
+        form = RegisterTeamMember(request.POST)
+        if form.is_valid():
+                cd = form.cleaned_data
+                teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
+                teamMember.save()
+                
+                return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
+
+        else:
+            return render_to_response("joinTeam.html", locals())
+    else:
+        form = RegisterTeamMember()
+        return render_to_response("joinTeam.html", {'form':form,})
+    
+
+
+def createTeam(request):
+    if request.method  == 'POST':
+        form = CreateTeamForm(request.POST)
+        if form.is_valid():
+            if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
+                cd = form.cleaned_data
+                league = League.objects.get(id=cd['leagueId'])
+                division = Division.objects.get(id=cd['leagueId'])
+                captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
+                captain.save()
+                team = Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
+                team.save()
+                return render_to_response("congrats.html", {"teamcaptain":captain.FirstName, "teampassword":team.Password, "teamname":team.Name,})
+
+            else:
+                form = CreateTeamForm()
+                return render_to_response("createTeam.html", {"passwordError":True, "form":form()})
+        else:
+            if request.POST['teamPassword'] != request.POST["repeatTeamPassword"]:
+                passwordError = True
+                return render_to_response("createTeam.html", locals())
+            return render_to_response("createTeam.html", locals())
+    else:
+        form = CreateTeamForm()
+        return render_to_response("createTeam.html", {'form':form,})
