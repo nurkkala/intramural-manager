@@ -1,41 +1,5 @@
-<?xml version = "1.0" encoding = "utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN", "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<!--          -->
-<html xmlns="http://www.w3.org/1999/xhtml"> 
-
-<head>
-<title>Create a Team</title>
-<link href="templates/CSS/intramurals.css" rel="stylesheet" type="text/css" />
-
-</head>
-<body>
-<div id="header">
-	<table class="mainlayout" align="center">
-		<tr class="titlehead">
-			<td colspan="5">
-			<h1 align="center">Create a Team </h1>
-			</td>
-		</tr>
-		<tr class="navigation">
-			<td class="navigationselect">
-			<h3> Step 1 </h3>
-			</td>
-			<td>
-			<h3> Step 2 </h3>
-			</td>
-			<td>
-			<h3> Step 3 </h3>
-			</td>
-			<td>
-			<h3> Step 4 </h3>
-			</td>
-			<td>
-			<h3> Step 5 </h3>
-			</td>
-		</tr>
-	</table>
-
-</div>
+{% extends 'createTeamBase.html' %}
+{% block content %}
 <div id="errors">
 
 </div>
@@ -66,7 +30,6 @@
 	<br />
 	<input type="button" value="Back" class="backButton"/>
 	<input type="button" value="Next" class="nextButton"/>
-
 </div>
 <div id="step4" class="hide">
 	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
@@ -84,53 +47,5 @@
 	<input type="button" value="Back" class="backButton"/>
 	<input type="button" value="Next" class="nextButton"/>
 </div>
-<div id="step5" class="hide">
-	<img src="paypal.png" width="498" height="450"  align="middle" />
-[Touchnet stuff goes here]
-	<input type="button" value="Back" class="backButton"/>
-	<input type="button" value="Next" class="nextButton"/>
-</div>
-<div id="step6" class="hide">
-    <h2>Create Team Password</h2>
-    <p>Please enter a team password here.  This will be like a key that the other players on your team need to know in order to register for this team.</p>
-    <p>Team Password: {{ form.teamPassword }}</p>{% if form.errors.teamPassword %}<span class = "error">This field must be entered</span>{% endif %}
-    <p>Retype Team Password: {{ form.repeatTeamPassword }} </p>{% if form.errors.repeatTeamPassword %}<span class = "error">This field must be entered</span>{% endif %}
-    {% if passwordError %}
-    <span class = "error">Please make sure the two team password fields match</span>
-    {% endif %}
-    <input type="button" value="Back" class="backButton"/>
-    <input id="complete" type="submit" value="Complete"/>
-</div>
-<div id="step7" class="hide">
-[inviting people goes here]
-	<input type="button" value="Back" class="backButton"/>
-	<input id="completeWithInvites" type="submit" value="Complete"/>
-</div>
 </form>
-<div id="footer">
-
-</div>
-<style type="text/css">
-.hide
-{
-  display:none;
-}
-</style>
-<script type="text/javascript" src="createTeam.js"></script>
-<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="http://plugins.jquery.com/files/jquery.dump.js.txt"></script>
-
-<script type="text/javascript">
-  showStep = function(e, fn) {
-    var $div = $(e.target).parents('div');
-    var $div2 = fn.apply($div);
-    $($div).addClass('hide');
-    $($div2).removeClass('hide');
-  }
-  $('.nextButton').click(function(e){  showStep(e, $.fn.next) } );
-  $('.backButton').click(function(e){  showStep(e, $.fn.prev) } );
-</script>
-
-</body>
-
-</html>
+{% endblock %}

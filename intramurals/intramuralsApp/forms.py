@@ -1,7 +1,7 @@
 from django import forms
 from models import *
 
-class CreateTeamForm(forms.Form):
+class CreateTeamForm1(forms.Form):
     sportList = [(obj.id, obj.Name) for obj in Sport.objects.all()]
     leagueList = [(obj.id, obj.Name) for obj in League.objects.all()]
     
@@ -14,9 +14,11 @@ class CreateTeamForm(forms.Form):
     captainId = forms.IntegerField(label='Please enter the team Captain\'s school ID: ', required = True)
     captainEmail = forms.EmailField(label='Please enter the Captain\'s email address: ', required = True)
     legal = forms.BooleanField(widget=forms.CheckboxInput, label='I agree :', required = True)
+
+class CreateTeamForm2(forms.Form):
     teamPassword = forms.CharField(max_length=50, widget=forms.PasswordInput, label='Please enter a key that your teammates will use to join the team: ', required = True)
     repeatTeamPassword = forms.CharField(max_length=50, widget=forms.PasswordInput, label = 'Please enter a key that your teammates will use to join the team: ', required = True)
-    
+    emailList = forms.TextArea(label = 'Please enter a list of e-mail addresses', required=False)
 
 class RegisterTeamMember(forms.Form):
 
