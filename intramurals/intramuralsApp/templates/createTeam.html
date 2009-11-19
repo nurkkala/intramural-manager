@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Create a Team</title>
+</head>
+<body>
+<div id="header">
+	<table class="mainlayout" align="center">
+		<tr class="titlehead">
+			<td colspan="5">
+			<h1 align="center">Create a Team </h1>
+			</td>
+		</tr>
+		<tr class="navigation">
+			<td class="navigationselect">
+			<h3> Step 1 </h3>
+			</td>
+			<td>
+			<h3> Step 2 </h3>
+			</td>
+			<td>
+			<h3> Step 3 </h3>
+			</td>
+			<td>
+			<h3> Step 4 </h3>
+			</td>
+			<td>
+			<h3> Step 5 </h3>
+			</td>
+		</tr>
+	</table>
+
+</div>
+<div id="errors">
+{% if form.errors %}
+   {% for error in form.errors %}
+   <p>{{error}}</p>
+   {% endfor %}
+{% endif %}
+</div>
+<form action="/createTeam" method="post">
+<div id="step1">
+	<h4>Sport</h4>
+	{{ form.sportId }}
+	<h4>League</h4>
+	{{ form.leagueId }}
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step2" class="hide">
+	<h4>Team name</h4>
+	{{ form.teamName }}
+	<h4>Floor/Wing</h4>
+	{{ form.locationId }}
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step3" class="hide">
+	<h4>Enter Captain's First Name </h4>
+	{{ form.captainFirstName }}
+	<h4>Enter Captain's Last Name </h4>
+	{{ form.captainLastName }}
+	<h4>Captain's Email Address</h4>
+	{{ form.captainEmail }}
+	<h4>Captain's School ID</h4>
+	{{ form.captainId }}
+	<br />
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
+
+</div>
+<div id="step4" class="hide">
+	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
+		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
+		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
+		BILLING
+		If you are transacting using 1-Click or your PayPal account, your order may be authorized and billed in gradual increments during one purchasing and renting (as applicable) session as you click the "Buy Now" button. Depending on the size of your order, this may appear as multiple orders and billings on your credit card statement.
+		If you use the Shopping Cart functionality, you will have one order that authorizes and bills as a single transaction.
+		SALES TAX
+		iTunes Store transactions will include sales tax based on the bill-to address and the sales tax rate in effect at the time your transaction is completed. If the sales tax rate for the billing address changes before the purchased or rented (as applicable) digital content is downloaded, the new tax rate in effect at the time of download will apply. We will only charge tax in states where digital goods are taxable. No customers are eligible for tax exemptions for transactions made on the iTunes Store.
+		PRE-ORDERS
+		By pre-ordering Products, you are authorizing the iTunes Store to automatically charge your account and download the product when it becomes available. You may cancel your pre-order prior to the time the item becomes available, by going to your Account page and clicking Manage Pre-Orders on your computer, or in the downloads section on your iPod touch or iPhone. Pre-orders purchased from your computer can only be managed and downloaded on your computer.
+	</textarea>
+    	<h4>I Agree</h4>{{ form.legal }}<br />
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step5" class="hide">
+	<img src="paypal.png" width="498" height="450"  align="middle" />
+[Paypal stuff goes here]
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step6" class="hide">
+    <h2>Create Team Password</h2>
+    <p>Please enter a team password here.  This will be like a key that the other players on your team need to know in order to register for this team.</p>
+    <p>Team Password: {{ form.teamPassword }}</p>
+    <p>Retype Team Password: {{ form.repeatTeamPassword }}</p>
+    <input type="button" value="Back" class="backButton"/>
+    <input id="complete" type="submit" value="Complete"/>
+</div>
+<div id="step7" class="hide">
+[inviting people goes here]
+	<input type="button" value="Back" class="backButton"/>
+	<input id="complete" type="submit" value="Complete"/>
+</div>
+</form>
+<div id="footer">
+
+</div>
+
+<script src="createTeam.js"></script>
+<script src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+<script src="http://plugins.jquery.com/files/jquery.dump.js.txt"></script>
+<style>
+.hide
+{
+  display:none;
+}
+</style>
+<script>
+  showStep = function(e, fn) {
+    var $div = $(e.target).parents('div');
+    var $div2 = fn.apply($div);
+    $($div).addClass('hide');
+    $($div2).removeClass('hide');
+  }
+  $('.nextButton').click(function(e){  showStep(e, $.fn.next) } );
+  $('.backButton').click(function(e){  showStep(e, $.fn.prev) } );
+</script>
+</body>
+</html>
