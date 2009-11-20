@@ -24,45 +24,36 @@ function UpdateSport() {
 	{% endfor %}
     </select>
   </form>
-  <ul>{% if sportName %}{% for sport in sportList %}
+  <ul>{% if sportName %}    <!-- display information for the specified sport -->
     <!-- insert sport icon/photo here -->
     <li><span class="sportName">{{sport}}<br /></span></li>
-    <ul>{% for season in sport.seasonList %}
-      <li><span class="seasonName">{{ season }}<br /></span></li>
-      <ul>{% for league in season.leagueList %}
-        <li><span class="leagueName">{{ league }}<br /></span></li>
-	<ul>{% for division in league.divisionList %}
-          <li><span class="divisionName">{{ division }}<br /></span></li>
-	  <ul>{% for team in division.teamList %}
-            <li><span class="teamLink"><a href="index/teams/{{team.id}}/">{{team}}<br /></a></span></li>
-	    {% endfor %}
-	  </ul>
+    <ul>{% for league in sport.leagueList %}
+      <li><span class="leagueName">{{ league }}<br /></span></li>
+      <ul>{% for division in league.divisionList %}
+        <li><span class="divisionName">{{ division }}<br /></span></li>
+	<ul>{% for team in division.teamList %}
+          <li><span class="teamLink"><a href="index/teams/{{team.id}}/">{{team}}<br /></a></span></li>
 	  {% endfor %}
 	</ul>
 	{% endfor %}
       </ul>
       {% endfor %}
     </ul>
-    {% endfor %}
-    {% else %}
-    <li><span class="sportName">{{thisSport}}<br /></span></li>
-    <ul>{% for season in thisSport.seasonList %}
-      <li><span class="seasonName">{{ season }}<br /></span></li>
-      <ul>{% for league in season.leagueList %}
-        <li><span class="leagueName">{{ league }}<br /></span></li>
-	<ul>{% for division in league.divisionList %}
-          <li><span class="divisionName">{{ division }}<br /></span></li>
-	  <ul>{% for team in division.teamList %}
-            <li><span class="teamLink"><a href="../teams/{{team.id}}/">{{team}}<br /></a></span></li>
-	    {% endfor %}
-	  </ul>
+    {% else %}{% for sport in sportList %}    <!-- display information for all the sports -->
+    <li><span class="sportName">{{sport}}<br /></span></li>
+    <ul>{% for league in sport.leagueList %}
+      <li><span class="leagueName">{{ league }}<br /></span></li>
+      <ul>{% for division in league.divisionList %}
+        <li><span class="divisionName">{{ division }}<br /></span></li>
+	<ul>{% for team in division.teamList %}
+          <li><span class="teamLink"><a href="../teams/{{team.id}}/">{{team}}<br /></a></span></li>
 	  {% endfor %}
 	</ul>
 	{% endfor %}
       </ul>
       {% endfor %}
     </ul>
-    {% endif %}
+    {% endfor %}{% endif %}
   </ul>
 </div>
 {% endblock %}
