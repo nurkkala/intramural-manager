@@ -17,23 +17,18 @@ def say_hi(request, name):
     html = t.render(c)
     return HttpResponse(html)
 
-def currentSeason(sport):
+def currentSeason(sport): # returns the season of a sport in the current school year or 'No current season' if the sport isn't being played this year
     seasonList = sport.season_set.order_by("Start")
     today = datetime.today()
     if today.month < 7:
         schoolYearStart = today.replace(year=today.year-1, month=7, day=1)
     schoolYearStart = today.replace(year=today.year, month=7, day=1)
+    schoolYearEnd = schoolYearStart.replace(year=schoolYearStart.year+1)
     currentSeason = "None"
-    minimum = (abs(schoolYearStart - today)).days # The start time must not be earlier than the beginning of the school year
     for season in seasonList:
-        difference = (abs(season.Start - today)).days
-        if difference < minimum:
-            minimum = difference
-            currentSeason = season
-    if currentSeason == "None":
-        return "No current season"
-    else:
-        return currentSeason;
+        if season.Start > schoolYearStart and season.Start < schoolYearEnd:
+            return season      
+    return "No current season"
 
 #"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
         
@@ -71,31 +66,43 @@ def createTeam(request):
     else:
         return render_to_response("createTeam.html", locals())
 
-def standingsAllSports(request): # generate information for all the sports
+def standingsAllSports(request, season="None"): # generate information for all active sports
     sportList = Sport.objects.all()
     for sport in sportList:
         sport.lwr = sport.Name.lower()
+        if season == "None": # no season specified - default to current season
+            sport.season = currentSeason(sport)
+        else:
+            sport.season = sport.season_set.get(Name__contains=season)
+        if sport.season != "No current season":
+            sport.active = "true"
+            sport.leagueList = sport.season.league_set.all()
+            for league in sport.leagueList:
+                league.divisionList = league.division_set.all()
+                for division in league.divisionList:
+                    division.teamList = division.team_set.all()
+    return render_to_response("standingsAllSports.html", locals())
+
+def standingsOneSport(request, sportName, season="None"): # generate information for the specified sport
+    sportName = sportName.capitalize()
+    sportList = Sport.objects.exclude(Name=sportName)
+    for s in sportList:
+        s.lwr = s.Name.lower()
+        if currentSeason(s) != "No current season":
+            s.active = "true";
+    sport = Sport.objects.get(Name=sportName)
+    if season == "None": # no season specified - default to current season
+        sport.season = currentSeason(sport)
+    else:
+        sport.season = sport.season_set.get(Name__contains=season)
+    if currentSeason(sport) != "No current season":
+        active = "true";
         sport.leagueList = currentSeason(sport).league_set.all()
         for league in sport.leagueList:
             league.divisionList = league.division_set.all()
             for division in league.divisionList:
                 division.teamList = division.team_set.all()
-    return render_to_response("standings.html", locals())
-
-def standingsOneSport(request, sportName): # generate information for the specified sport
-    sportName = sportName.capitalize()
-    sport = Sport.objects.get(Name=sportName)
-    if currentSeason(sport) == "No current season":
-        a = 1; #Go to the latest season for this sport or generate an error
-    sport.leagueList = currentSeason(sport).league_set.all()
-    for league in sport.leagueList:
-        league.divisionList = league.division_set.all()
-        for division in league.divisionList:
-            division.teamList = division.team_set.all()
-    sportList = Sport.objects.exclude(Name=sportName)
-    for s in sportList:
-        s.lwr = s.Name.lower()
-    return render_to_response("standings.html", locals())
+    return render_to_response("standingsOneSport.html", locals())
 
 def record(team):
     homeWins = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=1)) # games won as home team

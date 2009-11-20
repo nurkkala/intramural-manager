@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
-{% block pagetitle %}Standings{% endblock %}
-{% block title %}Standings{% endblock %}
+{% block pagetitle %}{{sport}} Standings{% endblock %}
+{% block title %}{{sport}} Standings{% endblock %}
 {% block javascript %}
 <!--
 function UpdateSport() {
@@ -15,17 +15,17 @@ function UpdateSport() {
 <div class="mainbody">  	
   <form>
     <select id="sportDropDown" onchange="UpdateSport()">
-      {% if sportName %}
       <option>{{sportName}}</option>
-      {% endif %}
       <option value="http://127.0.0.1:8000/standings">All Sports</option>
 	{% for sport in sportList %}
+          {% if sport.active %}
       <option value="http://127.0.0.1:8000/standings/{{sport.lwr}}">{{sport}}</option>
+          {% endif %}
 	{% endfor %}
     </select>
   </form>
-  <ul>{% if sportName %}    <!-- display information for the specified sport -->
-    <!-- insert sport icon/photo here -->
+    {% if active %}   <!-- display information for the specified sport -->
+  <ul>    <!-- insert sport icon/photo here -->
     <li><span class="sportName">{{sport}}<br /></span></li>
     <ul>{% for league in sport.leagueList %}
       <li><span class="leagueName">{{ league }}<br /></span></li>
@@ -39,21 +39,8 @@ function UpdateSport() {
       </ul>
       {% endfor %}
     </ul>
-    {% else %}{% for sport in sportList %}    <!-- display information for all the sports -->
-    <li><span class="sportName">{{sport}}<br /></span></li>
-    <ul>{% for league in sport.leagueList %}
-      <li><span class="leagueName">{{ league }}<br /></span></li>
-      <ul>{% for division in league.divisionList %}
-        <li><span class="divisionName">{{ division }}<br /></span></li>
-	<ul>{% for team in division.teamList %}
-          <li><span class="teamLink"><a href="../teams/{{team.id}}/">{{team}}<br /></a></span></li>
-	  {% endfor %}
-	</ul>
-	{% endfor %}
-      </ul>
-      {% endfor %}
-    </ul>
-    {% endfor %}{% endif %}
-  </ul>
+    {% else %}    <!-- information requested for an inactive sport -->
+  <span class="inactiveSport">{{ sportName }} is not being played this school year.</span>
+    {% endif %}
 </div>
 {% endblock %}
