@@ -18,16 +18,14 @@ function UpdateSport() {
       <option>{{sportName}}</option>
       <option value="http://127.0.0.1:8000/standings">All Sports</option>
 	{% for sport in sportList %}
-          {% if sport.active %}
       <option value="http://127.0.0.1:8000/standings/{{sport.lwr}}">{{sport}}</option>
-          {% endif %}
 	{% endfor %}
     </select>
   </form>
-    {% if active %}   <!-- display information for the specified sport -->
-  <ul>    <!-- insert sport icon/photo here -->
-    <li><span class="sportName">{{sport}}<br /></span></li>
-    <ul>{% for league in sport.leagueList %}
+ <!-- display information for the specified sport -->
+  <ul>{% for season in sport.seasonList %}
+    <li><span class="sportName">{{ season }} {{ sport }}<br /></span></li>
+    <ul>{% for league in season.leagueList %}
       <li><span class="leagueName">{{ league }}<br /></span></li>
       <ul>{% for division in league.divisionList %}
         <li><span class="divisionName">{{ division }}<br /></span></li>
@@ -39,8 +37,7 @@ function UpdateSport() {
       </ul>
       {% endfor %}
     </ul>
-    {% else %}    <!-- information requested for an inactive sport -->
-  <span class="inactiveSport">{{ sportName }} is not being played this school year.</span>
-    {% endif %}
+    {% endfor %}
+  </ul>
 </div>
 {% endblock %}
