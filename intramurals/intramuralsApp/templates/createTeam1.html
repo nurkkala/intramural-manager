@@ -3,7 +3,7 @@
 <div id="errors">
 
 </div>
-<form action="/createTeam" method="post">
+<form action="/createTeam1" method="post">
 <div id="step1">
 	<h4>Sport</h4>
 	{{ form.sportId }}{% if form.errors.sportId %}<span class = "error">This field must be entered</span>{% endif %}
@@ -45,7 +45,7 @@
 	</textarea>
     	<h4>I Agree</h4>{{ form.legal }}<br />{% if form.errors.legal %}<span class = "error">This field must be entered</span>{% endif %}
 	<input type="button" value="Back" class="backButton"/>
-	<input type="button" value="Next" class="nextButton"/>
+	<input type="submit" value="Next" />
 </div>
 </form>
 {% endblock %}
