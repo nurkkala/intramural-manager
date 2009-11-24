@@ -158,25 +158,31 @@ def createTeam1(request):
     if request.method  == 'POST':
         form = CreateTeamForm1(request.POST)
         if form.is_valid():
-                request.session['cd'] = form.cleaned_data
-                request.session['league'] = League.objects.get(id=cd['leagueId'])
-                request.session['division'] = Division.objects.get(id=cd['leagueId'])
-                request.session['captain'] = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
-                                
-                return render_to_response("congrats.html", {"teamcaptain":captain.FirstName, "teampassword":team.Password, "teamname":team.Name,})
+            #request.session['cd'] = form.cleaned_data
+            UPAY_SITE_ID = 7
+            return render_to_response("confirmPart1.html", locals())
         else:
-            if request.POST['teamPassword'] != request.POST["repeatTeamPassword"]:
-                passwordError = True
-                return render_to_response("createTeam.html", locals())
-            return render_to_response("createTeam.html", locals())
-    else:
-        form = CreateTeamForm()
-        return render_to_response("createTeam.html", {'form':form,})
-
-def createTeam2(request):
-    if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
-        team = Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
-        team.save()
+            return render_to_response("createTeam1.html", locals())
     else:
         form = CreateTeamForm1()
-        return render_to_response("createTeam.html", {"passwordError":True, "form":form()})
+        return render_to_response("createTeam1.html", {'form':form,})
+
+
+def createTeam2(request):
+    if request.method == 'POST':
+        form = CreateTeamForm2(request.POST)
+        if form.is_valid():
+            if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
+                cd = request.session['cd']
+                league = League.objects.get(id=cd['leagueId'])
+                division = Division.objects.get(id=cd['leagueId'])
+                captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
+                team = Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
+                team.save()
+                captain.save()
+            else:
+                passwordError = True
+                return render_to_response("createTeam2.html", locals())
+    else:
+        form = CreateTeamForm2()
+        return render_to_response("createTeam2.html", {"passwordError":True, "form":form()})
