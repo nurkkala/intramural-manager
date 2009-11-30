@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Sports{% endblock %}
+{% block title %}Sports{% endblock %}
+{% block javascript %}
+<!--
+function UpdateSport() {
+    var sportChoices = document.getElementById("sportDropDown");
+    var newPage = sportChoices.options[sportChoices.selectedIndex].value
+    window.location.href=newPage
+}
+//-->
+{% endblock %}
+{% block content %}
+<div class="mainbody">  	
+  <form>
+    <select id="sportDropDown" onchange="UpdateSport()">
+      <option value="http://127.0.0.1:8000/sports">All Sports</option>
+	{% for sport in sportList %}
+      <option value="http://127.0.0.1:8000/sports/{{sport.lwr}}">{{sport}}</option>
+	{% endfor %}
+    </select>
+  </form>
+ <!-- display information for all active sports -->
+{% for sport in sportList %}
+  <div class="sportPhoto">
+    {{ sport.Photo }}
+  </div>
+  <div class="sportLogo">
+    {{ sport.Logo }}
+  </div>
+  <div class="sportName">
+    {{ sport.Name }}
+  </div>
+  {% for season in sport.seasonList %}
+  <div  class="registration">
+    {{ season.Name }} Registration: {{ season.RegistrationStart|date:"M j, Y" }} - {{ season.RegistrationEnd|date:"M j, Y" }}
+  </div>
+  {% endfor %}
+{% endfor %}
+{% endblock %}

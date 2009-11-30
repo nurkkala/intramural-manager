@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}{{sport}} Standings{% endblock %}
+{% block title %}{{sport}} Standings{% endblock %}
+{% block javascript %}
+<!--
+function UpdateSport() {
+    var sportChoices = document.getElementById("sportDropDown");
+    var newPage = sportChoices.options[sportChoices.selectedIndex].value
+    window.location.href=newPage
+}
+//-->
+{% endblock %}
+{% block content %}
+<div class="mainbody">  	
+  <form>
+    <select id="sportDropDown" onchange="UpdateSport()">
+      <option>{{sportName}}</option>
+      <option value="http://127.0.0.1:8000/standings">All Sports</option>
+	{% for sport in sportList %}
+      <option value="http://127.0.0.1:8000/standings/{{sport.lwr}}">{{sport}}</option>
+	{% endfor %}
+    </select>
+  </form>
+ <!-- display information for the specified sport -->
+  <ul>{% for season in sport.seasonList %}
+    <li><span class="sportName">{{ season }} {{ sport }}<br /></span></li>
+    <ul>{% for league in season.leagueList %}
+      <li><span class="leagueName">{{ league }}<br /></span></li>
+      <ul>{% for division in league.divisionList %}
+        <li><span class="divisionName">{{ division }}<br /></span></li>
+	<ul>{% for team in division.teamList %}
+          <li><span class="teamLink"><a href="index/teams/{{team.id}}/">{{team}}<br /></a></span></li>
+	  {% endfor %}
+	</ul>
+	{% endfor %}
+      </ul>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

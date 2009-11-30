@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Referees{% endblock %}
+{% block title %}Referees{% endblock %}
+{% block javascript %}
+<!--
+function UpdateSport() {
+    var sportChoices = document.getElementById("sportDropDown");
+    var newPage = sportChoices.options[sportChoices.selectedIndex].value
+    window.location.href=newPage
+}
+//-->
+{% endblock %}
+{% block content %}
+<div class="mainbody">  	
+  <form>
+    <select id="sportDropDown" onchange="UpdateSport()">
+      <option value="http://127.0.0.1:8000/referees">All Sports</option>
+	{% for sport in sportList %}
+      <option value="http://127.0.0.1:8000/referees/{{sport.lwr}}">{{sport}}</option>
+	{% endfor %}
+    </select>
+  </form>
+ <!-- display information for all active sports -->
+  {% for sport in sportList %}    
+  <ul>{% for season in sport.seasonList %}
+    <li><span class="sportName">{{ season }} {{ sport }}<br /></span></li>
+    <ul>{% for league in season.leagueList %}
+      <li><span class="leagueName">{{ league }}<br /></span></li>
+      <ul>{% for referee in league.refereeList %}
+        <li><span class="refereeLink"><a href="/referees/{{referee.id}}/">{{referee}}</a><br /></span></li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</div>
+{% endblock %}
