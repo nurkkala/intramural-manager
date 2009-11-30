@@ -1,23 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends 'base.html' %}
 
-<html>
-<head>
-<title>Team Homepage</title>
-</head>
-<body>
-<div id="header">
-	<table class="mainlayout" align="center">
-		<tr class="titlehead">
-			<td colspan="250">
-			<h1 align="center">Team Homepage</h1>
-			</td>
-                </tr>
-	</table>
-<ul>
-  <li><a href="home.html">Home</a></li>
-  <li><a href="schedule.html">Schedule</a></li>
-  <li><a href="standings.html">Standings</a></li>
-</ul>
-</body>
-</html>
+{% block pagetitle %}Team Homepage{% endblock %}
+{% block title %}Team Homepage{% endblock %}
+{% block content %}
+<span class="teamName">Team Name: {{ team.Name }} </span><br />
+<span class="teamLivingUnit">Floor/Wing: {{ team.LivingUnit }} </span><br />
+<span class="sportName">Sport: {{ team.Division.League.Season.Sport }} </span><br />
+<span class="leagueName">League: {{ team.Division.League }} </span><br />
+<span class="pageLink">Standings</span><br />
+<div class="standings">
+  <ul>
+  {% for opponent in opponentList %}
+      <li>{{ forloop.counter }}. <a href="/teams/{{opponent.id}}/">{{ opponent.Name }}</a> {{ opponent.record }}</li>
+  {% endfor %}
+  </ul>
+</div>
+<span class="teamCaptain">Team Captain: {{ team.Captain }} </span><br />
+<div class="teamMembers">Team Members 
+  <ul>
+  {% for member in memberList %}
+      <li>{{ forloop.counter }}. {{ member }}</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,10 +1,18 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
 
-{% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
+{% block title %}{{ title }} | {% trans 'Intramurals site admin' %}{% endblock %}
+
+{% block extrastyle %}
+	<style>
+		#header{ background-color: #5a2049; }
+		#branding h1 { color: #e5d9a9; }
+		.module h2, .module caption, .inline-group h2 { background: #5a2049; url(/media/img/admin/default-bg.gif) bottom left repeat-x; color: #e5d9a9; }
+	</style>
+{% endblock %}
 
 {% block branding %}
-<h1 id="site-name">{% trans 'Django administration' %}</h1>
+<h1 id="site-name">{% trans 'Taylor Intramurals' %}</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
