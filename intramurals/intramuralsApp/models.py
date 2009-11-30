@@ -140,11 +140,21 @@ class Team(models.Model):
 	Captain = models.ForeignKey(Person, related_name = 'IntramuralsAppTeamsCaptain', verbose_name='Team Captain')
 	Division = models.ForeignKey(Division)
 	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
-	Members = models.ManyToManyField(Person, related_name = 'IntramuralsAppTeamsMembers', verbose_name='Team Members')
+	Members = models.ManyToManyField(Person, through = 'TeamMember')
 	def __unicode__(self):
 		return self.Name
 	class Meta:
 		ordering = ['Division']
+
+class TeamMember(models.Model):
+	PAYMENTSTATUS = (
+			(0, 'Payment Pending'),
+			(1, 'Paid')
+	)
+
+	Member = models.ForeignKey(Person)
+	Team = models.ForeignKey(Team)
+	PaymentStatus = models.IntegerField(choices=PAYMENTSTATUS)
 
 class TeamAdmin(admin.ModelAdmin):
 	list_display = ('Name', 'Division', 'LivingUnit', 'Captain',)
