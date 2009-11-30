@@ -23,44 +23,44 @@
   </head>
   <body>
   <div id="wrapper">
-    <div id="header">Taylor Intramurals</div>
-    <div id="id_of_gallery" class="gallery">
-      <ul class="galleryBar">
-	<li><a href="images/#.jpg" title="Welcome to the intramurals page!"><img src="images/thumbnails/#_thumbnail.jpg" title="Greetings! I'm the first caption!" /></a></li>
-	<li><a href="images/#.jpg" title="Hi Drew!"><img src="images/thumbnails/#_thumbnail.jpg" title="Hello there I'm the second caption"/></a></li>
-	<li><a href="images/#.jpg" title="Hi Ryan!"><img src="images/thumbnails/#_thumbnail.jpg" title="I'm the third caption"/></a></li>
-
-                <li><a href="images/#.jpg" title="HAZZAH!"><img src="images/thumbnails/#_thumbnail.jpg" title="I'm the 4th"/></a></li>
-		<li><a href="images/#.jpg" title="you get the idea"><img src="Images/thumbnails/#_thumbnail.jpg" title="...and so forth"/></a></li>
-		</ul>
-    </div>
-      <div class="nav"><!-- We need to change these links once we are actually on the web -->
-	<ul>
-	  <li><a href="http://127.0.0.1:8000/">Home</a></li>
-	  <li><a href="http://127.0.0.1:8000/sports">Sports</a></li>
-	  <li><a href="http://127.0.0.1:8000/schedule">Schedule</a></li>
-	  <li><a href="http://127.0.0.1:8000/standings">Standings</a></li>
-	  <li><a href="http://127.0.0.1:8000/register">Register</a>
-	    <ul>
-	      <li><a href="#">Link</a></li>
-	    </ul>
-	  </li>
-	  <li><a href="http://127.0.0.1:8000/referees">Referees</a></li>
-	  <li><a href="http://127.0.0.1:8000/about">About</a></li>
+    <div id="header">Taylor Intramurals
+      <div id="id_of_gallery" class="gallery">
+	<ul class="galleryBar">
+	  <li><a href="images/#.jpg" title="Welcome to the intramurals page!"><img src="images/thumbnails/#_thumbnail.jpg" title="Greetings! I'm the first caption!" /></a></li>
+	  <li><a href="images/#.jpg" title="Hi Drew!"><img src="images/thumbnails/#_thumbnail.jpg" title="Hello there I'm the second caption"/></a></li>
+	  <li><a href="images/#.jpg" title="Hi Ryan!"><img src="images/thumbnails/#_thumbnail.jpg" title="I'm the third caption"/></a></li>
+          <li><a href="images/#.jpg" title="HAZZAH!"><img src="images/thumbnails/#_thumbnail.jpg" title="I'm the 4th"/></a></li>
+	  <li><a href="images/#.jpg" title="you get the idea"><img src="Images/thumbnails/#_thumbnail.jpg" title="...and so forth"/></a></li>
 	</ul>
       </div>
     </div>
+    <div class="nav"><!-- We need to change these links once we are actually on the web -->
+      <ul>
+	<li><a href="http://127.0.0.1:8000/">Home</a></li>
+	<li><a href="http://127.0.0.1:8000/sports">Sports</a></li>
+	<li><a href="http://127.0.0.1:8000/schedule">Schedule</a></li>
+	<li><a href="http://127.0.0.1:8000/standings">Standings</a></li>
+	<li><a href="http://127.0.0.1:8000/register">Register</a>
+	  <ul>
+	    <li><a href="#">Link</a></li>
+	  </ul>
+	</li>
+	<li><a href="http://127.0.0.1:8000/referees">Referees</a></li>
+	<li><a href="http://127.0.0.1:8000/about">About</a></li>
+      </ul>
+    </div>
     <div id="container">
       <div id="content">
-      <h1>{% block title %}{% endblock %}</h1>
-      {% block content %}{% endblock %}
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In posuere pretium lorem, quis elementum neque pulvinar sed. Suspendisse viverra vulputate metus non eleifend. Nunc eleifend vulputate orci, ut sollicitudin ligula commodo et. Aenean quis lacus mauris. Sed urna lorem, pharetra sit amet iaculis rutrum, varius nec metus. Curabitur in erat risus, sit amet suscipit augue. Pellentesque facilisis accumsan odio, at interdum urna hendrerit ac. Suspendisse faucibus, arcu nec tempus malesuada, mi lacus vestibulum est, nec cursus purus odio convallis odio. Proin erat nulla, consectetur eleifend porttitor at, laoreet in ante. Suspendisse pellentesque lobortis turpis, non eleifend mi commodo pharetra. Nulla leo arcu, porttitor non sollicitudin vel, tincidunt at est. Mauris luctus leo eu ligula lobortis sed feugiat erat venenatis. Sed at libero nunc.</p></div>
-    </div>
-        <div id="sidebar">
+	<h1>{% block title %}{% endblock %}</h1>
+	{% block content %}{% endblock %}
+        <p>Suspendisse pellentesque lobortis turpis, non eleifend mi commodo pharetra. Nulla leo arcu, porttitor non sollicitudin vel, tincidunt at est. Mauris luctus leo eu ligula lobortis sed feugiat erat venenatis. Sed at libero nunc.</p>
+      </div>
+      <div id="sidebar">
         Search<br />
-  <input type="text" id="search" name="temp" onblur="checksearch();"/><br />
+	<input type="text" id="search" name="temp" onblur="checksearch();"/><br />
         <a href="#">Hi</a>
-        Aliquam tincidunt mattis nulla, non auctor metus posuere lobortis. Nam placerat lorem at nibh egestas sollicitudin. Suspendisse dapibus accumsan sem, a tristique felis fermentum quis. Aliquam rhoncus mauris laoreet justo ultrices a ultrices nunc laoreet. Nulla egestas egestas tempus. Morbi lobortis augue nec sem blandit imperdiet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla et nulla leo. Nulla lorem nulla, interdum vitae suscipit sed, tristique at enim. Integer ut blandit nulla. Aliquam ac porta nulla. Phasellus nunc ligula, gravida et rhoncus sit amet, ultrices eget quam.</div>
+	Integer ut blandit nulla. Aliquam ac porta nulla. Phasellus nunc ligula, gravida et rhoncus sit amet, ultrices eget quam.
+      </div>
     </div>
 
 <div id="footer">Hello, copyrights</div>
