@@ -6,7 +6,9 @@ from datetime import datetime
 from models import *
 from forms import *
 from django.core import serializers
+from django.core.mail import send_mail
 import json
+import pdb
 
 def index(request):
     return render_to_response("home.html")
@@ -106,3 +108,15 @@ def teamToSport(teamName):
     team = Team.objects.get(TeamName=teamName)
     sport = team.division.league.season.sport
     return sport
+
+def email(request):
+    send_mail("Test email","Hello World","","")
+
+def emailInvitation(team):
+    return str.join(map(lambda p:p.Email, team.Members.all()))
+    #send_mail('subject', 'body', 'from@example.com', ['to@example.com'], fail_silently=False)
+    team = Team.objects.get(id=1)
+    response = HttpResponse(" ".join(map(lambda p:p.Email, team.Members.all())) + "asdf")
+    return response
+    #return HttpResponse(", ".join(map(team.Members)))
+    #return HttpResponse(emailInvitation(team))

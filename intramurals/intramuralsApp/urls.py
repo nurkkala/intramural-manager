@@ -13,4 +13,5 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^about$', 'about'),
     url('^admin$', 'admin'),
     url(r'^$', 'index'),
+    url('^email$', 'email'),
 )
