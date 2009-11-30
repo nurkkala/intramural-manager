@@ -92,7 +92,7 @@ ol {
 	border-color:#CCC;
 }
 .mainbody{
-	color:
+	color: #FFFFFF;
 }
 
 .titlehead{
@@ -121,4 +121,9 @@ ol {
 }
 #content{ 
         
+}
+
+.error {
+	color: red;
+	font-weight: bold;
 }

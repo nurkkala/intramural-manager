@@ -22,12 +22,22 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 # Each sport uses one or more locations.
 
 class Person(models.Model):
+	SHIRTSIZE = (
+		('XS', 'XS'),
+		('S', 'S'),
+		('M', 'M'),
+		('L', 'L'),
+		('XL', 'XL'),
+		('XXL', 'XXL'),
+		('XXXL', 'XXXL')
+	)
+
 	StudentID = models.PositiveIntegerField('Student ID')
 	FirstName = models.CharField('First Name', max_length = 50)
 	LastName = models.CharField('Last Name', max_length = 50)
 	Email = models.EmailField()
 	PhoneNumber = PhoneNumberField('Phone Number', null=True)
-	ShirtSize = models.CharField('Shirt Size', max_length = 50)
+	ShirtSize = models.CharField('Shirt Size', choices=SHIRTSIZE, max_length = 5)
 	Address = models.CharField('Address', max_length = 50)
 	def __unicode__(self):
 		return u'%s %s' % (self.FirstName, self.LastName)
@@ -38,6 +48,7 @@ class Person(models.Model):
 
 class PersonAdmin(admin.ModelAdmin):
 	list_display = ('name', 'Email',)	
+	fields = ('StudentID', 'FirstName', 'LastName', 'Email', 'PhoneNumber', 'Address', 'ShirtSize',)
 
 class AttributeGroup(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of AttributeGroup
@@ -68,7 +79,7 @@ class RefereeAdmin(admin.ModelAdmin):
 	list_display = ('Person', 'Attribute')
 
 class Sport(models.Model):
-	Name = models.CharField('Name', max_length = 50)
+	Name = models.CharField('Name', max_length = 50, unique=True)
 	Rules = models.ImageField('Rules File', upload_to='SportRules', blank=True)
 	Logo = models.ImageField('Logo File', upload_to='SportLogos', blank=True)
 	Photo = models.ImageField('Sport Photo', upload_to='SportPhotos', blank=True) # Photo for Sport
@@ -129,11 +140,21 @@ class Team(models.Model):
 	Captain = models.ForeignKey(Person, related_name = 'IntramuralsAppTeamsCaptain', verbose_name='Team Captain')
 	Division = models.ForeignKey(Division)
 	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
-	Members = models.ManyToManyField(Person, related_name = 'IntramuralsAppTeamsMembers', verbose_name='Team Members')
+	Members = models.ManyToManyField(Person, through = 'TeamMember')
 	def __unicode__(self):
 		return self.Name
 	class Meta:
 		ordering = ['Division']
+
+class TeamMember(models.Model):
+	PAYMENTSTATUS = (
+			(0, 'Payment Pending'),
+			(1, 'Paid')
+	)
+
+	Member = models.ForeignKey(Person)
+	Team = models.ForeignKey(Team)
+	PaymentStatus = models.IntegerField(choices=PAYMENTSTATUS)
 
 class TeamAdmin(admin.ModelAdmin):
 	list_display = ('Name', 'Division', 'LivingUnit', 'Captain',)
