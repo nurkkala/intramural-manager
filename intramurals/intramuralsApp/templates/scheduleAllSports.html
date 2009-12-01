@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Schedule{% endblock %}
+{% block title %}Schedule{% endblock %}
+{% block javascript %}
+<!--
+function UpdateSport() {
+    var sportChoices = document.getElementById("sportDropDown");
+    var newPage = sportChoices.options[sportChoices.selectedIndex].value
+    window.location.href=newPage
+}
+//-->
+{% endblock %}
+{% block content %}
+<div class="mainbody">  	
+  <form>
+    <select id="sportDropDown" onchange="UpdateSport()">
+      <option value="http://127.0.0.1:8000/schedule">All Sports</option>
+	{% for sport in sportList %}
+      <option value="http://127.0.0.1:8000/schedule/{{sport.lwr}}">{{sport}}</option>
+	{% endfor %}
+    </select>
+  </form>
+ <!-- display information for all active sports -->
+</div>
+{% endblock %}

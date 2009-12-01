@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Join a Team</title>
+</head>
+<body>
+<div id="header">
+</div>
+<div>
+  <form action="/joinTeam" method="post">
+  <div><h3>Join a Team</h3></div>
+  {% for item in form %}
+  <span>{{item.label}} {{item}}</span><br />
+  {% if item.errors %} <span class="errors">{{item.errors}}</span>{% endif %}
+  {% endfor %}
+  <input type="submit" value="Submit" />
+  </form>
+</div>
+</body>
+</html>
