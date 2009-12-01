@@ -216,13 +216,14 @@ def refereesAllSports(request, year="None"): # generate information for all the 
             for league in season.leagueList:
                 league.refereeList = league.Referees.all()
     return render_to_response("refereesAllSports.html", locals())
-                    
+
 def refereesOneSport(request, sportName, year="None"): # generate information for the specified sport
     if year=="None": # default to present school year
         today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return render_to_response(reverse("refereesOneSport", args=[request, sportName, str(intYear) + "-" + str(intYear+1)]))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -234,6 +235,7 @@ def refereesOneSport(request, sportName, year="None"): # generate information fo
         s.lwr = s.Name.lower()
 
     # get the Sport object from the given sport name
+    sportName.lwr = sportName
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
 
