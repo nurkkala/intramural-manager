@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import Template, Context
-from django.http import HttpResponse
+from django.core.urlresolvers import reverse
 from datetime import datetime
 from models import *
 from forms import *
@@ -15,11 +15,12 @@ def index(request):
 #"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
         
 def scheduleAllSports(request, year="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
-            intYear = intYear-1
+            intYear = intYear-1            
+        return scheduleAllSports(request, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -36,11 +37,12 @@ def scheduleAllSports(request, year="None"): # generate information for all acti
     return render_to_response("scheduleAllSports.html", locals())
 
 def scheduleOneSport(request, sportName, year="None"): # generate information for the specified sport in given school year
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return scheduleOneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -61,11 +63,12 @@ def scheduleOneSport(request, sportName, year="None"): # generate information fo
     return render_to_response("scheduleOneSport.html", locals())
 
 def allSports(request, year="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return allSports(request, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -82,11 +85,12 @@ def allSports(request, year="None"): # generate information for all active sport
     return render_to_response("allSports.html", locals())
 
 def oneSport(request, sportName, year="None"): # generate information for the specified sport in given school year
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return oneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -107,11 +111,12 @@ def oneSport(request, sportName, year="None"): # generate information for the sp
     return render_to_response("oneSport.html", locals())
 
 def standingsAllSports(request, year="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return render_to_response(reverse("standingsAllSports", args=[request, str(intYear) + "-" + str(intYear+1)]))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -134,11 +139,12 @@ def standingsAllSports(request, year="None"): # generate information for all act
     return render_to_response("standingsAllSports.html", locals())
 
 def standingsOneSport(request, sportName, year="None"): # generate information for the specified sport in given school year
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return render_to_response(reverse("standingsOneSport", args=[request, sportName, str(intYear) + "-" + str(intYear+1)]))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -193,11 +199,12 @@ def register(request):
     return render_to_response("register.html", locals())
 
 def refereesAllSports(request, year="None"): # generate information for all the sports
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return render_to_response(reverse("refereesAllSports", args=[request, str(intYear) + "-" + str(intYear+1)]))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -218,8 +225,8 @@ def refereesAllSports(request, year="None"): # generate information for all the 
     return render_to_response("refereesAllSports.html", locals())
 
 def refereesOneSport(request, sportName, year="None"): # generate information for the specified sport
+    today = datetime.today()
     if year=="None": # default to present school year
-        today = datetime.today()
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
