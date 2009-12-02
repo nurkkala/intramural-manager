@@ -21,14 +21,14 @@ function UpdateYear() {
   <form>
     <select id="sportDropDown" onchange="UpdateSport()">
       <option>{{sportName}}</option>
-      <option>All Sports</option>
+      <option value="http://127.0.0.1:8000/referees/{{yearSelected}}">All Sports</option>
 	{% for sport in sportList %}
-      <option value="http://127.0.0.1:8000/referees/{{sport.lwr}}/{{year}}">{{sport}}</option>
+      <option value="http://127.0.0.1:8000/referees/{{sport.lwr}}/{{yearSelected}}">{{sport}}</option>
 	{% endfor %}
     </select>
     <select id="yearDropDown" onchange="UpdateYear()">
-	{% for yr in yrList %}
-      <option value="http://127.0.0.1:8000/referees/{{sportNameLwr}}/{{yr}}">{{yr}}</option>
+	{% for year in yearList %}
+      <option value="http://127.0.0.1:8000/referees/{{sportNameLwr}}/{{year}}">{{year}}</option>
 	{% endfor %}
     </select>
   </form>
