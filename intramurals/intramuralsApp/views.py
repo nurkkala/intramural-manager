@@ -27,7 +27,18 @@ def scheduleAllSports(request, year="None"): # generate information for all acti
     yearEnd = yearStart.replace(year=intYear+1)
 
     # list of the sports with seasons in the given school year 
-    sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
+    sportList = Sport.objects.all()
+#    sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() WHY ISN'T THIS WORKING?
+
+    # list of years in which any sport has been played
+    yrList = [year]
+    for season in Season.objects.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
 
     # create the list of variables for the template
     for sport in sportList:
@@ -48,12 +59,23 @@ def scheduleOneSport(request, sportName, year="None"): # generate information fo
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
+    # list of years in which this sport has been played
+    yrList = [year]
+    for season in sport.season_set.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
+
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct() 
     for s in sportList:
         s.lwr = s.Name.lower()
 
     # get the Sport object from the given sport name
+    sportNameLwr = sportName
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
 
@@ -77,6 +99,16 @@ def allSports(request, year="None"): # generate information for all active sport
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
 
+    # list of years in which any sport has been played
+    yrList = [year]
+    for season in Season.objects.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
+
     # create the list of variables for the template
     for sport in sportList:
         sport.lwr = sport.Name.lower()
@@ -96,7 +128,18 @@ def oneSport(request, sportName, year="None"): # generate information for the sp
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
+    # list of years in which this sport has been played
+    yrList = [year]
+    for season in sport.season_set.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
+
     # list of the sports with seasons in the given school year 
+    sportNameLwr = sportName
     sportList = Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct() 
     for s in sportList:
         s.lwr = s.Name.lower()
@@ -116,7 +159,7 @@ def standingsAllSports(request, year="None"): # generate information for all act
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
-        return render_to_response(reverse("standingsAllSports", args=[request, str(intYear) + "-" + str(intYear+1)]))
+        return standingsAllSports(request, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -124,6 +167,16 @@ def standingsAllSports(request, year="None"): # generate information for all act
 
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
+
+    # list of years in which any sport has been played
+    yrList = [year]
+    for season in Season.objects.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
 
     # create the list of variables for the template
     for sport in sportList:
@@ -144,7 +197,7 @@ def standingsOneSport(request, sportName, year="None"): # generate information f
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
-        return render_to_response(reverse("standingsOneSport", args=[request, sportName, str(intYear) + "-" + str(intYear+1)]))
+        return standingsOneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -156,8 +209,19 @@ def standingsOneSport(request, sportName, year="None"): # generate information f
         s.lwr = s.Name.lower()
 
     # get the Sport object from the given sport name
+    sportNameLwr = sportName
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
+
+    # list of years in which this sport has been played
+    yrList = [year]
+    for season in sport.season_set.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
 
     # list of this sport's seasons in the given school year 
     sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
@@ -204,7 +268,7 @@ def refereesAllSports(request, year="None"): # generate information for all the 
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
-        return render_to_response(reverse("refereesAllSports", args=[request, str(intYear) + "-" + str(intYear+1)]))
+        return refereesAllSports(request, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -212,6 +276,16 @@ def refereesAllSports(request, year="None"): # generate information for all the 
 
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
+
+    # list of years in which any sport has been played
+    yrList = [year]
+    for season in Season.objects.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
 
     # create the list of variables for the template
     for sport in sportList:
@@ -230,7 +304,7 @@ def refereesOneSport(request, sportName, year="None"): # generate information fo
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
-        return render_to_response(reverse("refereesOneSport", args=[request, sportName, str(intYear) + "-" + str(intYear+1)]))
+        return refereesOneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:3])
     yearStart = today.replace(year=intYear, month=7, day=1)
@@ -242,9 +316,19 @@ def refereesOneSport(request, sportName, year="None"): # generate information fo
         s.lwr = s.Name.lower()
 
     # get the Sport object from the given sport name
-    sportName.lwr = sportName
+    sportNameLwr = sportName
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
+
+    # list of years in which this sport has been played
+    yrList = [year]
+    for season in sport.season_set.order_by('Start'):
+        yr = season.Start.year
+        if season.Start.month < 7:            
+            yr = yr-1
+        yr = str(yr) + "-" + str(yr+1)
+        if yr not in yrList:
+            yrList.append(yr)
 
     # list of this sport's seasons in the given school year 
     sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
