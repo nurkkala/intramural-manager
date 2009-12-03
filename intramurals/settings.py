@@ -62,7 +62,9 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'intramurals.urls'
 
-#TEMPLATE_DIRS has been moved to sandbox.py
+TEMPLATE_DIRS = (
+  HOME_DIR + '/intramural-manager/intramurals/intramuralsApp/templates/CSS/',
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',

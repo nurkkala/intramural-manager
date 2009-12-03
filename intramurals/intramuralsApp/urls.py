@@ -27,4 +27,5 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^teams/(\d+)', 'teamHomepage'),# the home page for team of given id
     url('^about$', 'about'),
     url('^admin$', 'admin'),
+
 )
