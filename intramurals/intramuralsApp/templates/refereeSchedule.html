@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Referee Schedule{% endblock %}
+{% block title %}Referee Schedule{% endblock %}
+{% block content %}
+<div class="gameList">
+   <span class="refName">Games for {{referee.Person.FirstName}}, with time and location</span>
+   {% for game in gameList %}
+   <br />
+   <span class="teamNames">{{game.HomeTeam}} vs. {{game.AwayTeam}}</span>
+   <span class="gameStartTime">{{game.StartTime|date:"F j, Y"}}</span>
+   <span class="gameLocation">{{game.Location}}</span>
+   {% endfor %}
+</div>
+{% endblock %}
