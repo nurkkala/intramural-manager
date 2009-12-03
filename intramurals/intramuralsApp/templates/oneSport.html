@@ -1,9 +1,4 @@
-{% extends 'base.html' %}
-
-{% block pagetitle %}{{sport}}{% endblock %}
-{% block title %}{{sport}}{% endblock %}
-{% block javascript %}
-<!--
+<script>
 function UpdateSport() {
     var sportChoices = document.getElementById("sportDropDown");
     var newPage = sportChoices.options[sportChoices.selectedIndex].value
@@ -14,9 +9,7 @@ function UpdateYear() {
     var newPage = yearChoices.options[yearChoices.selectedIndex].value
     window.location.href=newPage
 }
-//-->
-{% endblock %}
-{% block content %}
+</script>
 <div class="mainbody">  	
   <form>
     <select id="sportDropDown" onchange="UpdateSport()">
@@ -50,4 +43,4 @@ function UpdateYear() {
   <div class="sportRules">
     <a href="{{ sport.Rules }}" target="_blank">Official rules</a>
   </div>
-{% endblock %}
+</div>
