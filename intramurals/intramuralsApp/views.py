@@ -13,6 +13,7 @@ def index(request):
 
 
 #"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
+
         
 def scheduleAllSports(request, year="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
     if year=="None": # default to present school year
