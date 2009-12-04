@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.template import Template, Context
 from django.core.urlresolvers import reverse
 from datetime import datetime
@@ -28,9 +29,13 @@ def sportDropDownOf(sportName, yearSelected):
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
     if sportName==None:
-        return Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
+        sportList =  Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
     else:
-        return Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct()
+        sportList =  Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct()
+    sportNameList = []
+    for sport in sportList:
+        sportNameList.append(sport.Name)
+    return sportNameList
     
 def sportListOf(sportName, yearSelected): # list of sports of which info is displayed (only one if viewing a specific sport)
     yearStart = yearStartOf(yearSelected)
@@ -78,7 +83,7 @@ def schedule(request, sportName=None, yearSelected=None): # generate information
     for sport in sportList:
         sport.seasonList = seasonListOf(sport, yearSelected)
 
-    return render_to_response("schedule.html", locals())
+    return render_to_response("base.html", locals())
 
 def sportsYearOnly(request, yearSelected): # generate information for all sports in given school year
     return sports(request, None, yearSelected)
@@ -97,7 +102,7 @@ def sports(request, sportName=None, yearSelected=None): # generate information f
     for sport in sportList:
         sport.seasonList = seasonListOf(sport, yearSelected)
 
-    return render_to_response("sports.html", locals())
+    return render_to_response("base.html", locals())
 
 def standingsYearOnly(request, yearSelected): # generate information for all sports in given school year
     return standings(request, None, yearSelected)
@@ -122,7 +127,8 @@ def standings(request, sportName=None, yearSelected=None): # generate informatio
                 league.divisionList = league.division_set.all()
                 for division in league.divisionList:
                     division.teamList = division.team_set.all()
-    return render_to_response("standings.html", locals())
+
+    return render_to_response("base.html", locals())
 
 def record(team):
     homeWins = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=1)) # games won as home team
@@ -155,6 +161,9 @@ def refereesYearOnly(request, yearSelected): # generate information for all spor
     return referees(request, None, yearSelected)
 
 def referees(request, sportName=None, yearSelected=None): # generate information for all the sports
+    if request.is_ajax():
+        sportName = request.GET.get("sportName")
+        yearSelected = request.GET.get("yearSelected")
     # list of the sports that can be navigated to from this page (exclude a selected sport)
     sportDropDown = sportDropDownOf(sportName, yearSelected)
 
@@ -171,7 +180,14 @@ def referees(request, sportName=None, yearSelected=None): # generate information
             season.leagueList = season.league_set.all()
             for league in season.leagueList:
                 league.refereeList = league.Referees.all()
-    return render_to_response("referees.html", locals())
+
+    template = "referees.html"
+    data = {
+        "sportName": sportName,
+        "yearSelected": yearSelected,
+        "sportList": sportList,
+    }
+    return render_to_response(template, data, RequestContext(request))
 
 def about(request):
     return render_to_response("about.html", locals())

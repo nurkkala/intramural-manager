@@ -13,14 +13,39 @@
     <script type="text/javascript" src="js/plugins/jquery.gallery.0.3.js"></script>
     <script>
       $(document).ready(function(){
-      $('#id_of_gallery').gallery({
-      interval: 5500,
-      height: '230px',
-      width: '800px'
-      });
+          $("#refereesLink").click(function(){
+              $.ajax(newPage, function(){
+                  $("#content").html().load(
+                      "{% url referees %}?sportName=" + sport + "&yearSelected=" + year );
+              });
+          });
+    {% if sportDropDown %}
+          $("#sportDropDown").change(function(){
+              var sport = sportChoices.options[sportChoices.selectedIndex].value;
+              var year = {{yearSelected}}
+              $.ajax(newPage, function(){
+                  $("#content").html().load(
+
+WHAT'S GOING ON HERE?
+              });
+          });
+          $("#yearDropDown").change(function(){
+              var sport = {{sportName}}
+              var year = yearChoices.options[yearChoices.selectedIndex].value;
+              $.ajax(newPage, function(){
+                  $("#content").html().load(
+
+WHAT'S GOING ON HERE?
+              });
+          });
+    {% endif %}
+          $('#id_of_gallery').gallery({
+              interval: 5500,
+              height: '230px',
+              width: '800px'
+          });
       });
     </script>
-
   </head>
   <body>
   <div id="wrapper">
@@ -51,7 +76,22 @@
       </ul>
     </div>
     <div id="container">
-      <div id="content"></div>
+      {% if sportDropDown %}
+      <form>
+	<select id="sportDropDown">
+	  <option>All Sports</option>
+	  {% for sport in sportDropDown %}
+	  <option value="{{sport}}">{{sport}}</option>
+	  {% endfor %}
+	</select>
+	<select id="yearDropDown">
+	  {% for year in yearList %}
+	  <option value="{{year}}">{{year}}</option>
+	  {% endfor %}
+	</select>
+      </form>
+      {% endif %}
+      <div id="content">{{content}}</div>
       <div id="sidebar">
         Search<br />
 	<input type="text" id="search" name="temp" onblur="checksearch();"/><br />
