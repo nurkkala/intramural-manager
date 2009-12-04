@@ -22,7 +22,7 @@ function UpdateYear() {
     <select id="sportDropDown" onchange="UpdateSport()">
       <option>{{sportName}}</option>
       <option value="http://127.0.0.1:8000/referees/{{yearSelected}}">All Sports</option>
-	{% for sport in sportList %}
+	{% for sport in sportDropDown %}
       <option value="http://127.0.0.1:8000/referees/{{sport.lwr}}/{{yearSelected}}">{{sport}}</option>
 	{% endfor %}
     </select>
