@@ -16,11 +16,17 @@ function UpdateYear() {
 </script>
   <form>
     <select id="sportDropDown" onchange="UpdateSport()">
-      <option>All Sports</option>
+      {% if sportName %}
 	{% for sport in sportDropDown %}
-          {% if sport
       <option value="http://127.0.0.1:8000/sports/{{sport}}/{{yearSelected}}">{{sport}}</option>
 	{% endfor %}
+      <option>All Sports</option>
+      {% else %}
+      <option>All Sports</option>
+	{% for sport in sportDropDown %}
+      <option value="http://127.0.0.1:8000/sports/{{sport}}/{{yearSelected}}">{{sport}}</option>
+	{% endfor %}
+      {% endif %}
     </select>
     <select id="yearDropDown" onchange="UpdateYear()">
 	{% for year in yearList %}
