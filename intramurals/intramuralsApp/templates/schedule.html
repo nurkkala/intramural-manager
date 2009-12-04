@@ -1,0 +1,14 @@
+  <form>
+    <select id="sportDropDown" onchange="UpdateSport()">
+      <option>All Sports</option>
+	{% for sport in sportList %}
+      <option value="http://127.0.0.1:8000/schedule/{{sport.lwr}}/{{yearSelected}}">{{sport}}</option>
+	{% endfor %}
+    </select>
+    <select id="yearDropDown" onchange="UpdateYear()">
+	{% for year in yearList %}
+      <option value="http://127.0.0.1:8000/schedule/{{year}}">{{year}}</option>
+	{% endfor %}
+    </select>
+  </form>
+ <!-- display information for all active sports -->
