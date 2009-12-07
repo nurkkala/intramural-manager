@@ -17,29 +17,29 @@ INSERT INTO `intramuralsApp_season` VALUES
 
 /* Persons */
 INSERT INTO `intramuralsApp_person` VALUES
-(1, 123456, 'Bogus', 'Dude', 'bogusdude@gmail.com', '123-456-7890',
+(1, 123456, 'Bogus', 'Dude', 'sethbird@taylor.edu', '123-456-7890',
 'XL', 'Bergwall Hall 123'),
-(2, 123456, 'John', 'Wengatz', 'john@gmail.com', '123-456-7890', 'L',
+(2, 123456, 'John', 'Wengatz', 'seth_bird@taylor.edu', '123-456-7890', 'L',
 'Wengatz Hall 321'),
-(3, 123456, 'Austin', 'Brown', 'austin@gmail.com', '123-456-7890',
+(3, 123456, 'Austin', 'Brown', 'austin_brown@taylor.edu', '123-456-7890',
 'M', 'Sammy Morris Hall 218'),
-(4, 123456, 'Grace', 'Olson', 'grace@gmail.com', '123-456-7890', 'S',
+(4, 123456, 'Grace', 'Olson', 'robertlong@taylor.edu', '123-456-7890', 'S',
 'Olson Hall 123'),
-(5, 123456, 'John', 'Smith', 'jsmith@gmail.com', '123-456-7890', 'L',
+(5, 123456, 'John', 'Smith', 'robert_long@taylor.edu', '123-456-7890', 'L',
 'Sammy Morris Hall 123'),
-(6, 123456, 'Barry', 'Black', 'bblack@gmail.com', '123-456-7890',
+(6, 123456, 'Barry', 'Black', 'douglas_laskowski@taylor.edu', '123-456-7890',
 'XL', 'Swallow Robin Hall 123'),
-(7, 123456, 'Timmy', 'Jones', 'tjones@gmail.com', '123-456-7890', 'L',
+(7, 123456, 'Timmy', 'Jones', 'matthew_tamny@taylor.edu', '123-456-7890', 'L',
 'Wengatz Hall 123'),
-(8, 123456, 'Susie', 'Floors', 'sfloors@gmail.com', '123-456-7890',
+(8, 123456, 'Susie', 'Floors', 'bogusDude@taylor.edu', '123-456-7890',
 'M', '123 Barry Ave'),
-(9, 123456, 'Toto', 'Dog', 'toto@gmail.com', '123-456-7890', 'S',
+(9, 123456, 'Toto', 'Dog', 'bogusDude@taylor.edu', '123-456-7890', 'S',
 'English Hall 123'),
-(10, 123456, 'Carol', 'Captain', 'ccaptain@gmail.com', '123-456-7890',
+(10, 123456, 'Carol', 'Captain', 'bogusDude@taylor.edu', '123-456-7890',
 'L', 'English Hall 200'),
-(11, 123456, 'Stuart', 'Effort', 'seffort@gmail.com', '123-456-7890',
+(11, 123456, 'Stuart', 'Effort', 'bogusDude@taylor.edu', '123-456-7890',
 'XL', 'Gerig Hall 412'),
-(12, 123456, 'Charles', 'Esperanto', 'cesperanto@gmail.com',
+(12, 123456, 'Charles', 'Esperanto', 'bogusDude@taylor.edu',
 '123-456-7890', 'M', 'Bergwall Hall 123');
 
 /* Divisions */
@@ -73,43 +73,42 @@ INSERT INTO `intramuralsApp_team` VALUES
 (20, 'Live Comfort Eagle', 'password', 5, 4, 'Foundation');
 
 /* Teams to Members */
-INSERT INTO `intramuralsApp_teammember` (id, Member_id, Team_id, PaymentStatus) VALUES
+INSERT INTO `intramuralsApp_teammember` (id, Member_id, Team_id, ExternalTransactionID) VALUES
 (1, 1, 1, 1),
-(2, 1, 2, 1),
-(3, 2, 3, 1),
-(4, 3, 7, 1),
-(5, 4, 8, 1),
-(6, 5, 11, 1),
-(7, 5, 12, 1),
-(8, 6, 1, 1),
-(9, 6, 2, 1),
-(10, 7, 3, 1),
-(11, 8, 7, 1),
-(12, 9, 8, 1),
-(13, 10, 11, 1),
-(14, 10, 12, 1),
-(15, 11, 1, 1),
-(16, 11, 2, 1),
-(17, 12, 3, 1),
-(18, 13, 7, 1),
-(19, 14, 8, 1),
-(20, 15, 11, 1),
-(21, 15, 12, 1),
-(22, 16, 1, 1),
-(23, 16, 2, 1),
-(24, 17, 3, 1),
-(25, 18, 7, 1),
-(26, 19, 8, 1),
-(27, 20, 11, 1),
-(28, 20, 12, 1);
+(2, 1, 2, 2),
+(3, 2, 3, 3),
+(4, 3, 7, 4),
+(5, 4, 8, 5),
+(6, 5, 11, 6),
+(7, 5, 12, 7),
+(8, 6, 1, 8),
+(9, 6, 2, 9),
+(10, 7, 3, 10),
+(11, 8, 7, 11),
+(12, 9, 8, 12),
+(13, 10, 11, 13),
+(14, 10, 12, 14),
+(15, 11, 1, 15),
+(16, 11, 2, 16),
+(17, 12, 3, 17),
+(18, 13, 7, 18),
+(19, 14, 8, 19),
+(20, 15, 11, 20),
+(21, 15, 12, 21),
+(22, 16, 1, 22),
+(23, 16, 2, 23),
+(24, 17, 3, 24),
+(25, 18, 7, 25),
+(26, 19, 8, 26),
+(27, 20, 11, 27),
+(28, 20, 12, 28);
 
 /* Leagues */
 INSERT INTO `intramuralsApp_league` VALUES
 (1, 'Men''s League', 1, 0),
 (2, 'Women''s League', 1, 1),
 (3, 'Men''s Singles', 2, 0),
-(4, 'Women''s Singles', 2, 1);
-/*  These are commented out because not all of these leagues have divisions, making it hard to run tests 
+(4, 'Women''s Singles', 2, 1),
 (5, 'Co-ed Doubles', 2, 2),
 (6, 'Men''s A League', 3, 0),
 (7, 'Men''s B League', 3, 0),
@@ -120,7 +119,7 @@ INSERT INTO `intramuralsApp_league` VALUES
 (12, 'Men''s C League', 4, 0),
 (13, 'Women''s A League', 4, 1),
 (14, 'Women''s B League', 4, 1);
-*/
+
 /* Locations */
 INSERT INTO `intramuralsApp_location` VALUES
 (1, 'Field 1', 'Eastmost intramural football field on southeast corner of campus', 1),

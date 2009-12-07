@@ -147,14 +147,9 @@ class Team(models.Model):
 		ordering = ['Division']
 
 class TeamMember(models.Model):
-	PAYMENTSTATUS = (
-			(0, 'Payment Pending'),
-			(1, 'Paid')
-	)
-
 	Member = models.ForeignKey(Person)
 	Team = models.ForeignKey(Team)
-	PaymentStatus = models.IntegerField(choices=PAYMENTSTATUS)
+	ExternalTransactionID = models.PositiveIntegerField('External Transaction ID')
 
 class TeamAdmin(admin.ModelAdmin):
 	list_display = ('Name', 'Division', 'LivingUnit', 'Captain',)
