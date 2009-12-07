@@ -299,8 +299,10 @@ def createTeam1(request):
     if request.method  == 'POST':
         form = CreateTeamForm1(request.POST)
         if form.is_valid():
-            #request.session['cd'] = form.cleaned_data
+            request.session['cd'] = form.cleaned_data
             UPAY_SITE_ID = 7
+            BILL_NAME = request.session['cd']['captainFirstName']
+            EXT_TRANS_ID_LABEL = "This id is stored in Taylor's database to confirm that you have paid"
             return render_to_response("confirmPart1.html", locals())
         else:
             return render_to_response("createTeam1.html", locals())
@@ -318,12 +320,16 @@ def createTeam2(request):
                 league = League.objects.get(id=cd['leagueId'])
                 division = Division.objects.get(id=cd['leagueId'])
                 captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
-                team = Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
-                team.save()
                 captain.save()
+                team = Team(Name=cd['teamName'], Password=request.POST['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
+                team.save()
+                return render_to_response("congrats.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':request.POST['teamPassword'],})
             else:
                 passwordError = True
                 return render_to_response("createTeam2.html", locals())
+        else:
+            blank_form = CreateTeamForm2()
+            return render_to_response("createTeam2.html", {"form":blank_form,})
     else:
         form = CreateTeamForm2()
-        return render_to_response("createTeam2.html", {"passwordError":True, "form":form()})
+        return render_to_response("createTeam2.html", {"passwordError":True, "form":form,})
