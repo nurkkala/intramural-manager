@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import Template, Context
-from django.http import HttpResponse
+from django.core.urlresolvers import reverse
 from datetime import datetime
 from models import *
 from forms import *
@@ -15,35 +15,57 @@ def index(request):
 #"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
 
         
-def scheduleAllSports(request, year="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
-    if year=="None": # default to present school year
-        today = datetime.today()
+
+def sportYears(year, sport="None"): # generate a list of school years in which the particular sport has been played, starting with the given year
+    yearList = [year]
+    if sport=="None":
+        seasonList = Season.objects.order_by('Start')
+    else:
+        seasonList = sport.season_set.order_by('Start')
+    for season in seasonList:
+        year = season.Start.year
+        if season.Start.month < 7:            
+            year = year-1
+        year = str(year) + "-" + str(year+1)
+        if year not in yearList:
+            yearList.append(year)
+    return yearList
+
+def scheduleAllSports(request, yearSelected="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
-            intYear = intYear-1
+            intYear = intYear-1            
+        return scheduleAllSports(request, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
 
+    # list of years in which any sport has been played
+    yearList = sportYears(yearSelected)
+
     # create the list of variables for the template
     for sport in sportList:
         sport.lwr = sport.Name.lower()
         # list of each sport's seasons in the given school year 
         sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
+
     return render_to_response("scheduleAllSports.html", locals())
 
-def scheduleOneSport(request, sportName, year="None"): # generate information for the specified sport in given school year
-    if year=="None": # default to present school year
-        today = datetime.today()
+def scheduleOneSport(request, sportName, yearSelected="None"): # generate information for the specified sport in given school year
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return scheduleOneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
@@ -53,27 +75,35 @@ def scheduleOneSport(request, sportName, year="None"): # generate information fo
         s.lwr = s.Name.lower()
 
     # get the Sport object from the given sport name
+    sportNameLwr = sportName
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
 
     # list of this sport's seasons in the given school year 
     sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
 
+    # list of years in which this sport has been played
+    yearList = sportYears(yearSelected, sport)
+
     return render_to_response("scheduleOneSport.html", locals())
 
-def allSports(request, year="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
-    if year=="None": # default to present school year
-        today = datetime.today()
+def allSports(request, yearSelected="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return allSports(request, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
+
+    # list of years in which any sport has been played
+    yearList = sportYears(yearSelected)
 
     # create the list of variables for the template
     for sport in sportList:
@@ -82,18 +112,20 @@ def allSports(request, year="None"): # generate information for all active sport
         sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
     return render_to_response("allSports.html", locals())
 
-def oneSport(request, sportName, year="None"): # generate information for the specified sport in given school year
-    if year=="None": # default to present school year
-        today = datetime.today()
+def oneSport(request, sportName, yearSelected="None"): # generate information for the specified sport in given school year
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return oneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
     # list of the sports with seasons in the given school year 
+    sportNameLwr = sportName
     sportList = Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct() 
     for s in sportList:
         s.lwr = s.Name.lower()
@@ -102,24 +134,31 @@ def oneSport(request, sportName, year="None"): # generate information for the sp
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
 
+    # list of years in which this sport has been played
+    yearList = sportYears(yearSelected, sport)
+
     # list of this sport's seasons in the given school year 
     sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
 
     return render_to_response("oneSport.html", locals())
 
-def standingsAllSports(request, year="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
-    if year=="None": # default to present school year
-        today = datetime.today()
+def standingsAllSports(request, yearSelected="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return standingsAllSports(request, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
+
+    # list of years in which any sport has been played
+    yearList = sportYears(yearSelected)
 
     # create the list of variables for the template
     for sport in sportList:
@@ -134,14 +173,15 @@ def standingsAllSports(request, year="None"): # generate information for all act
                     division.teamList = division.team_set.all()
     return render_to_response("standingsAllSports.html", locals())
 
-def standingsOneSport(request, sportName, year="None"): # generate information for the specified sport in given school year
-    if year=="None": # default to present school year
-        today = datetime.today()
+def standingsOneSport(request, sportName, yearSelected="None"): # generate information for the specified sport in given school year
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return standingsOneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
@@ -151,8 +191,12 @@ def standingsOneSport(request, sportName, year="None"): # generate information f
         s.lwr = s.Name.lower()
 
     # get the Sport object from the given sport name
+    sportNameLwr = sportName
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
+
+    # list of years in which this sport has been played
+    yearList = sportYears(yearSelected, sport)
 
     # list of this sport's seasons in the given school year 
     sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
@@ -193,19 +237,23 @@ def teamHomepage(request, teamId):
 def register(request):
     return render_to_response("register.html", locals())
 
-def refereesAllSports(request, year="None"): # generate information for all the sports
-    if year=="None": # default to present school year
-        today = datetime.today()
+def refereesAllSports(request, yearSelected="None"): # generate information for all the sports
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return refereesAllSports(request, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
     # list of the sports with seasons in the given school year 
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
+
+    # list of years in which any sport has been played
+    yearList = sportYears(yearSelected)
 
     # create the list of variables for the template
     for sport in sportList:
@@ -217,15 +265,16 @@ def refereesAllSports(request, year="None"): # generate information for all the 
             for league in season.leagueList:
                 league.refereeList = league.Referees.all()
     return render_to_response("refereesAllSports.html", locals())
-                    
-def refereesOneSport(request, sportName, year="None"): # generate information for the specified sport
-    if year=="None": # default to present school year
-        today = datetime.today()
+
+def refereesOneSport(request, sportName, yearSelected="None"): # generate information for the specified sport
+    today = datetime.today()
+    if yearSelected=="None": # default to present school year
         intYear = today.year
         if today.month < 7:            
             intYear = intYear-1
+        return refereesOneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
     else:
-        intYear = int(year[0:3])
+        intYear = int(yearSelected[0:4])
     yearStart = today.replace(year=intYear, month=7, day=1)
     yearEnd = yearStart.replace(year=intYear+1)
 
@@ -235,8 +284,12 @@ def refereesOneSport(request, sportName, year="None"): # generate information fo
         s.lwr = s.Name.lower()
 
     # get the Sport object from the given sport name
+    sportNameLwr = sportName
     sportName = sportName.capitalize()
     sport = Sport.objects.get(Name=sportName)
+
+    # list of years in which this sport has been played
+    yearList = sportYears(yearSelected, sport)
 
     # list of this sport's seasons in the given school year 
     sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
