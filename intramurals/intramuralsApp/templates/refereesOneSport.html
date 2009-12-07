@@ -9,6 +9,11 @@ function UpdateSport() {
     var newPage = sportChoices.options[sportChoices.selectedIndex].value
     window.location.href=newPage
 }
+function UpdateYear() {
+    var yearChoices = document.getElementById("yearDropDown");
+    var newPage = yearChoices.options[yearChoices.selectedIndex].value
+    window.location.href=newPage
+}
 //-->
 {% endblock %}
 {% block content %}
@@ -16,9 +21,14 @@ function UpdateSport() {
   <form>
     <select id="sportDropDown" onchange="UpdateSport()">
       <option>{{sportName}}</option>
-      <option value="http://127.0.0.1:8000/referees">All Sports</option>
+      <option value="http://127.0.0.1:8000/referees/{{yearSelected}}">All Sports</option>
 	{% for sport in sportList %}
-      <option value="http://127.0.0.1:8000/referees/{{sport.lwr}}">{{sport}}</option>
+      <option value="http://127.0.0.1:8000/referees/{{sport.lwr}}/{{yearSelected}}">{{sport}}</option>
+	{% endfor %}
+    </select>
+    <select id="yearDropDown" onchange="UpdateYear()">
+	{% for year in yearList %}
+      <option value="http://127.0.0.1:8000/referees/{{sportNameLwr}}/{{year}}">{{year}}</option>
 	{% endfor %}
     </select>
   </form>
