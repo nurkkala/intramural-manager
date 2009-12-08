@@ -1,0 +1,51 @@
+{% extends 'createTeamBase.html' %}
+{% block content %}
+<div id="errors">
+
+</div>
+<form action="/createTeam1" method="post">
+<div id="step1">
+	<h4>Sport</h4>
+	{{ form.sportId }}{% if form.errors.sportId %}<span class = "error">This field must be entered</span>{% endif %}
+	<h4>League</h4>
+	{{ form.leagueId }}{% if form.errors.leagueId %}<span class = "error">This field must be entered</span>{% endif %}
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step2" class="hide">
+	<h4>Team name</h4>
+	{{ form.teamName }}{% if form.errors.teamName %}<span class = "error">This field must be entered</span>{% endif %}
+	<h4>Floor/Wing</h4>
+	{{ form.locationId }}{% if form.errors.locationId %}<span class = "error">This field must be entered</span>{% endif %}
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step3" class="hide">
+	<h4>Enter Captain's First Name </h4>
+	{{ form.captainFirstName }} {% if form.errors.captainFirstName %}<span class = "error">This field must be entered</span>{% endif %}
+	<h4>Enter Captain's Last Name </h4>
+	{{ form.captainLastName }}{% if form.errors.captainLastName %}<span class = "error">This field must be entered</span>{% endif %}
+	<h4>Captain's Email Address</h4>
+	{{ form.captainEmail }} {% if form.errors.captainEmail %}<span class = "error">This field must be entered</span>{% endif %}
+	<h4>Captain's School ID</h4>
+	{{ form.captainId }}{% if form.errors.captainId %}<span class = "error">This field must be entered</span>{% endif %}
+	<br />
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step4" class="hide">
+	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
+		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
+		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
+		BILLING
+		If you are transacting using 1-Click or your PayPal account, your order may be authorized and billed in gradual increments during one purchasing and renting (as applicable) session as you click the "Buy Now" button. Depending on the size of your order, this may appear as multiple orders and billings on your credit card statement.
+		If you use the Shopping Cart functionality, you will have one order that authorizes and bills as a single transaction.
+		SALES TAX
+		iTunes Store transactions will include sales tax based on the bill-to address and the sales tax rate in effect at the time your transaction is completed. If the sales tax rate for the billing address changes before the purchased or rented (as applicable) digital content is downloaded, the new tax rate in effect at the time of download will apply. We will only charge tax in states where digital goods are taxable. No customers are eligible for tax exemptions for transactions made on the iTunes Store.
+		PRE-ORDERS
+		By pre-ordering Products, you are authorizing the iTunes Store to automatically charge your account and download the product when it becomes available. You may cancel your pre-order prior to the time the item becomes available, by going to your Account page and clicking Manage Pre-Orders on your computer, or in the downloads section on your iPod touch or iPhone. Pre-orders purchased from your computer can only be managed and downloaded on your computer.
+	</textarea>
+    	<h4>I Agree</h4>{{ form.legal }}<br />{% if form.errors.legal %}<span class = "error">This field must be entered</span>{% endif %}
+	<input type="button" value="Back" class="backButton"/>
+	<input type="submit" value="Next" class="proceedToPayment"/>
+</div>
+</form>
+{% endblock %}
