@@ -47,6 +47,9 @@ ADMIN_MEDIA_PREFIX = '/media/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '!mpp(x97zy8y1xz#@25zbeekd@1x1@y$=-ugppgn*ly=wb3c=k'
 
+#email settings
+EMAIL_HOST = 'smtp.cse.taylor.edu'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
