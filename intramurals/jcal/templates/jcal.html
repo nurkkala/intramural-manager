@@ -31,8 +31,10 @@ var iterate = function(next, go) {
   }
 };
 
-var makeDay = function(date, tr) {
-  $('<td class="day">' + date.getDate() + '</td>').appendTo(tr);
+var makeDay = function(weekDOM, date) {
+  var _class = 'cal-day cal-' + date.getMonthName();
+  date.setHours(0);
+$('<td class="'+_class+'" >'+payload.get(date)+'</td>').appendTo(weekDOM);
 };
 
 var iterateTimeSegmentFn = function(s,e, next) {
@@ -55,6 +57,7 @@ var iterateTimeSegmentFn = function(s,e, next) {
     return false;
   };
 };
+var iterateDistFn = iterateTimeSegmentFn;
 
 // This is a helper function for makeWeek
 // w is the day of which we are displaying the week
@@ -72,7 +75,7 @@ var iterateWeekFn = function(w) {
 var makeWeek = function(w) {
   var tr = $('<tr/>')[0];
   $('#cal').append(tr);
-  iterate(iterateWeekFn(w), function(date) {makeDay(date, tr)});
+  iterate(iterateWeekFn(w), function(date) { makeDay(tr, date)});
 }
 
 // This is a helper function for makeWist
@@ -91,6 +94,61 @@ var makeWist = function(start, end) {
           makeWeek);
 };
 
+var payload = {};
+payload.get = function(date) {
+  if(! payload[date] ) {
+    payload[date] = date.getDate() + '<hr/>';
+  }
+  return payload[date];
+};
+payload.inc = function(date, value) {
+  payload.get(date); //this is to set payload[date] if it is undefined.
+  payload[date] += value;
+};
+
+</script>
+
+<div id="alpha"></div>
+<script>
+var ajax_gameJson2Html = function(data, textStatus) {
+  var json = eval(data);
+  var args = this.args;
+  var start = Date.parse(args.start);
+  start.setHours(0);
+  var end = Date.parse(args.end);
+  start.setHours(0);
+
+  for(k in json) {
+    var game = json[k]
+    var date = Date.parse(game.fields.StartTime);
+    date.setHours(0); //makeDay function assumes that all indexes have a zero hour.
+    payload.inc(date, '<a href="#">' + game.fields.HomeTeam.fields.Name + '<br/>' +
+                                       game.fields.AwayTeam.fields.Name + '</a><hr/>');
+  }
+
+};
+
+var getGames = function(start, end, fn) {
+  fn = fn || ajax_gameJson2Html;
+
+  $.ajax({
+    url:"/getGames",
+    type: "post",
+    data: {
+      'start':start,
+      'end':end
+    },
+    args: {
+      "start":start,
+      "end":end
+    },
+    success: fn
+  });
+};
+
+//getGames('2009-9-16', '2009-9-18');
+gstart = '2009-9-16';
+gend = '2009-9-18';
 
 </script>
 
@@ -100,13 +158,20 @@ var makeWist = function(start, end) {
 }
 #cal td
 {
-  border-style:solid;
+  border-style: solid;
+  vertical-align: top;
 }
 #cal
 {
   border-collapse:collapse;
 }
+
+.cal-September
+{
+  //background-color:blue;
+}
 </style>
+
 
 </body>
 </html>

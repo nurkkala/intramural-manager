@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('intramuralsApp.views',
+    url('^mynameis/(.*)', 'say_hi'),
+    url('^getGames$','getGames'),
     url('^getX$','getX'),# used for the json serializer (rename!)
     url('^$', 'index'),
     url('^sports/(.+)/(\d.+)', 'oneSport'),# view info for a specific sport in specified year
@@ -27,5 +29,5 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^teams/(\d+)', 'teamHomepage'),# the home page for team of given id
     url('^about$', 'about'),
     url('^admin$', 'admin'),
-
+    url('^email$', 'email'),
 )

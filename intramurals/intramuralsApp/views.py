@@ -7,6 +7,7 @@ from models import *
 from forms import *
 from django.core import serializers
 import json
+import pdb
 
 def index(request):
     return render_to_response("home.html")
@@ -304,10 +305,19 @@ def refereesOneSport(request, sportName, yearSelected="None"): # generate inform
 def about(request):
     return render_to_response("about.html", locals())
 
+
+def getGames(request):
+    if(not request.POST or request.POST['start'] == "" or request.POST['end'] == ""):
+        return HttpResponse('"start" and "end" get values need to be passed')
+    json_serializer = serializers.get_serializer("json")()
+    o = Game.objects.select_related(depth=1).extra(where=["%s <= date(StartTime) and date(StartTime) <= %s"], params=[request.POST['start'], request.POST['end']])
+    json_serializer.serialize(o, relations=('HomeTeam', 'AwayTeam',))
+    val = json_serializer.getvalue()
+    return HttpResponse(val);
+
 def getX(request):
     # A serializer turns database objects into a javascript dictionary
     # This uses javascript because otherwise it would involve multiple page reloads
-    json_serializer = serializers.get_serializer("json")()
     gameList = Game.objects.all()
 #    for game in gameList:
 #        game.homeName = game.HomeTeam.Name
@@ -317,8 +327,7 @@ def getX(request):
 #        game.sportId = game.HomeTeam.Division.League.Season.Sport.id
 #        game.sportLogo = game.HomeTeam.Division.League.Season.Sport.id
     json_serializer.serialize(gameList)
-    val = json_serializer.getvalue()
-    return HttpResponse(val);
+
 
 def admin(request):
     return render_to_response("admin.html", locals())
@@ -334,6 +343,16 @@ def teamToSport(teamId):
     team = Team.objects.get(id=teamId)
     sport = team.Division.League.Season.Sport
     return sport
+
+
+def emailInvitation(team):
+    return str.join(map(lambda p:p.Email, team.Members.all()))
+    #send_mail('subject', 'body', 'from@example.com', ['to@example.com'], fail_silently=False)
+    team = Team.objects.get(id=1)
+    response = HttpResponse(" ".join(map(lambda p:p.Email, team.Members.all())) + "asdf")
+    return response
+    #return HttpResponse(", ".join(map(team.Members)))
+    #return HttpResponse(emailInvitation(team))
 
 def joinTeam(request):
     if request.method  == 'POST':
@@ -380,4 +399,3 @@ def createTeam2(request):
     else:
         form = CreateTeamForm2()
         return render_to_response("createTeam2.html", {"passwordError":True, "form":form()})
-
