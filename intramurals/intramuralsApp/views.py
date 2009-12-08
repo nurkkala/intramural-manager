@@ -75,6 +75,8 @@ def schedule(request, sportName="all", yearSelected=thisYear()): # generate info
     for sport in sportList:
         sport.seasonList = seasonListOf(sport, yearSelected)
     page = "schedule"
+    if request.is_ajax():
+        return render_to_response("scheduleContent.html", locals())
     return render_to_response("schedule.html", locals())
 
 def sportsYearOnly(request, yearSelected): # generate information for all sports in given school year
@@ -87,6 +89,8 @@ def sports(request, sportName="all", yearSelected=thisYear()): # generate inform
     for sport in sportList:
         sport.seasonList = seasonListOf(sport, yearSelected)
     page = "sports"
+    if request.is_ajax():
+        return render_to_response("sportsContent.html", locals())
     return render_to_response("sports.html", locals())
 
 def standingsYearOnly(request, yearSelected): # generate information for all sports in given school year
@@ -105,6 +109,8 @@ def standings(request, sportName="all", yearSelected=thisYear()): # generate inf
                 for division in league.divisionList:
                     division.teamList = division.team_set.all()
     page = "standings"
+    if request.is_ajax():
+        return render_to_response("standingsContent.html", locals())
     return render_to_response("standings.html", locals())
 
 def refereesYearOnly(request, yearSelected): # generate information for all sports in given school year
@@ -121,6 +127,8 @@ def referees(request, sportName="all", yearSelected=thisYear()): # generate info
             for league in season.leagueList:
                 league.refereeList = league.Referees.all()
     page = "referees"
+    if request.is_ajax():
+        return render_to_response("refereesContent.html", locals())
     return render_to_response("referees.html", locals())
 
 def record(team):

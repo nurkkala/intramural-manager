@@ -1,5 +1,3 @@
-{% extends "content.html" %}
-{% block innerContent %}
   {% for sport in sportList %}    
   <ul>{% for season in sport.seasonList %}
     <li><span class="sportName">{{ season }} {{ sport }}<br /></span></li>
@@ -18,4 +16,3 @@
       {% endfor %}
   </ul>
   {% endfor %}
-{% endblock %}
