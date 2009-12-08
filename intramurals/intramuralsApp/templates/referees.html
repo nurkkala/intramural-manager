@@ -1,0 +1,17 @@
+{% extends "content.html" %}
+{% block innerContent %}
+  {% for sport in sportList %}    
+  <ul>{% for season in sport.seasonList %}
+    <li><span class='sportName'>{{ season }} {{ sport }}<br /></span></li>
+    <ul>{% for league in season.leagueList %}
+      <li><span class='leagueName'>{{ league }}<br /></span></li>
+      <ul>{% for referee in league.refereeList %}
+        <li><span class='refereeLink'><a href='/referees/{{referee.id}}/'>{{referee}}</a><br /></span></li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+{% endblock %}
