@@ -21,8 +21,8 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^joinTeam1', 'joinTeam1'),
     url('^joinTeam2', 'joinTeam2'),
     url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
-    url('^referees/?(.+)?/?(\d.+)?', 'referees'),# view referees for a specific sport in specified year
-    url('^referees/(\d.+)', 'refereesYearOnly'),# view referees for all sports in specified year
+    url('^referees/?(\d.+)?', 'refereesYearOnly'),# view referees for all sports in specified year
+    url('^referees/(.+)/(\d.+)?/?(d)?', 'referees'),# view referees for a specific sport in specified year
     url('^teams/(\d+)', 'teamHomepage'),# the home page for team of given id
     url('^about$', 'about'),
     url('^admin$', 'admin'),
