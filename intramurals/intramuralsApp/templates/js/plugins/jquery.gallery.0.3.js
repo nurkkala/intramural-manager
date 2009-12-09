@@ -244,9 +244,9 @@
             });
 
           // scrolle
-          bar.animate({left: w*(-1)*step}, {
+          bar.animate({}, {
             queue: false,
-            duration: 300,
+            duration: 0,
             easing: options.easing,
             complete: function () {
               var $t = jQuery(this).css({left: 0});
@@ -258,7 +258,7 @@
                 jQuery.data(this, 'index', indexes[j]);
               }).hide().appendTo(this).fadeIn(duration);
               f.remove();
-              step = 1;
+              step = 0;
             }
           });
         } else {
@@ -305,8 +305,8 @@
     easing: 'linear',
     ratio: 0.35,
     slideshow: true,
-    toggleBar: true,
-    showOverlay: true,
+    toggleBar: false,
+    showOverlay: false,
     barPosition: null,
     barClass: 'galleryBar',
     contentClass: 'galleryContent',
