@@ -1,4 +1,6 @@
-{% for sport in sportList %}
+{% extends "innerContent.html" %}
+{% block innerContent %}
+  {% for sport in sportList %}
   <div class="sportPhoto">
     {{ sport.Photo }}
   </div>
@@ -8,9 +10,10 @@
   <div class="sportName">
     {{ sport.Name }}
   </div>
-  {% for season in sport.seasonList %}
+    {% for season in sport.seasonList %}
   <div  class="registration">
     {{ season.Name }} Registration: {{ season.RegistrationStart|date:"M j, Y" }} - {{ season.RegistrationEnd|date:"M j, Y" }}
   </div>
+    {% endfor %}
   {% endfor %}
-{% endfor %}
+{% endblock %}

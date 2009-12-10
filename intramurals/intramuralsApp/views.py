@@ -36,11 +36,6 @@ def sportDropDownOf(sportName, yearSelected):     # list of the sports that can 
         sportNameList.append(sport.Name)
     return sportNameList
     
-def dropDownContent(page, sportName, yearSelected): # return content of drop-down lists in response to an ajax update
-    sportDropDown = sportDropDownOf(sportName, yearSelected)
-    yearList = yearListOf(sportName, yearSelected)
-    return render_to_response("dropDown.html", locals())
-
 def sportListOf(sportName, yearSelected): # list of sports of which info is displayed (only one if viewing a specific sport)
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
@@ -51,11 +46,7 @@ def sportListOf(sportName, yearSelected): # list of sports of which info is disp
 
 def yearListOf(sportName, yearSelected): # generate a list of school years in which the particular sport has been played, starting with the given year
     yearList = [yearSelected]
-    if sportName=="all":
-        seasonList = Season.objects.order_by('Start')
-    else:
-        sport = Sport.objects.get(Name=sportName)
-        seasonList = sport.season_set.order_by('Start')
+    seasonList = Season.objects.order_by('Start')
     for season in seasonList:
         year = season.Start.year
         if season.Start.month < 7:            
@@ -76,6 +67,8 @@ def scheduleYearOnly(request, yearSelected=None): # generate information for all
 def schedule(request, sportName="all", yearSelected=None): # generate information for the specified sport in given school year
     if not yearSelected:
         yearSelected = thisYear()
+    if sportName == "all":
+        allSports = True
     sportDropDown = sportDropDownOf(sportName, yearSelected)
     sportList = sportListOf(sportName, yearSelected)
     yearList = yearListOf(sportName, yearSelected)
@@ -92,6 +85,8 @@ def sportsYearOnly(request, yearSelected=None): # generate information for all s
 def sports(request, sportName="all", yearSelected=None): # generate information for all active sports in given year (eg Basketball, '2008-2009')
     if not yearSelected:
         yearSelected = thisYear()
+    if sportName == "all":
+        allSports = True
     sportDropDown = sportDropDownOf(sportName, yearSelected)
     sportList = sportListOf(sportName, yearSelected)
     yearList = yearListOf(sportName, yearSelected)
@@ -108,6 +103,8 @@ def standingsYearOnly(request, yearSelected=None): # generate information for al
 def standings(request, sportName="all", yearSelected=None): # generate information for all active sports in given year (eg Basketball, '2008-2009')
     if not yearSelected:
         yearSelected = thisYear()
+    if sportName == "all":
+        allSports = True
     sportDropDown = sportDropDownOf(sportName, yearSelected)
     sportList = sportListOf(sportName, yearSelected)
     yearList = yearListOf(sportName, yearSelected)
@@ -130,6 +127,8 @@ def refereesYearOnly(request, yearSelected=None): # generate information for all
 def referees(request, sportName="all", yearSelected=None, dropDown=None): # generate information for all the sports
     if not yearSelected:
         yearSelected = thisYear()
+    if sportName == "all":
+        allSports = True
     sportDropDown = sportDropDownOf(sportName, yearSelected)
     sportList = sportListOf(sportName, yearSelected)
     yearList = yearListOf(sportName, yearSelected)
