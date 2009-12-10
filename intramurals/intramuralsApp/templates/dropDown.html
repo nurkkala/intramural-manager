@@ -1,11 +1,11 @@
   <form>
-    <select id="sportDropDown" onchange="UpdateSport()">
+    <select id="sportDropDown">
       <option>All Sports</option>
 	{% for sport in sportDropDown %}
       <option value="http://127.0.0.1:8000/{{page}}/{{sport}}/{{yearSelected}}">{{sport}}</option>
 	{% endfor %}
     </select>
-    <select id="yearDropDown" onchange="UpdateYear()">
+    <select id="yearDropDown">
 	{% for year in yearList %}
       <option value="http://127.0.0.1:8000/{{page}}/{{sportName}}/{{year}}">{{year}}</option>
 	{% endfor %}

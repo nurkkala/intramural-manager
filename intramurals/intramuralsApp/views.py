@@ -36,6 +36,11 @@ def sportDropDownOf(sportName, yearSelected):     # list of the sports that can 
         sportNameList.append(sport.Name)
     return sportNameList
     
+def dropDownContent(page, sportName, yearSelected): # return content of drop-down lists in response to an ajax update
+    sportDropDown = sportDropDownOf(sportName, yearSelected)
+    yearList = yearListOf(sportName, yearSelected)
+    return render_to_response("dropDown.html", locals())
+
 def sportListOf(sportName, yearSelected): # list of sports of which info is displayed (only one if viewing a specific sport)
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
@@ -65,8 +70,8 @@ def seasonListOf(sport, yearSelected):
     yearEnd = yearStart.replace(yearStart.year+1)
     return sport.season_set.filter(Start__range=(yearStart, yearEnd))
 
-def scheduleYearOnly(request, yearSelected): # generate information for all sports in given school year
-    return schedule(request, "all", yearSelected=None)
+def scheduleYearOnly(request, yearSelected=None): # generate information for all sports in given school year
+    return schedule(request, "all", yearSelected)
 
 def schedule(request, sportName="all", yearSelected=None): # generate information for the specified sport in given school year
     if not yearSelected:
@@ -81,8 +86,8 @@ def schedule(request, sportName="all", yearSelected=None): # generate informatio
         return render_to_response("scheduleContent.html", locals())
     return render_to_response("schedule.html", locals())
 
-def sportsYearOnly(request, yearSelected): # generate information for all sports in given school year
-    return sports(request, "all", yearSelected=None)
+def sportsYearOnly(request, yearSelected=None): # generate information for all sports in given school year
+    return sports(request, "all", yearSelected)
 
 def sports(request, sportName="all", yearSelected=None): # generate information for all active sports in given year (eg Basketball, '2008-2009')
     if not yearSelected:
@@ -97,8 +102,8 @@ def sports(request, sportName="all", yearSelected=None): # generate information 
         return render_to_response("sportsContent.html", locals())
     return render_to_response("sports.html", locals())
 
-def standingsYearOnly(request, yearSelected): # generate information for all sports in given school year
-    return standings(request, "all", yearSelected=None)
+def standingsYearOnly(request, yearSelected=None): # generate information for all sports in given school year
+    return standings(request, "all", yearSelected)
 
 def standings(request, sportName="all", yearSelected=None): # generate information for all active sports in given year (eg Basketball, '2008-2009')
     if not yearSelected:
@@ -119,8 +124,8 @@ def standings(request, sportName="all", yearSelected=None): # generate informati
         return render_to_response("standingsContent.html", locals())
     return render_to_response("standings.html", locals())
 
-def refereesYearOnly(request, yearSelected): # generate information for all sports in given school year
-    return referees(request, "all", yearSelected=None)
+def refereesYearOnly(request, yearSelected=None): # generate information for all sports in given school year
+    return referees(request, "all", yearSelected)
 
 def referees(request, sportName="all", yearSelected=None, dropDown=None): # generate information for all the sports
     if not yearSelected:
