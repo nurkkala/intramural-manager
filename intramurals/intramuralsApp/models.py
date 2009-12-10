@@ -83,7 +83,7 @@ class Sport(models.Model):
 	Rules = models.ImageField('Rules File', upload_to='SportRules', blank=True)
 	Logo = models.ImageField('Logo File', upload_to='SportLogos', blank=True)
 	Photo = models.ImageField('Sport Photo', upload_to='SportPhotos', blank=True) # Photo for Sport
-	#TODO: Complete discussion about what will need to store images in the database
+	#TODO: Complete discussion about what we will need to store images in the database
 	def __unicode__(self):
 		return self.Name
 	class Meta:
@@ -147,14 +147,9 @@ class Team(models.Model):
 		ordering = ['Division']
 
 class TeamMember(models.Model):
-	PAYMENTSTATUS = (
-			(0, 'Payment Pending'),
-			(1, 'Paid')
-	)
-
 	Member = models.ForeignKey(Person)
 	Team = models.ForeignKey(Team)
-	PaymentStatus = models.IntegerField(choices=PAYMENTSTATUS)
+	ExternalTransactionID = models.PositiveIntegerField('External Transaction ID')
 
 class TeamAdmin(admin.ModelAdmin):
 	list_display = ('Name', 'Division', 'LivingUnit', 'Captain',)

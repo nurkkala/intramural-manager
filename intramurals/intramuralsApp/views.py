@@ -334,20 +334,7 @@ def teamToSport(teamId):
     team = Team.objects.get(id=teamId)
     sport = team.Division.League.Season.Sport
     return sport
-
-def joinTeam(request):
-    if request.method  == 'POST':
-        form = RegisterTeamMember(request.POST)
-        if form.is_valid():
-                cd = form.cleaned_data
-                teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
-                teamMember.save()
-                
-                return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
-
-        else:
-            return render_to_response("joinTeam.html", locals())
-
+    
 def createTeam1(request):
     if request.method  == 'POST':
         form = CreateTeamForm1(request.POST)
@@ -362,7 +349,6 @@ def createTeam1(request):
     else:
         form = CreateTeamForm1()
         return render_to_response("createTeam1.html", {'form':form,})
-
 
 def createTeam2(request):
     if request.method == 'POST':
@@ -386,3 +372,29 @@ def createTeam2(request):
     else:
         form = CreateTeamForm2()
         return render_to_response("createTeam2.html", {"passwordError":True, "form":form,})
+
+def joinTeam1(request):
+    if request.method  == 'POST':
+        form = JoinTeamForm(request.POST)
+        if request.POST["teampassword"]:
+            
+               
+        else:
+            return render_to_response("joinTeam.html", locals())
+    else:
+        form = JoinTeamForm()
+        return render_to_response("joinTeam.html", locals())
+
+def joinTeam2(request):
+    if request.method  == 'POST':
+        form = JoinTeamForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
+            teamMember.save()
+            return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
+        else:
+            return render_to_response("joinTeam.html", locals())
+    else:
+        form = JoinTeamForm()
+        return render_to_response("joinTeam2", locals())
