@@ -177,26 +177,12 @@ def createTeam2(request):
 
 def joinTeam1(request):
     if request.method  == 'POST':
-        form = JoinTeamForm(request.POST)
+        form = JoinTeamForm1(request.POST)
         if request.POST["teampassword"]:
-            return render_to_response("joinTeam1.html", locals())
-        else:
-            return render_to_response("joinTeam1.html", locals())
+        	team = Team.objects.get(Password=request.POST["teampassword"]) 
+			return
+		else:
+            return render_to_response("joinTeam.html", locals())
     else:
         form = JoinTeamForm()
-        return render_to_response("joinTeam1.html", locals())
-
-def joinTeam2(request):
-    if request.method  == 'POST':
-        form = JoinTeamForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
-            teamMember.save()
-            return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
-        else:
-            return render_to_response("joinTeam2.html", locals())
-    else:
-        form = JoinTeamForm()
-        return render_to_response("joinTeam2", locals())
-
+        return render_to_response("joinTeam.html", locals())
