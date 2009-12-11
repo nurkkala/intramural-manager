@@ -36,20 +36,25 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
             yearList.append(year)
     return yearList
 
-def pageYearOnly(request, page, yearSelected=None): # generate information for all sports in given school year
-    return schedule(request, page, "all", yearSelected)
+def pageWithSportYearOnly(request, page, yearSelected=None): # generate information for all sports in given school year
+    return pageWithSport(request, page, "all", yearSelected)
 
-def page(request, page, sportName="all", yearSelected=None): # generate information for the specified sport in given school year
+def pageWithSport(request, page, sportName="all", yearSelected=None): # generate information for the specified sport in given school year
     if not yearSelected:
         yearSelected = thisYear()
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
 
+    yearChanged = False
+    if sportName == "yearChanged":
+        yearChanged = True
+        sportName = "all"
     if sportName == "all":
         allSports = True
         sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
         sportDDList = sportList
     else:
+        sportName = sportName.capitalize()
         sportList = [Sport.objects.get(Name=sportName)]
         sportDDList =  Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct()
 
@@ -69,12 +74,12 @@ def page(request, page, sportName="all", yearSelected=None): # generate informat
                 league.divisionList = league.division_set.all()
                 for division in league.divisionList:
                     division.teamList = division.team_set.all()
-    if yearSelected == "same": # year has been changed
-        return render_to_response("yearContent.html", locals())
-    else if request.is_ajax(): # sport has been changed
-        return render_to_response(page + "Content.html", locals())
+
+    pageContent = page + ".html"
+    if request.is_ajax(): # year or sport has been changed
+        return render_to_response(pageContent, locals())
     else: # page has been changed
-        return render_to_response(page + ".html", locals())
+        return render_to_response("content.html", locals())
 
 def record(team):
     homeWins = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=1)) # games won as home team

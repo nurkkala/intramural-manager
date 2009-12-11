@@ -1,5 +1,9 @@
-{% extends "content.html" %}
-{% block innerContent %}
+{% if yearChanged %}
+  {% include "sportDropDown.html" %}
+{% endif %}
+
+<div id="sportContent">
+{% endif %}
   {% for sport in sportList %}    
   <ul>{% for season in sport.seasonList %}
     <li><span class='sportName'>{{ season }} {{ sport }}<br /></span></li>
@@ -14,4 +18,4 @@
     {% endfor %}
   </ul>
   {% endfor %}
-{% endblock %}
+</div>
