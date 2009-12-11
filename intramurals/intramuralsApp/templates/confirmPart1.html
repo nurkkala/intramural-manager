@@ -1,0 +1,14 @@
+{% extends 'createTeamBase.html' %}
+{% block content %}
+<div class="confirmPart1">
+<form action="https://secure.touchnet.com:8443/C21485test_upay/web/index.jsp" method="post">
+<p>The first part of your application has been approved, but
+   in order to complete registration you must pay the 
+   intramural sports registration fee</p><br />
+<input type="hidden" value="{{UPAY_SITE_ID}}" name="UPAY_SITE_ID" />
+<input type="hidden" value="{{BILL_NAME}}" name="BILL_NAME" />
+<input type="hidden" value="{{EXT_ID_LABEL}}" name="EXT_ID_LABEL" />
+<input type="submit" value="Continue to make Payment" />
+</form>
+</div>
+{% endblock %}
