@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from intramurals import dish_out_template
+from __init__ import dish_out_template
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -9,7 +9,9 @@ urlpatterns = patterns('',
     # Example:
     url('^templates/(.*)', dish_out_template), #TODO: we need to make this secure (we can't allow .. directory)
     (r'^admin/(.*)', admin.site.root),
-    (r'', include('intramurals.intramuralsApp.urls')),
+
+    (r'', include('intramuralsApp.urls')),
+
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
