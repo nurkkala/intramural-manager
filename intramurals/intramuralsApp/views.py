@@ -344,7 +344,7 @@ def joinTeam1(request):
     if request.method  == 'POST':
         form = JoinTeamForm(request.POST)
         if request.POST["teampassword"]:
-            return True
+            return render_to_response("joinTeam.html", locals())
         else:
             return render_to_response("joinTeam.html", locals())
     else:

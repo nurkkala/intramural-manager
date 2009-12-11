@@ -1,5 +1,5 @@
 from django.contrib import admin
-from intramurals.intramuralsApp.models import *
+from intramuralsApp.models import *
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Attribute, AttributeAdmin)
