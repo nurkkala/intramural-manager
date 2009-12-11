@@ -39,14 +39,14 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
 def pageWithSportYearOnly(request, page, yearSelected=None): # generate information for all sports in given school year
     return pageWithSport(request, page, "all", yearSelected)
 
-def pageWithSport(request, page, sportName="all", yearSelected=None): # generate information for the specified sport in given school year
+def pageWithSport(request, page, sportName="all", yearSelected=None, yearChanged=False): # generate information for the specified sport in given school year
     if not yearSelected:
         yearSelected = thisYear()
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
 
     yearChanged = False
-    if sportName == "yearChanged":
+    if sportName == "yearChanged": # sportName is passed as 'yearChanged' if the year has been changed (sportName is then changed to 'all')
         yearChanged = True
         sportName = "all"
     if sportName == "all":

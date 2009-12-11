@@ -1,11 +1,11 @@
   <form>
     <select id="sportDropDown">
     {% if not allSports %}
-      <option value="http://127.0.0.1:8000/{{page}}/{{sportName}}/{{yearSelected}}">{{sportName}}</option>
+      <option value="/{{page}}/{{sportName}}/{{yearSelected}}">{{sportName}}</option>
     {% endif %}
-      <option value="http://127.0.0.1:8000/{{page}}/all/{{yearSelected}}">All Sports</option>
+      <option value="/{{page}}/all/{{yearSelected}}">All Sports</option>
     {% for sport in sportDropDown %}
-      <option value="http://127.0.0.1:8000/{{page}}/{{sport}}/{{yearSelected}}">{{sport}}</option>
+      <option value="/{{page}}/{{sport}}/{{yearSelected}}">{{sport}}</option>
     {% endfor %}
     </select>
   </form>
