@@ -2,10 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.core.urlresolvers import reverse
-from datetime import datetime
 from models import *
 from forms import *
 from django.core import serializers
+from sports import ssports, allSports, oneSport
 import json
 import pdb
 
@@ -87,61 +87,6 @@ def scheduleOneSport(request, sportName, yearSelected="None"): # generate inform
     yearList = sportYears(yearSelected, sport)
 
     return render_to_response("scheduleOneSport.html", locals())
-
-def allSports(request, yearSelected="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
-    today = datetime.today()
-    if yearSelected=="None": # default to present school year
-        intYear = today.year
-        if today.month < 7:            
-            intYear = intYear-1
-        return allSports(request, str(intYear) + "-" + str(intYear+1))
-    else:
-        intYear = int(yearSelected[0:4])
-    yearStart = today.replace(year=intYear, month=7, day=1)
-    yearEnd = yearStart.replace(year=intYear+1)
-
-    # list of the sports with seasons in the given school year 
-    sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
-
-    # list of years in which any sport has been played
-    yearList = sportYears(yearSelected)
-
-    # create the list of variables for the template
-    for sport in sportList:
-        sport.lwr = sport.Name.lower()
-        # list of each sport's seasons in the given school year 
-        sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
-    return render_to_response("allSports.html", locals())
-
-def oneSport(request, sportName, yearSelected="None"): # generate information for the specified sport in given school year
-    today = datetime.today()
-    if yearSelected=="None": # default to present school year
-        intYear = today.year
-        if today.month < 7:            
-            intYear = intYear-1
-        return oneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
-    else:
-        intYear = int(yearSelected[0:4])
-    yearStart = today.replace(year=intYear, month=7, day=1)
-    yearEnd = yearStart.replace(year=intYear+1)
-
-    # list of the sports with seasons in the given school year 
-    sportNameLwr = sportName
-    sportList = Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct() 
-    for s in sportList:
-        s.lwr = s.Name.lower()
-
-    # get the Sport object from the given sport name
-    sportName = sportName.capitalize()
-    sport = Sport.objects.get(Name=sportName)
-
-    # list of years in which this sport has been played
-    yearList = sportYears(yearSelected, sport)
-
-    # list of this sport's seasons in the given school year 
-    sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
-
-    return render_to_response("oneSport.html", locals())
 
 def standingsAllSports(request, yearSelected="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
     today = datetime.today()
@@ -344,16 +289,6 @@ def teamToSport(teamId):
     sport = team.Division.League.Season.Sport
     return sport
 
-
-def emailInvitation(team):
-    return str.join(map(lambda p:p.Email, team.Members.all()))
-    #send_mail('subject', 'body', 'from@example.com', ['to@example.com'], fail_silently=False)
-    team = Team.objects.get(id=1)
-    response = HttpResponse(" ".join(map(lambda p:p.Email, team.Members.all())) + "asdf")
-    return response
-    #return HttpResponse(", ".join(map(team.Members)))
-    #return HttpResponse(emailInvitation(team))
-
 def joinTeam(request):
     if request.method  == 'POST':
         form = RegisterTeamMember(request.POST)
@@ -409,8 +344,7 @@ def joinTeam1(request):
     if request.method  == 'POST':
         form = JoinTeamForm(request.POST)
         if request.POST["teampassword"]:
-            
-               
+            return True
         else:
             return render_to_response("joinTeam.html", locals())
     else:
