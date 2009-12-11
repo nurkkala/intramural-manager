@@ -15,7 +15,6 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^standings/(\d.+)', 'standingsAllSports'),# view standings for all sports in specified year
     url('^standings/(.+)', 'standingsOneSport'),# view standings for a specific sport (no year specified)
     url('^standings$', 'standingsAllSports'),# view standings for all sports (no year specified)
-    url('^register', 'register'),
     url('^createTeam1', 'createTeam1'),
     url('^createTeam2', 'createTeam2'),
     url('^joinTeam', 'joinTeam'),
@@ -27,5 +26,4 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^teams/(\d+)', 'teamHomepage'),# the home page for team of given id
     url('^about$', 'about'),
     url('^admin$', 'admin'),
-
 )
