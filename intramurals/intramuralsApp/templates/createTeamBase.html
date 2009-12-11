@@ -59,14 +59,8 @@
     $($div2).removeClass('hide');
   }
 
-  function checkForm(){
-   $.post("test.py", $("#testform").serialize());
-   
-  }
-
   $('.nextButton').click(function(e){  showStep(e, $.fn.next) } );
   $('.backButton').click(function(e){  showStep(e, $.fn.prev) } );
-  $('.proceedToPayment').click(checkForm());
   
 </script>
 
