@@ -9,6 +9,7 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^sports/(\d.+)', 'allSports'),# view info for all sports in specified year
     url('^sports/(.+)', 'oneSport'),# view info for a specific sport (no year specified)
     url('^sports$', 'allSports'),# view info for all sports (no year specified)
+    url('^ssports/', 'ssports'),# view info for all sports (no year specified)
     url('^schedule/(.+)/(\d.+)', 'scheduleOneSport'),# view schedule for a specific sport in specified year
     url('^schedule/(\d.+)', 'scheduleAllSports'),# view schedule for all sports in specified year
     url('^schedule/(.+)', 'scheduleOneSport'),# view schedule for a specific sport (no year specified)
