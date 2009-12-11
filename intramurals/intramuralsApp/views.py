@@ -2,11 +2,12 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.core.urlresolvers import reverse
-from datetime import datetime
 from models import *
 from forms import *
 from django.core import serializers
+from sports import ssports, allSports, oneSport
 import json
+import pdb
 
 def index(request):
     return render_to_response("home.html")
@@ -86,61 +87,6 @@ def scheduleOneSport(request, sportName, yearSelected="None"): # generate inform
     yearList = sportYears(yearSelected, sport)
 
     return render_to_response("scheduleOneSport.html", locals())
-
-def allSports(request, yearSelected="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
-    today = datetime.today()
-    if yearSelected=="None": # default to present school year
-        intYear = today.year
-        if today.month < 7:            
-            intYear = intYear-1
-        return allSports(request, str(intYear) + "-" + str(intYear+1))
-    else:
-        intYear = int(yearSelected[0:4])
-    yearStart = today.replace(year=intYear, month=7, day=1)
-    yearEnd = yearStart.replace(year=intYear+1)
-
-    # list of the sports with seasons in the given school year 
-    sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct() 
-
-    # list of years in which any sport has been played
-    yearList = sportYears(yearSelected)
-
-    # create the list of variables for the template
-    for sport in sportList:
-        sport.lwr = sport.Name.lower()
-        # list of each sport's seasons in the given school year 
-        sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
-    return render_to_response("allSports.html", locals())
-
-def oneSport(request, sportName, yearSelected="None"): # generate information for the specified sport in given school year
-    today = datetime.today()
-    if yearSelected=="None": # default to present school year
-        intYear = today.year
-        if today.month < 7:            
-            intYear = intYear-1
-        return oneSport(request, sportName, str(intYear) + "-" + str(intYear+1))
-    else:
-        intYear = int(yearSelected[0:4])
-    yearStart = today.replace(year=intYear, month=7, day=1)
-    yearEnd = yearStart.replace(year=intYear+1)
-
-    # list of the sports with seasons in the given school year 
-    sportNameLwr = sportName
-    sportList = Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct() 
-    for s in sportList:
-        s.lwr = s.Name.lower()
-
-    # get the Sport object from the given sport name
-    sportName = sportName.capitalize()
-    sport = Sport.objects.get(Name=sportName)
-
-    # list of years in which this sport has been played
-    yearList = sportYears(yearSelected, sport)
-
-    # list of this sport's seasons in the given school year 
-    sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
-
-    return render_to_response("oneSport.html", locals())
 
 def standingsAllSports(request, yearSelected="None"): # generate information for all active sports in given year (eg Basketball, '2008-2009')
     today = datetime.today()
@@ -304,10 +250,19 @@ def refereesOneSport(request, sportName, yearSelected="None"): # generate inform
 def about(request):
     return render_to_response("about.html", locals())
 
+
+def getGames(request):
+    if(not request.POST or request.POST['start'] == "" or request.POST['end'] == ""):
+        return HttpResponse('"start" and "end" get values need to be passed')
+    json_serializer = serializers.get_serializer("json")()
+    o = Game.objects.select_related(depth=1).extra(where=["%s <= date(StartTime) and date(StartTime) <= %s"], params=[request.POST['start'], request.POST['end']])
+    json_serializer.serialize(o, relations=('HomeTeam', 'AwayTeam',))
+    val = json_serializer.getvalue()
+    return HttpResponse(val);
+
 def getX(request):
     # A serializer turns database objects into a javascript dictionary
     # This uses javascript because otherwise it would involve multiple page reloads
-    json_serializer = serializers.get_serializer("json")()
     gameList = Game.objects.all()
 #    for game in gameList:
 #        game.homeName = game.HomeTeam.Name
@@ -317,8 +272,7 @@ def getX(request):
 #        game.sportId = game.HomeTeam.Division.League.Season.Sport.id
 #        game.sportLogo = game.HomeTeam.Division.League.Season.Sport.id
     json_serializer.serialize(gameList)
-    val = json_serializer.getvalue()
-    return HttpResponse(val);
+
 
 def admin(request):
     return render_to_response("admin.html", locals())
@@ -334,7 +288,20 @@ def teamToSport(teamId):
     team = Team.objects.get(id=teamId)
     sport = team.Division.League.Season.Sport
     return sport
-    
+
+def joinTeam(request):
+    if request.method  == 'POST':
+        form = RegisterTeamMember(request.POST)
+        if form.is_valid():
+                cd = form.cleaned_data
+                teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
+                teamMember.save()
+                
+                return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
+
+        else:
+            return render_to_response("joinTeam.html", locals())
+
 def createTeam1(request):
     if request.method  == 'POST':
         form = CreateTeamForm1(request.POST)
