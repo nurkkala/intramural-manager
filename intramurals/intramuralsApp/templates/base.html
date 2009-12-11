@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="css/jquery.gallery.css"/> <!-- new from design team -->
     <link rel="stylesheet" type="text/css" href="css/intramurals.css" /> <!-- old -->
     <title>Taylor Intramurals - {% block pagetitle %}{% endblock %}</title>
+    <script language="JavaScript">{% block javascript %}{% endblock %}</script>
     <script src="http://cse.taylor.edu/~cos372f0901/intramurals/js/jquery-1.3.2.min.js"></script>
     <script src="http://cse.taylor.edu/~cos372f0901/intramurals/js/jquery.js"></script>
     <script src="http://cse.taylor.edu/~cos372f0901/intramurals/js/jquery.dimensions.js"></script>
@@ -39,25 +40,30 @@
     </div>
     <div class="nav"><!-- We need to change these links once we are actually on the web -->
       <ul>
-	<li><a href="http://127.0.0.1:8000/">Home</a></li>
-	<li><a href="http://127.0.0.1:8000/sports">Sports</a></li>
-	<li><a href="http://127.0.0.1:8000/schedule">Schedule</a></li>
-	<li><a href="http://127.0.0.1:8000/standings">Standings</a></li>
-	<li><a href="http://127.0.0.1:8000/register">Register</a>
+	<li><a href="/">Home</a></li>
+	<li><a href="/sports">Sports</a></li>
+	<li><a href="/schedule">Schedule</a></li>
+	<li><a href="/standings">Standings</a></li>
+	<li><a href="/register">Register</a>
 	  <ul>
 	    <li><a href="#">Link</a></li>
 	  </ul>
 	</li>
-	<li><a href="http://127.0.0.1:8000/referees">Referees</a></li>
-	<li><a href="http://127.0.0.1:8000/about">About</a></li>
+	<li><a href="/referees">Referees</a></li>
+	<li><a href="/about">About</a></li>
       </ul>
     </div>
     <div id="container">
-      <div id="content">{% block content %}{% endblock %}</div>
+      <div id="content">
+	<h1>{% block title %}{% endblock %}</h1>
+	{% block content %}{% endblock %}
+        <p>Suspendisse pellentesque lobortis turpis, non eleifend mi commodo pharetra. Nulla leo arcu, porttitor non sollicitudin vel, tincidunt at est. Mauris luctus leo eu ligula lobortis sed feugiat erat venenatis. Sed at libero nunc.</p>
+      </div>
       <div id="sidebar">
         Search<br />
 	<input type="text" id="search" name="temp" onblur="checksearch();"/><br />
         <a href="#">Hi</a>
+	Integer ut blandit nulla. Aliquam ac porta nulla. Phasellus nunc ligula, gravida et rhoncus sit amet, ultrices eget quam.
       </div>
     </div>
 
