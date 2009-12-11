@@ -9,7 +9,7 @@ from forms import *
 from django.core import serializers
 #import json
 
-def index(request):
+def home(request):
     return render_to_response("home.html")
 
 def thisYear(): # return this school year in proper format (eg "2009-2010")
@@ -205,3 +205,13 @@ def joinTeam2(request):
         form = JoinTeamForm()
         return render_to_response("joinTeam2", locals())
 
+def referees(request):
+    return render_to_response('referees.html')
+
+def standings(request):
+    return render_to_response('standings.html')
+
+def servePage(request, page):
+    if page in ['referees', 'standings', 'home', 'schedule']:
+        return render_to_response(page + '.html')
+    return render_to_response('home.html')
