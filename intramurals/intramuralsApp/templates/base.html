@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--    <link rel="stylesheet" type="text/css" href="templates/CSS/intramurals.css" />  old -->
+    <title>Taylor Intramurals - {% block pagetitle %}{% endblock %}</title>
+    <script language="JavaScript">{% block javascript %}{% endblock %}</script>
+       <script type="text/javascript" src="/~cos372f0901/intramurals/js/jquery.dimensions.js"></script>
+    <script type="text/javascript" src="/~cos372f0901/intramurals/js/plugins/jquery.gallery.0.3.js"></script> 
+    <script>
+      $(document).ready(function(){
+      $('#id_of_gallery').gallery({
+      interval: 5500,
+      height: '230px',
+      width: '800px'
+      });
+      });
+    </script>
+    <link href="http://cse.taylor.edu/~cos372f0901/intramurals/css/style.css" rel="stylesheet" type="text/css" /> <!-- new from design team -->
+    <link rel="stylesheet" type="text/css" href="http://cse.taylor.edu/~cos372f0901/intramurals/css/jquery.gallery.css"/> <!-- new from design team -->
+  </head>
+  <body>
+  <div id="wrapper">
+    <div id="header">Taylor Intramurals
+      <div id="id_of_gallery" class="gallery">
+	<ul class="galleryBar">
+	  <li><a href="http://cse.taylor.edu/~cos372f0901/intramurals/images/#.jpg" title="Welcome to the intramurals page!"><img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/thumbnails/#_thumbnail.jpg" title="Greetings! I'm the first caption!" /></a></li>
+	  <li><a href="http://cse.taylor.edu/~cos372f0901/intramurals/images/#.jpg" title="Hi Drew!"><img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/thumbnails/#_thumbnail.jpg" title="Hello there I'm the second caption"/></a></li>
+	  <li><a href="http://cse.taylor.edu/~cos372f0901/intramurals/images/#.jpg" title="Hi Ryan!"><img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/thumbnails/#_thumbnail.jpg" title="I'm the third caption"/></a></li>
+          <li><a href="http://cse.taylor.edu/~cos372f0901/intramurals/images/#.jpg" title="HAZZAH!"><img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/thumbnails/#_thumbnail.jpg" title="I'm the 4th"/></a></li>
+	  <li><a href="http://cse.taylor.edu/~cos372f0901/intramurals/images/#.jpg" title="you get the idea"><img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/thumbnails/#_thumbnail.jpg" title="...and so forth"/></a></li>
+	</ul>
+      </div>
+    </div>
+    <div class="nav"><!-- We need to change these links once we are actually on the web -->
+      <ul>
+	<li><a href="/">Home</a></li>
+	<li><a href="/sports">Sports</a></li>
+	<li><a href="/schedule">Schedule</a></li>
+	<li><a href="/standings">Standings</a></li>
+	<li><a href="/register">Register</a>
+	  <ul>
+	    <li><a href="#">Link</a></li>
+	  </ul>
+	</li>
+	<li><a href="/referees">Referees</a></li>
+	<li><a href="/about">About</a></li>
+      </ul>
+    </div>
+    <div id="container">
+      <div id="content">
+	<h1>{% block title %}{% endblock %}</h1>
+	{% block content %}{% endblock %}
+        <p>Suspendisse pellentesque lobortis turpis, non eleifend mi commodo pharetra. Nulla leo arcu, porttitor non sollicitudin vel, tincidunt at est. Mauris luctus leo eu ligula lobortis sed feugiat erat venenatis. Sed at libero nunc.</p>
+      </div>
+      <div id="sidebar">
+        Search<br />
+	<input type="text" id="search" name="temp" onblur="checksearch();"/><br />
+        <a href="#">Hi</a>
+	Integer ut blandit nulla. Aliquam ac porta nulla. Phasellus nunc ligula, gravida et rhoncus sit amet, ultrices eget quam.
+      </div>
+    </div>
+
+<div id="footer">Hello, copyrights</div>
+</div>
+</body>
+</html>
