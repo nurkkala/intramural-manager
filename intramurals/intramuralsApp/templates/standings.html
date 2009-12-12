@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "yearDropDown.html" %}
+<div id="yearContent">
+{% include "sportDropDown.html" %}
+<link href="http://cse.taylor.edu/~cos372f0901/intramurals/css/stat.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
+  <div id="sportContent">
+  {% for sport in sportList %}
+    <h3>{{sport.Name}}</h3>
+    {% for season in sport.seasonList %}
+      {% for league in season.leagueList %}
+        {% for division in league.divisionList %}
+    <div class="stat_container">
+      <div class="stat_table" id="stat_menu">
+        <span class="Menu">{{league.Name}} - {{division.Name}}</span>    
+      </div>
+      <div class="stat_statistics">
+        <table width="180" border="0" class="stat_table">
+          <tr>
+            <td width="36"><span class="style1">Position</span></td>
+            <td width="70"><span class="style1">Team</span></td>
+            <td width="50"><span class="style1">Wins-Losses-Ties</span></td>
+          </tr>
+        </table>
+        <table width="180" border="0" class="stat_table">
+	  {% for team in division.teamList %}
+          <tr>
+            <td width="36">{{team.id}}</td>
+            <td width="70">{{team.Name}}</td>
+            <td width="50">{{team.record}}</td>
+          </tr>
+	  {% endfor %}
+        </table>
+      </div>
+    </div>
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}
