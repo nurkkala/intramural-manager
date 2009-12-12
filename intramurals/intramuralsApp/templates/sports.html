@@ -1,7 +1,5 @@
-{% if yearChanged %}
-  {% include "sportDropDown.html" %}
-{% endif %}
-
+{% extends "base.html" %}
+{% block content %}
 <div id="sportContent">
   {% for sport in sportList %}
   <div class="sportPhoto">
@@ -20,3 +18,5 @@
     {% endfor %}
   {% endfor %}
 </div>
+{% endblock %}
+

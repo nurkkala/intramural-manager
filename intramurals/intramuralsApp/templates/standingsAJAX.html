@@ -1,12 +1,19 @@
-{% extends 'base.html' %}
-{% block content %}
+{% if not isAjax %}
+  {% include "yearDropDown.html" %}
+  <div id="yearContent">
+  {% include "sportDropDown.html" %}
+{% else %} <!-- This is being delivered in response to an AJAX request -->
+  {% if yearChanged %}
+     {% include "sportDropDown.html" %}
+  {% endif %}
+{% endif %}
 <link href="http://cse.taylor.edu/~cos372f0901/intramurals/css/stat.css" rel="stylesheet" type="text/css" />
-
-<div id="container">
-  <div id="content">
+<script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
+  <div id="sportContent">
     <div id="stat_container">
       <div class="stat_table" id="stat_menu">
-        <span class="Menu">Men's A League</span>    <img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/button.png" class="menu_class"/>
+        <span class="Menu">Men's A League</span>    
+	<img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/button.png" class="menu_class"/>
         <ul class="the_menu">
           <li><a href="#">Men's A League</a></li>
           <li><a href="#">Men's B League</a></li>
@@ -282,8 +289,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
-
-{% endblock %}
+{% if not isAjax %}
+  </div>
+{% endif %}
