@@ -9,13 +9,10 @@
 <div id="header">
 </div>
 <div>
-  <form action="/joinTeam" method="post">
+  <form action="/joinTeam1" method="post">
   <div><h3>Join a Team</h3></div>
-  {% for item in form %}
-  <span>{{item.label}} {{item}}</span><br />
-  {% if item.errors %} <span class="errors">{{item.errors}}</span>{% endif %}
-  {% endfor %}
-  <input type="submit" value="Submit" />
+  {{form.teamPassword.label}}{{form.teamPassword}}{{form.teamPassword.errors}}
+    <input type="submit" value="Submit" />
   </form>
 </div>
 </body>

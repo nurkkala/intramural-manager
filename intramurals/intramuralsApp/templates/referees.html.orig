@@ -1,41 +1,168 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-  	<head>
-	  <link rel="stylesheet" type="text/css" href="CSS/intramurals.css" />
-  		<title>Referees</title>
-	</head>
-<body>
-  <div>
-    <div id="header">
-	    <span class="titlehead"> Referees </span>
-    </div>
-    <div class="navigation">
-      <span class="pageLink"><a href="home.html">Home</a></span>
-      <span><a href="refereeSchedule.html">Referee Schedule</a></span>
-    </div>
+<<<<<<< local
+{% extends 'base.html' %}
+{% block content %}
+<link href="http://cse.taylor.edu/~cos372f0901/intramurals/css/stat.css" rel="stylesheet" type="text/css" />
 
-    <div class="mainbody">  	
-  	<ul>{% for sport in sportList %}
-	<!-- insert sport icon/photo here -->
-	<li><span class="sportName">{{sport.SportName}}<br /></span>
-  	      <ul>{% for season in sport.seasonList %}
-        <li><span class="seasonName">{{ season.SeasonName }}<br /></span></li>
-	  	     <ul>{% for league in season.leagueList %}
-              <li><span class="leagueName">{{ league.LeagueName }}<br /></span></li>
-	                  <ul>{% for referee in league.refereeList %}
-                  <li><span class="refereeLink"><a href="/referees/{{referee.id}}/">{{referee}}<br /></a></span></li>
-			    <!-- don't forget divisions -->
-			    {% endfor %}
-			    </ul>
-	             {% endfor %}
-		     </ul>
-		{% endfor %}
-		</ul>
-	{% endfor %}
-	</ul>
+<div id="container">
+  <div id="content">
+    <div id="stat_container">
+      <div class="stat_table" id="stat_menu">
+        <span class="Menu">Basketball Referees</span>    <img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/button.png" class="menu_class"/>
+        <ul class="the_menu">
+          <li><a href="#">Men's A League</a></li>
+          <li><a href="#">Men's B League</a></li>
+          <li><a href="#">Women's A League</a></li>
+          <li><a href="#">Women's B League</a></li>
+        </ul>
+      </div>
+      
+      <div id="stat_statistics">
+        <table width="180" border="0" class="stat_table">
+          <tr>
+            <td width="36"><span class="style1">Position</span></td>
+            <td width="70"><span class="style1">Team</span></td>
+            <td width="22"><span class="style1">Wins</span></td>
+            <td width="6"><span class="style1">-</span></td>
+            <td width="22"><span class="style1">Loses</span></td>
+          </tr>
+        </table>
+        <table width="180" border="0" class="stat_table">
+          <tr>
+            <td width="36">1</td>
+            <td width="70">Samuel Morris</td>
+            <td width="22">5</td>
+            <td width="6">-</td>
+            <td width="22">9</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td width="70">La La</td>
+            <td>4</td>
+            <td>-</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Runner</td>
+            <td>6</td>
+            <td>-</td>
+            <td>14</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Bob M</td>
+            <td>4</td>
+            <td>-</td>
+            <td>12</td>
+          </tr>
+        </table>
+        <table width="180" border="0">
+          <tr>
+            <td width="36">5</td>
+            <td width="70">Winner, no</td>
+            <td width="22">3</td>
+            <td width="6">-</td>
+            <td width="22">12</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Loswer?</td>
+            <td>0</td>
+            <td>-</td>
+            <td>19</td>
+          </tr>
+          
+        </table>
+      </div>
+    </div>
+    <div id="stat_container">
+      <div class="stat_table" id="stat_menu">
+        <span class="Menu">Tenis Referees</span>    <img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/button.png" class="menu_class2"/>
+        <ul class="the_menu2">
+          <li><a href="#">Womens's Ball</a></li>
+          <li><a href="#">Men's B League</a></li>
+          <li><a href="#">Women's A League</a></li>
+          <li><a href="#">Women's B League</a></li>
+        </ul>
+      </div>
+      
+      <div id="stat_statistics">
+        <table width="180" border="0" class="stat_table">
+          <tr>
+            <td width="36"><span class="style1">Position</span></td>
+            <td width="70"><span class="style1">Team</span></td>
+            <td width="22"><span class="style1">Wins</span></td>
+            <td width="6"><span class="style1">-</span></td>
+            <td width="22"><span class="style1">Loses</span></td>
+          </tr>
+        </table>
+        <table width="180" border="0" class="stat_table">
+          <tr>
+            <td width="36">1</td>
+            <td width="70">Samuel Morris</td>
+            <td width="22">5</td>
+            <td width="6">-</td>
+            <td width="22">9</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td width="70">La La</td>
+            <td>4</td>
+            <td>-</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Runner</td>
+            <td>6</td>
+            <td>-</td>
+            <td>14</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Bob M</td>
+            <td>4</td>
+            <td>-</td>
+            <td>12</td>
+          </tr>
+        </table>
+        <table width="180" border="0">
+          <tr>
+            <td width="36">5</td>
+            <td width="70">Winner, no</td>
+            <td width="22">3</td>
+            <td width="6">-</td>
+            <td width="22">12</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Loswer?</td>
+            <td>0</td>
+            <td>-</td>
+            <td>19</td>
+          </tr>
+          
+        </table>
       </div>
     </div>
   </div>
-</body>
-</html>  
+</div>
+
+<script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
+{% endblock %}
+=======
+  {% for sport in sportList %}    
+  <ul>{% for season in sport.seasonList %}
+    <li><span class='sportName'>{{ season }} {{ sport }}<br /></span></li>
+    <ul>{% for league in season.leagueList %}
+      <li><span class='leagueName'>{{ league }}<br /></span></li>
+      <ul>{% for referee in league.refereeList %}
+        <li><span class='refereeLink'><a href='/referees/{{referee.id}}/'>{{referee}}</a><br /></span></li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+>>>>>>> other

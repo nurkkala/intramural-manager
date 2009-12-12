@@ -7,15 +7,29 @@ from datetime import datetime
 from models import *
 from forms import *
 from django.core import serializers
-import json
+#import json
 
-def index(request):
+def home(request):
     return render_to_response("home.html")
 
+<<<<<<< local
+def thisYear(): # return this school year in proper format (eg "2009-2010")
+=======
 #"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
         
 def yearStartOf(year): # get the start date of the school year given a string such as "2009-2010" ("None" defaults to present school year)
+>>>>>>> other
     today = datetime.today()
+<<<<<<< local
+    intYear = today.year
+    if today.month < 7:            
+        intYear = intYear-1
+    return str(intYear) + "-" + str(intYear+1)
+
+def yearStartOf(year): # get the start date of the school year given a string such as "2009-2010"
+    today = datetime.today()
+    intYear = int(year[0:4])
+=======
     if year==None: # default to present school year
         intYear = today.year
         if today.month < 7:            
@@ -23,8 +37,12 @@ def yearStartOf(year): # get the start date of the school year given a string su
         return yearStartOf(str(intYear) + "-" + str(intYear+1))
     else:
         intYear = int(year[0:4])
+>>>>>>> other
     return today.replace(year=intYear, month=7, day=1)
 
+<<<<<<< local
+def yearListOf(sportName, yearSelected): # list of school years in which the particular sport has been played, starting with the given year
+=======
 def sportDropDownOf(sportName, yearSelected): 
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
@@ -46,12 +64,17 @@ def sportListOf(sportName, yearSelected): # list of sports of which info is disp
         return [Sport.objects.get(Name=sportName)]
 
 def yearListOf(sportName, yearSelected): # generate a list of school years in which the particular sport has been played, starting with the given year
+>>>>>>> other
     yearList = [yearSelected]
+<<<<<<< local
+    seasonList = Season.objects.order_by('Start')
+=======
     if sportName==None:
         seasonList = Season.objects.order_by('Start')
     else:
         sport = Sport.objects.get(Name=sportName)
         seasonList = sport.season_set.order_by('Start')
+>>>>>>> other
     for season in seasonList:
         year = season.Start.year
         if season.Start.month < 7:            
@@ -61,14 +84,48 @@ def yearListOf(sportName, yearSelected): # generate a list of school years in wh
             yearList.append(year)
     return yearList
 
+<<<<<<< local
+def pageWithSportYearOnly(request, page, yearSelected=None): # generate information for all sports in given school year
+    return pageWithSport(request, page, "all", yearSelected)
+
+def pageWithSport(request, page, sportName="all", yearSelected=None, yearChanged=False): # generate information for the specified sport in given school year
+    if not yearSelected:
+        yearSelected = thisYear()
+=======
 def seasonListOf(sport, yearSelected):
+>>>>>>> other
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
-    return sport.season_set.filter(Start__range=(yearStart, yearEnd))
+<<<<<<< local
 
+    yearChanged = False
+    if sportName == "yearChanged": # sportName is passed as 'yearChanged' if the year has been changed (sportName is then changed to 'all')
+        yearChanged = True
+        sportName = "all"
+    if sportName == "all":
+        allSports = True
+        sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
+        sportDDList = sportList
+    else:
+        sportName = sportName.capitalize()
+        sportList = [Sport.objects.get(Name=sportName)]
+        sportDDList =  Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct()
+=======
+    return sport.season_set.filter(Start__range=(yearStart, yearEnd))
+>>>>>>> other
+
+<<<<<<< local
+    sportDropDown = []
+    for sport in sportDDList:
+        sportDropDown.append(sport.Name)
+=======
 def scheduleYearOnly(request, yearSelected): # generate information for all sports in given school year
     return schedule(request, None, yearSelected)
+>>>>>>> other
 
+<<<<<<< local
+    # list of school years in which the particular sport has been played, starting with the given year
+=======
 def schedule(request, sportName=None, yearSelected=None): # generate information for the specified sport in given school year
     # list of the sports that can be navigated to from this page (exclude a selected sport)
     sportDropDown = sportDropDownOf(sportName, yearSelected)
@@ -77,7 +134,11 @@ def schedule(request, sportName=None, yearSelected=None): # generate information
     sportList = sportListOf(sportName, yearSelected)
 
     # list of years in which sports are played (or in which the selected sport is played)
+>>>>>>> other
     yearList = yearListOf(sportName, yearSelected)
+<<<<<<< local
+    
+=======
  
     # create the list of variables for the template
     for sport in sportList:
@@ -118,17 +179,31 @@ def standings(request, sportName=None, yearSelected=None): # generate informatio
     yearList = yearListOf(sportName, yearSelected)
  
     # create the list of variables for the template
+>>>>>>> other
     for sport in sportList:
+<<<<<<< local
+        sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
+=======
         sport.lwr = sport.Name.lower()
         sport.seasonList = seasonListOf(sport, yearSelected)
+>>>>>>> other
         for season in sport.seasonList:
             season.leagueList = season.league_set.all()
             for league in season.leagueList:
+                league.refereeList = league.Referees.all()
                 league.divisionList = league.division_set.all()
                 for division in league.divisionList:
                     division.teamList = division.team_set.all()
 
+<<<<<<< local
+    pageContent = page + ".html"
+    if request.is_ajax(): # year or sport has been changed
+        return render_to_response(pageContent, locals())
+    else: # page has been changed
+        return render_to_response("content.html", locals())
+=======
     return render_to_response("base.html", locals())
+>>>>>>> other
 
 def record(team):
     homeWins = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=1)) # games won as home team
@@ -157,6 +232,8 @@ def teamHomepage(request, teamId):
 def register(request):
     return render_to_response("register.html", locals())
 
+<<<<<<< local
+=======
 def refereesYearOnly(request, yearSelected): # generate information for all sports in given school year
     return referees(request, None, yearSelected)
 
@@ -189,6 +266,7 @@ def referees(request, sportName=None, yearSelected=None): # generate information
     }
     return render_to_response(template, data, RequestContext(request))
 
+>>>>>>> other
 def about(request):
     return render_to_response("about.html", locals())
 
@@ -222,33 +300,21 @@ def teamToSport(teamId):
     team = Team.objects.get(id=teamId)
     sport = team.Division.League.Season.Sport
     return sport
-
-def joinTeam(request):
-    if request.method  == 'POST':
-        form = RegisterTeamMember(request.POST)
-        if form.is_valid():
-                cd = form.cleaned_data
-                teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
-                teamMember.save()
-                
-                return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
-
-        else:
-            return render_to_response("joinTeam.html", locals())
-
+    
 def createTeam1(request):
     if request.method  == 'POST':
         form = CreateTeamForm1(request.POST)
         if form.is_valid():
-            #request.session['cd'] = form.cleaned_data
+            request.session['cd'] = form.cleaned_data
             UPAY_SITE_ID = 7
+            BILL_NAME = request.session['cd']['captainFirstName']
+            EXT_TRANS_ID_LABEL = "This id is stored in Taylor's database to confirm that you have paid"
             return render_to_response("confirmPart1.html", locals())
         else:
             return render_to_response("createTeam1.html", locals())
     else:
         form = CreateTeamForm1()
         return render_to_response("createTeam1.html", {'form':form,})
-
 
 def createTeam2(request):
     if request.method == 'POST':
@@ -259,13 +325,49 @@ def createTeam2(request):
                 league = League.objects.get(id=cd['leagueId'])
                 division = Division.objects.get(id=cd['leagueId'])
                 captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
-                team = Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
-                team.save()
                 captain.save()
+                team = Team(Name=cd['teamName'], Password=request.POST['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
+                team.save()
+                return render_to_response("congrats.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':request.POST['teamPassword'],})
             else:
                 passwordError = True
                 return render_to_response("createTeam2.html", locals())
+        else:
+            blank_form = CreateTeamForm2()
+            return render_to_response("createTeam2.html", {"form":blank_form,})
     else:
         form = CreateTeamForm2()
-        return render_to_response("createTeam2.html", {"passwordError":True, "form":form()})
+        return render_to_response("createTeam2.html", {"passwordError":True, "form":form,})
+
+def joinTeam1(request):
+    if request.method  == 'POST':
+        form = JoinTeamForm1(request.POST)
+        if request.POST["teampassword"]:
+            team = Team.objects.get(Password=request.POST["teampassword"]) 
+            return
+        else:
+            return render_to_response("joinTeam.html", locals())
+    else:
+        form = JoinTeamForm()
+        return render_to_response("joinTeam1.html", locals())
+
+def joinTeam2(request):
+    if request.method  == 'POST':
+        form = JoinTeamForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
+            teamMember.save()
+            return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
+        else:
+            return render_to_response("joinTeam2.html", locals())
+    else:
+        form = JoinTeamForm()
+        return render_to_response("joinTeam2", locals())
+
+def servePage(request, page):
+    if page in ['referees', 'standings', 'home', 'schedule']:
+        return render_to_response(page + '.html')
+    return render_to_response('home.html')
+
 

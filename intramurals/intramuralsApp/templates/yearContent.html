@@ -1,0 +1,16 @@
+{% extends "" %}
+  <form>
+    <select id="sportDropDown">
+    {% if allSports %}
+      <option>All Sports</option>
+    {% else %}
+      <option>{{sportName}}</option>
+      <option value="/{{page}}/all/{{year}}">All Sports</option>
+    {% endif %}
+    {% for sport in sportDropDown %}
+      <option value="/{{page}}/{{sport}}/{{yearSelected}}">{{sport}}</option>
+    {% endfor %}
+    </select>
+  </form>
+  {% block innerContent %}
+  {% endblock %}
