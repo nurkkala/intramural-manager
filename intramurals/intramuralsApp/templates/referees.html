@@ -1,6 +1,20 @@
 <<<<<<< local
+{% if not isAjax %}
+  {% extends "base.html" %}
+  {% block content %}
+  {% include "yearDropDown.html" %}
+  <div id="yearContent">
+  {% include "sportDropDown.html" %}
+{% else %} <!-- This is being delivered in response to an AJAX request -->
+  {% if yearChanged %}
+     {% include "sportDropDown.html" %}
+  {% endif %}
+{% endif %}
+=======
+<<<<<<< local
 {% extends 'base.html' %}
 {% block content %}
+>>>>>>> other
 <link href="http://cse.taylor.edu/~cos372f0901/intramurals/css/stat.css" rel="stylesheet" type="text/css" />
 
 <div id="container">
@@ -149,6 +163,12 @@
 </div>
 
 <script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
+<<<<<<< local
+{% if not isAjax %}
+  </div>
+  {% endblock %}
+{% endif %}
+=======
 {% endblock %}
 =======
   {% for sport in sportList %}    
@@ -165,4 +185,5 @@
     {% endfor %}
   </ul>
   {% endfor %}
+>>>>>>> other
 >>>>>>> other

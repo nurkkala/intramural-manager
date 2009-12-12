@@ -1,85 +1,51 @@
 <<<<<<< local
-{% extends "base.html" %}
+{% if not isAjax %}
+  {% include "yearDropDown.html" %}
+  <div id="yearContent">
+  {% include "sportDropDown.html" %}
+{% else %} <!-- This is being delivered in response to an AJAX request -->
+  {% if yearChanged %}
+     {% include "sportDropDown.html" %}
+  {% endif %}
+{% endif %}
 =======
 <<<<<<< local
 {% extends 'base.html' %}
->>>>>>> other
 {% block content %}
-<<<<<<< local
-{% include "yearDropDown.html" %}
-<div id="yearContent">
-{% include "sportDropDown.html" %}
-=======
 >>>>>>> other
 <link href="http://cse.taylor.edu/~cos372f0901/intramurals/css/stat.css" rel="stylesheet" type="text/css" />
-<<<<<<< local
 <script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
   <div id="sportContent">
-  {% for sport in sportList %}
-    <h3>{{sport.Name}}</h3>
-    {% for season in sport.seasonList %}
-      {% for league in season.leagueList %}
-        {% for division in league.divisionList %}
-    <div class="stat_container">
-=======
-
-<div id="container">
-  <div id="content">
     <div id="stat_container">
->>>>>>> other
       <div class="stat_table" id="stat_menu">
-<<<<<<< local
-        <span class="Menu">{{league.Name}} - {{division.Name}}</span>    
-=======
-        <span class="Menu">Men's A League</span>    <img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/button.png" class="menu_class"/>
+        <span class="Menu">Men's A League</span>    
+	<img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/button.png" class="menu_class"/>
         <ul class="the_menu">
           <li><a href="#">Men's A League</a></li>
           <li><a href="#">Men's B League</a></li>
           <li><a href="#">Women's A League</a></li>
           <li><a href="#">Women's B League</a></li>
         </ul>
->>>>>>> other
       </div>
-<<<<<<< local
-      <div class="stat_statistics">
-=======
       
       <div id="stat_statistics">
->>>>>>> other
         <table width="180" border="0" class="stat_table">
           <tr>
             <td width="36"><span class="style1">Position</span></td>
             <td width="70"><span class="style1">Team</span></td>
-<<<<<<< local
-            <td width="50"><span class="style1">Wins-Losses-Ties</span></td>
-=======
             <td width="22"><span class="style1">Wins</span></td>
             <td width="6"><span class="style1">-</span></td>
             <td width="22"><span class="style1">Loses</span></td>
->>>>>>> other
           </tr>
         </table>
         <table width="180" border="0" class="stat_table">
-<<<<<<< local
-	  {% for team in division.teamList %}
-=======
->>>>>>> other
           <tr>
-<<<<<<< local
-            <td width="36">{{team.id}}</td>
-            <td width="70">{{team.Name}}</td>
-            <td width="50">{{team.record}}</td>
-=======
             <td width="36">1</td>
             <td width="70">Samuel Morris</td>
             <td width="22">5</td>
             <td width="6">-</td>
             <td width="22">9</td>
->>>>>>> other
           </tr>
-<<<<<<< local
-	  {% endfor %}
-=======
           <tr>
             <td>2</td>
             <td width="70">La La</td>
@@ -118,12 +84,9 @@
             <td>19</td>
           </tr>
           
->>>>>>> other
         </table>
       </div>
     </div>
-<<<<<<< local
-=======
     <div id="stat_container">
       <div class="stat_table" id="stat_menu">
         <span class="Menu">Womens's A League</span>    <img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/button.png" class="menu_class2"/>
@@ -332,6 +295,11 @@
       </div>
     </div>
   </div>
+<<<<<<< local
+{% if not isAjax %}
+  </div>
+{% endif %}
+=======
 =======
 <script>
 function UpdateSport() {
@@ -373,35 +341,18 @@ function UpdateYear() {
 	</ul>
 	  {% endfor %}
       </ul>
->>>>>>> other
         {% endfor %}
-<<<<<<< local
-=======
     </ul>
->>>>>>> other
       {% endfor %}
-<<<<<<< local
-    {% endfor %}
-=======
   </ul>
->>>>>>> other
   {% endfor %}
-<<<<<<< local
-  </div>
-=======
->>>>>>> other
 >>>>>>> other
 </div>
-<<<<<<< local
-=======
 <<<<<<< local
 
 <script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
 
->>>>>>> other
 {% endblock %}
-<<<<<<< local
-=======
 =======
 >>>>>>> other
 >>>>>>> other
