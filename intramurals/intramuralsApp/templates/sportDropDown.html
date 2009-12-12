@@ -1,3 +1,9 @@
+<script>
+$("#sportDropDown").change(function (){
+    var newPage = this.options[this.selectedIndex].value
+    $("#sportContent").load(newPage);
+});
+</script>
   <form>
     <select id="sportDropDown">
     {% if not allSports %}

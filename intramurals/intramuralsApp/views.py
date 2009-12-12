@@ -85,10 +85,15 @@ def yearListOf(sportName, yearSelected): # generate a list of school years in wh
     return yearList
 
 <<<<<<< local
+def standingsYearOnly(request, page, yearSelected=None): # generate information for all sports in given school year
+    return standings(request, page, "all", yearSelected)
+=======
+<<<<<<< local
 def pageWithSportYearOnly(request, page, yearSelected=None): # generate information for all sports in given school year
     return pageWithSport(request, page, "all", yearSelected)
+>>>>>>> other
 
-def pageWithSport(request, page, sportName="all", yearSelected=None, yearChanged=False): # generate information for the specified sport in given school year
+def standings(request, page, sportName="all", yearSelected=None, yearChanged=False): # generate information for the specified sport in given school year
     if not yearSelected:
         yearSelected = thisYear()
 =======
@@ -194,24 +199,69 @@ def standings(request, sportName=None, yearSelected=None): # generate informatio
                 league.divisionList = league.division_set.all()
                 for division in league.divisionList:
                     division.teamList = division.team_set.all()
+                    for team in division.teamList:
+                        team.record = record(team)
 
 <<<<<<< local
+    isAjax = False
+=======
+<<<<<<< local
     pageContent = page + ".html"
+>>>>>>> other
     if request.is_ajax(): # year or sport has been changed
+<<<<<<< local
+        isAjax = True
+    return render_to_response("standings.html", locals())
+
+def pageWithSport(request, page, sportName="all"): # generate information for the specified sport in current school year
+    yearStart = yearStartOf(thisYear())
+    yearEnd = yearStart.replace(yearStart.year+1)
+
+    if sportName == "all":
+        allSports = True
+        sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
+        sportDDList = sportList
+    else:
+        sportName = sportName.capitalize()
+        sportList = [Sport.objects.get(Name=sportName)]
+        sportDDList =  Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct()
+
+    sportDropDown = []
+    for sport in sportDDList:
+        sportDropDown.append(sport.Name)
+
+    for sport in sportList:
+        sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
+        for season in sport.seasonList:
+            season.leagueList = season.league_set.all()
+            for league in season.leagueList:
+                league.refereeList = league.Referees.all()
+                league.divisionList = league.division_set.all()
+                for division in league.divisionList:
+                    division.teamList = division.team_set.all()
+                    for team in division.teamList:
+                        team.record = record(team)
+
+    isAjax = False
+    if request.is_ajax(): # year or sport has been changed
+        isAjax = True
+    return render_to_response(page + ".html", locals())
+=======
         return render_to_response(pageContent, locals())
     else: # page has been changed
         return render_to_response("content.html", locals())
 =======
     return render_to_response("base.html", locals())
 >>>>>>> other
+>>>>>>> other
 
 def record(team):
-    homeWins = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=1)) # games won as home team
-    awayWins = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=2)) # games won as away team
-    homeLosses = len(Game.objpppects.filter(HomeTeam__id=team.id).filter(Outcome=2)) # games lost as home team
-    awayLosses = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=1)) # games lost as away team
-    homeTies = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=3)) # games tied as home team
-    awayTies = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=3)) # games tied as away team
+    homeWins = len(Game.objects.filter(HomeTeam=team).filter(Outcome=1)) # games won as home team
+    awayWins = len(Game.objects.filter(AwayTeam=team).filter(Outcome=2)) # games won as away team
+    homeLosses = len(Game.objects.filter(HomeTeam=team).filter(Outcome=2)) # games lost as home team
+    awayLosses = len(Game.objects.filter(AwayTeam=team).filter(Outcome=1)) # games lost as away team
+    homeTies = len(Game.objects.filter(HomeTeam=team).filter(Outcome=3)) # games tied as home team
+    awayTies = len(Game.objects.filter(AwayTeam=team).filter(Outcome=3)) # games tied as away team
     wins = homeWins + awayWins
     losses = homeLosses + awayLosses
     ties = homeTies + awayTies
