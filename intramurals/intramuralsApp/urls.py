@@ -2,6 +2,12 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('intramuralsApp.views',
     url('^getX$','getX'),# used for the json serializer (rename!)
+<<<<<<< local
+    url('^$', 'home'),
+    url('^home$', 'home'),
+    url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
+    url('^teams/(\d+)', 'teamHomepage'),       # the home page for team of given id
+=======
     url('^$', 'index'),
     url('^sports/(.+)/(\d.+)', 'sports'),# view info for a specific sport in specified year
     url('^sports/(\d.+)', 'sportsYearOnly'),# view info for all sports in specified year
@@ -16,13 +22,21 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^standings/(.+)', 'standings'),# view standings for a specific sport (no year specified)
     url('^standings$', 'standings'),# view standings for all sports (no year specified)
     url('^register', 'register'),
+>>>>>>> other
     url('^createTeam1', 'createTeam1'),
     url('^createTeam2', 'createTeam2'),
-    url('^joinTeam', 'joinTeam'),
+    url('^joinTeam1', 'joinTeam1'),
+    url('^joinTeam2', 'joinTeam2'),
+    url('^joinTeam3', 'joinTeam3'),
     url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
     url('^referees/?(.+)?/?(\d.+)?', 'referees'),# view referees for a specific sport in specified year
     url('^referees/(\d.+)', 'refereesYearOnly'),# view referees for all sports in specified year
     url('^teams/(\d+)', 'teamHomepage'),# the home page for team of given id
     url('^about$', 'about'),
     url('^admin$', 'admin'),
+    url('^(sports|schedule|standings|referees)/([\w-]+)/(\d{4}-\d{4})$', 'pageWithSport'),# view info for a specific sport (year specified)
+    url('^(sports|schedule|standings|referees)/(\d{4}-\d{4})$', 'pageWithSportYearOnly'), # view info for all sports (year specified)
+    url('^(sports|schedule|standings|referees)/([\w-]+)$', 'pageWithSport'),              # view info for a specific sport (no year specified)
+    url('^(sports|schedule|standings|referees)$', 'pageWithSport'),                       # view info for all sports (no year specified)
+    url('^(.*)$', 'servePage'),
 )

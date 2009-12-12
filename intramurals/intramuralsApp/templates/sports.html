@@ -1,3 +1,11 @@
+<<<<<<< local
+{% if yearChanged %}
+  {% include "sportDropDown.html" %}
+{% endif %}
+
+<div id="sportContent">
+  {% for sport in sportList %}
+=======
   <form>
     <select id="sportDropDown" onchange="UpdateSport()">
       {% if sportName %}
@@ -20,6 +28,7 @@
   </form>
  <!-- display information for all active sports -->
 {% for sport in sportList %}
+>>>>>>> other
   <div class="sportPhoto">
     {{ sport.Photo }}
   </div>
@@ -29,9 +38,21 @@
   <div class="sportName">
     {{ sport.Name }}
   </div>
+<<<<<<< local
+    {% for season in sport.seasonList %}
+=======
   {% for season in sport.seasonList %}
+>>>>>>> other
   <div  class="registration">
     {{ season.Name }} Registration: {{ season.RegistrationStart|date:"M j, Y" }} - {{ season.RegistrationEnd|date:"M j, Y" }}
   </div>
+<<<<<<< local
+    {% endfor %}
+=======
+>>>>>>> other
   {% endfor %}
+<<<<<<< local
+</div>
+=======
 {% endfor %}
+>>>>>>> other
