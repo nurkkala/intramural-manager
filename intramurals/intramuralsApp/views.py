@@ -182,11 +182,12 @@ def createTeam2(request):
 
 def joinTeam1(request):
     if request.method  == 'POST':
-        form = JoinTeamForm(request.POST)
+        form = JoinTeamForm1(request.POST)
         if request.POST["teampassword"]:
-            return render_to_response("joinTeam1.html", locals())
+            team = Team.objects.get(Password=request.POST["teampassword"]) 
+            return
         else:
-            return render_to_response("joinTeam1.html", locals())
+            return render_to_response("joinTeam.html", locals())
     else:
         form = JoinTeamForm()
         return render_to_response("joinTeam1.html", locals())
@@ -205,13 +206,9 @@ def joinTeam2(request):
         form = JoinTeamForm()
         return render_to_response("joinTeam2", locals())
 
-def referees(request):
-    return render_to_response('referees.html')
-
-def standings(request):
-    return render_to_response('standings.html')
-
 def servePage(request, page):
     if page in ['referees', 'standings', 'home', 'schedule']:
         return render_to_response(page + '.html')
     return render_to_response('home.html')
+
+
