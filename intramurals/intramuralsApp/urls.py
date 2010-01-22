@@ -10,6 +10,7 @@ urlpatterns = patterns('intramuralsApp.views',
 
 
     url('^daySched','daySched'),
+    url('^getGames', 'getGames'),
 
     url('^(.*)$', 'defaults'),
 

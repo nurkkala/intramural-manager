@@ -133,7 +133,7 @@ var getGames = function(start, end, fn) {
 
   $.ajax({
     url:"/getGames",
-    type: "post",
+    type: "get",
     data: {
       'start':start,
       'end':end
@@ -150,6 +150,8 @@ var getGames = function(start, end, fn) {
 gstart = '2009-9-16';
 gend = '2009-9-18';
 
+//getGames(gstart, gend, ajax_gameJson2Html);
+makeWist(gstart, gend);
 </script>
 
 <style>
