@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="http://cse.taylor.edu/~cos372f0901/intramurals/css/stat.css" />
+<script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
+
+{% for i in info %}
+<div class="stat_container">
+  <div class="stat_table" id="stat_menu">
+    <span class="Menu">{{i.division.League.Name}}</span>
+  </div>
+
+  <div class="stat_statistics">
+    <table width="180" border="0" class="stat_table">
+      <tr>
+        <td width="36"><span class="style1">Position</span></td>
+        <td width="70"><span class="style1">Team</span></td>
+        <td width="50"><span class="style1">Wins-Losses-Ties</span></td>
+      </tr>
+
+    </table>
+    <table width="180" border="0" class="stat_table">
+      
+      {% for t in i.teams%}
+      <tr>
+        <td width="36">5</td>
+        <td width="70">{{t.0}}</td>
+        <td width="50">{{t.1}}</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
