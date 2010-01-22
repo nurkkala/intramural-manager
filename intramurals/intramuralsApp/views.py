@@ -82,21 +82,6 @@ def pageWithSport(request, page, sportName="all", yearSelected=None, yearChanged
     else: # page has been changed
         return render_to_response("content.html", locals())
 
-def record(team):
-    homeWins = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=1)) # games won as home team
-    awayWins = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=2)) # games won as away team
-    homeLosses = len(Game.objpppects.filter(HomeTeam__id=team.id).filter(Outcome=2)) # games lost as home team
-    awayLosses = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=1)) # games lost as away team
-    homeTies = len(Game.objects.filter(HomeTeam__id=team.id).filter(Outcome=3)) # games tied as home team
-    awayTies = len(Game.objects.filter(AwayTeam__id=team.id).filter(Outcome=3)) # games tied as away team
-    wins = homeWins + awayWins
-    losses = homeLosses + awayLosses
-    ties = homeTies + awayTies
-    record = str(wins) + "-" + str(losses)
-    if ties > 0:
-        record = record + "-" + str(ties)
-    return record
-
 def teamHomepage(request, teamId):
     team = Team.objects.get(id=teamId)
     team.record = record(team)
