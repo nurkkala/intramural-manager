@@ -8,6 +8,9 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^joinTeam2', 'joinTeam2'),
     url('^joinTeam3', 'joinTeam3'),
 
+
+    url('^daySched','daySched'),
+
     url('^(.*)$', 'defaults'),
 
     url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
