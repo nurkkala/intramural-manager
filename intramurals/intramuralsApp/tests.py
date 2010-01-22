@@ -49,13 +49,10 @@ class helperFunctionsTestCase(unittest.TestCase):
         self.game6 = Game(6, '2009-09-21 16:00:00', 1, 0, 1, 2, 5, 5, 3) #tie between teams A and B
         self.game6.save()
         
-    def testCurrentSeason(self):
-        self.assertEquals(currentSeason(self.football), self.presentSeason)
-
     def testRecord(self):
         print record(self.testTeamA.id)
-        self.assertEquals(record(self.testTeamA.id), "3-2-1")
+        self.assertEquals(record(self.testTeamA), "3-2-1")
         print record(self.testTeamB.id)
-        self.assertEquals(record(self.testTeamB.id), "2-3-1")
+        self.assertEquals(record(self.testTeamB), "2-3-1")
         print record(self.testTeamC.id)
-        self.assertEquals(record(self.testTeamC.id), "0-0")
+        self.assertEquals(record(self.testTeamC), "0-0")
