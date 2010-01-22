@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.localflavor.us.models import PhoneNumberField
+from models_admin import *
 
 # Each person is part of one or more teams and/or is a referee.
 # Each team has one or more team members (people) and one captain (person)
@@ -46,10 +47,6 @@ class Person(models.Model):
 	class Meta:
 		ordering = ['LastName']
 
-class PersonAdmin(admin.ModelAdmin):
-	list_display = ('name', 'Email',)	
-	fields = ('StudentID', 'FirstName', 'LastName', 'Email', 'PhoneNumber', 'Address', 'ShirtSize',)
-
 class AttributeGroup(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of AttributeGroup
 	Description = models.TextField('Description') # Description of AttributeGroup
@@ -64,9 +61,6 @@ class Attribute(models.Model):
 	class Meta:
 		ordering = ['AttributeGroup']
 
-class AttributeAdmin(admin.ModelAdmin):
-	list_display = ('AttributeGroup',)
-
 class Referee(models.Model):
 	Person = models.ForeignKey(Person, verbose_name='Referee Name')
 	Attribute = models.ForeignKey(Attribute, verbose_name='Classification')
@@ -74,9 +68,6 @@ class Referee(models.Model):
 		return u'%s %s' % (self.Person.FirstName, self.Person.LastName)
 	class Meta:
 		ordering = ['Person']
-
-class RefereeAdmin(admin.ModelAdmin):
-	list_display = ('Person', 'Attribute')
 
 class Sport(models.Model):
 	Name = models.CharField('Name', max_length = 50, unique=True)
@@ -100,10 +91,6 @@ class Season(models.Model):
 	class Meta:
 		ordering = ['Sport']
 
-class SeasonAdmin(admin.ModelAdmin):
-	list_display = ('Name', 'Start', 'Sport',)
-	date_hierarchy = 'Start'
-
 class League(models.Model):
 	GENDER = (
 		(0, 'Male'),
@@ -120,11 +107,6 @@ class League(models.Model):
 		return self.Name
 	class Meta:
 		ordering = ['Season']
-
-class LeagueAdmin(admin.ModelAdmin):
-	list_display = ('Name', 'Season', 'Gender',)
-	list_filter = ('Gender', 'Season',)
-	filter_horizontal = ('Attributes', 'Referees',)
 
 class Division(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of Division
@@ -156,12 +138,6 @@ class TeamMember(models.Model):
 	Team = models.ForeignKey(Team)
 	PaymentStatus = models.IntegerField(choices=PAYMENTSTATUS)
 
-class TeamAdmin(admin.ModelAdmin):
-	list_display = ('Name', 'Division', 'LivingUnit', 'Captain',)
-	list_filter = ('Division', 'Name',)
-	filter_horizontal = ('Members',)
-	search_fields = ('Name', 'LivingUnit',)
-
 class LocationGroup(models.Model):
 	Name = models.CharField('Location Name', max_length = 50)
 	Sports = models.ManyToManyField(Sport, verbose_name='Sports Played')
@@ -171,9 +147,6 @@ class LocationGroup(models.Model):
 	class Meta:
 		ordering = ['Name']
 
-class LocationGroupAdmin(admin.ModelAdmin):
-	filter_horizontal = ('Sports',)
-
 class Location(models.Model):
 	Name = models.CharField('Name', max_length = 50)
 	Description = models.TextField('Description')
@@ -182,11 +155,6 @@ class Location(models.Model):
 		return self.Name
 	class Meta:
 		ordering = ['Name']
-
-class LocationAdmin(admin.ModelAdmin):
-	list_display = ('Name', 'LocationGroup')
-	fields = ('Name', 'LocationGroup', 'Description',)
-	list_filter = ('LocationGroup',)
 
 class Game(models.Model):
 	OUTCOME = (
@@ -217,8 +185,3 @@ class Game(models.Model):
 	class Meta:
 		ordering = ['StartTime']
 
-class GameAdmin(admin.ModelAdmin):
-	list_display = ('StartTime', 'HomeTeam', 'AwayTeam',)
-	list_filter = ('StartTime',)
-	filter_horizontal = ('Referees',)
-	date_hierarchy = 'StartTime'
