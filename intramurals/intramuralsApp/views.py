@@ -8,8 +8,10 @@ from forms import *
 from django.core import serializers
 import json
 
+
+
 def index(request):
-    return render_to_response("home.html", {static_pathname: "http://cse.taylor.edu/~cos372f0901/local_html/intramural-manager/intramurals_static"})
+    return render_to_response("home.html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
 
 
 #"dish_out_template" belongs in /intramurals/__init.py__  (or intramuals/views.py) because dish_out_template is logically independent of any specific app, since it pulls templates from any/every app. Also, that's why dish_out_templates is in the root urls.py file.
