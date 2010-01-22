@@ -10,8 +10,10 @@ from django.core import serializers
 from defaults import default, home
 import json
 
-def junk(*args):
-    return HttpResponse("junk")
+
+
+def index(request):
+    return render_to_response("home.html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
 
 def thisYear(): # return this school year in proper format (eg "2009-2010")
     today = datetime.today()
