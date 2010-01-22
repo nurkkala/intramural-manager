@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<ul id='sports-listing'>
+  {% for d in data %}
+  <li>{{d.sport.Name}}:
+    <ul>
+      <li>{{d.sport.Rules}}</li>
+      <li>{{d.start}} ---- {{d.end}}</li>
+    </ul>
+  </li>
+  {%endfor%}
+</ul>
+<img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/png/basketball2.png" />
+<style>
+  #sports-listing
+  {
+  list-style-type:none;
+  }
+</style>
+{% endblock %}
