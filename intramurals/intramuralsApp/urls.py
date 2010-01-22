@@ -1,12 +1,13 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('intramuralsApp.views',
-    url('^$', 'home'),
+    url('^$', 'index'),
     url('^createTeam1', 'createTeam1'),
     url('^createTeam2', 'createTeam2'),
     url('^joinTeam1', 'joinTeam1'),
     url('^joinTeam2', 'joinTeam2'),
     url('^joinTeam3', 'joinTeam3'),
+
     url('^(.*)$', 'defaults'),
 
     url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
