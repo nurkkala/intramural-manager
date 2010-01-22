@@ -5,8 +5,8 @@
 <!--    <link rel="stylesheet" type="text/css" href="templates/CSS/intramurals.css" />  old -->
     <title>Taylor Intramurals - {% block pagetitle %}{% endblock %}</title>
     <script language="JavaScript">{% block javascript %}{% endblock %}</script>
-       <script type="text/javascript" src="/~cos372f0901/intramurals/js/jquery.dimensions.js"></script>
-    <script type="text/javascript" src="/~cos372f0901/intramurals/js/plugins/jquery.gallery.0.3.js"></script> 
+       <script type="text/javascript" src="{{static_pathname}}/js/jquery.dimensions.js"></script>
+    <script type="text/javascript" src="{{static_pathname}}/js/plugins/jquery.gallery.0.3.js"></script> 
     <script>
       $(document).ready(function(){
       $('#id_of_gallery').gallery({
@@ -16,19 +16,16 @@
       });
       });
     </script>
-    <link href="http://cse.taylor.edu/~cos372f0901/intramurals/css/style.css" rel="stylesheet" type="text/css" /> <!-- new from design team -->
-    <link rel="stylesheet" type="text/css" href="http://cse.taylor.edu/~cos372f0901/intramurals/css/jquery.gallery.css"/> <!-- new from design team -->
+    <link href="{{static_pathname}}/css/style.css" rel="stylesheet" type="text/css" /> <!-- new from design team -->
+    <link rel="stylesheet" type="text/css" href="{{static_pathname}}/css/jquery.gallery.css"/> <!-- new from design team -->
   </head>
   <body>
   <div id="wrapper">
     <div id="header">Taylor Intramurals
       <div id="id_of_gallery" class="gallery">
 	<ul class="galleryBar">
-	  <li><a href="{{static_pathname}}/images/#.jpg" title="Welcome to the intramurals page!"><img src="{{static_pathname}}/images/thumbnails/#_thumbnail.jpg" title="Greetings! I'm the first caption!" /></a></li>
-	  <li><a href="{{static_pathname}}/images/#.jpg" title="Hi Drew!"><img src="{{static_pathname}}/images/thumbnails/#_thumbnail.jpg" title="Hello there I'm the second caption"/></a></li>
-	  <li><a href="{{static_pathname}}/images/#.jpg" title="Hi Ryan!"><img src="{{static_pathname}}/images/thumbnails/#_thumbnail.jpg" title="I'm the third caption"/></a></li>
-          <li><a href="{{static_pathname}}/images/#.jpg" title="HAZZAH!"><img src="{{static_pathname}}/images/thumbnails/#_thumbnail.jpg" title="I'm the 4th"/></a></li>
-	  <li><a href="{{static_pathname}}/images/#.jpg" title="you get the idea"><img src="{{static_pathname}}/images/thumbnails/#_thumbnail.jpg" title="...and so forth"/></a></li>
+	  <li><a href="{{static_pathname}}/images/slideshow/TUI_header_photo1.jpg" title="Welcome to the intramurals page!"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo1.jpg" title="Greetings! I'm the first caption!" /></a></li>
+	  <li><a href="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hi Drew!"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
 	</ul>
       </div>
     </div>
