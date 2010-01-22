@@ -8,6 +8,7 @@ from models import *
 from forms import *
 from django.core import serializers
 from defaults import default
+from schedule import *
 import json
 
 
