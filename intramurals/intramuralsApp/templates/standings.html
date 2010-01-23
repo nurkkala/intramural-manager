@@ -3,10 +3,10 @@
 <link rel="stylesheet" type="text/css" href="http://cse.taylor.edu/~cos372f0901/intramurals/css/stat.css" />
 <script type="text/javascript" src="http://cse.taylor.edu/~cos372f0901/intramurals/js/slider.js"></script>
 
-{% for i in info %}
+{% for sport in sportList %}
 <div class="stat_container">
   <div class="stat_table" id="stat_menu">
-    <span class="Menu">{{i.division.League.Name}}</span>
+    <span class="Menu">{{.division.League.Name}}</span>
   </div>
 
   <div class="stat_statistics">
