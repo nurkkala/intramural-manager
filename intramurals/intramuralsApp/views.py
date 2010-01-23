@@ -44,9 +44,11 @@ def pageWithSport(request, page, sportName="current"): # generate information fo
     yearSelected = thisYear()
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
+    today = datetime.today()
+    
 
     if sportName == "current":
-        currentSport = True
+        currentSports = True
     else:
         sportName = sportName.capitalize()
     sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
@@ -56,24 +58,20 @@ def pageWithSport(request, page, sportName="current"): # generate information fo
     for sport in sportDDList:
         sportDropDown.append(sport.Name)
 
-    # list of school years in which the particular sport has been played, starting with the given year
-    yearList = yearListOf(sportName, yearSelected)
-    
     for sport in sportList:
         sport.seasonList = sport.season_set.filter(Start__range=(yearStart, yearEnd))
         for season in sport.seasonList:
+            season.gameList = Game.objects.filter(HomeTeam__Division__League__Season=season.id).distinct().order_by("-StartTime")
             season.leagueList = season.league_set.all()
             for league in season.leagueList:
                 league.refereeList = league.Referees.all()
                 league.divisionList = league.division_set.all()
                 for division in league.divisionList:
                     division.teamList = division.team_set.all()
+                    for team in division.teamList:
+                        team.record = record(team)
 
-    pageContent = page + ".html"
-    if request.is_ajax(): # sport has been changed
-        return render_to_response(pageContent, locals())
-    else: # page has been changed
-        return render_to_response("content.html", locals())
+    return render_to_response(page + ".html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
 
 def teamHomepage(request, teamId):
     team = Team.objects.get(id=teamId)
@@ -90,6 +88,21 @@ def refereeSchedule(request, refId):
     for game in gameList:
         game.sport = teamToSport(game.HomeTeam.id)
     return render_to_response("refereeSchedule.html", locals())
+
+def record(team):
+    homeWins = len(Game.objects.filter(HomeTeam=team).filter(Outcome=1)) # games won as home team
+    awayWins = len(Game.objects.filter(AwayTeam=team).filter(Outcome=2)) # games won as away team
+    homeLosses = len(Game.objects.filter(HomeTeam=team).filter(Outcome=2)) # games lost as home team
+    awayLosses = len(Game.objects.filter(AwayTeam=team).filter(Outcome=1)) # games lost as away team
+    homeTies = len(Game.objects.filter(HomeTeam=team).filter(Outcome=3)) # games tied as home team
+    awayTies = len(Game.objects.filter(AwayTeam=team).filter(Outcome=3)) # games tied as away team
+    wins = homeWins + awayWins
+    losses = homeLosses + awayLosses
+    ties = homeTies + awayTies
+    record = str(wins) + "-" + str(losses)
+    if ties > 0:
+        record = record + "-" + str(ties)
+    return record
 
 def teamToSport(teamId):
     team = Team.objects.get(id=teamId)

@@ -8,17 +8,16 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^joinTeam2', 'joinTeam2'),
     url('^joinTeam3', 'joinTeam3'),
 
-
-    url('^daySched','daySched'),
-    url('^getGames', 'getGames'),
-
     url('^(.*)$', 'defaults'),
 
     url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
     url('^teams/(\d+)', 'teamHomepage'),       # the home page for team of given id
-    url('^teams/(\d+)', 'teamHomepage'),# the home page for team of given id
     url('^about$', 'about'),
     url('^admin$', 'admin'),
     url('^(sports|schedule|standings|referees)/([\w-]+)$', 'pageWithSport'),# sport specified
     url('^(sports|schedule|standings|referees)$', 'pageWithSport'),         # no sport specified
+
+    url('^daySched','daySched'),
+    url('^getGames', 'getGames'),
+
 )
