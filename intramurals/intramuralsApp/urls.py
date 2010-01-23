@@ -15,15 +15,10 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^(.*)$', 'defaults'),
 
     url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
-    url('^referees/?(.+)?/?(\d.+)?', 'referees'),# view referees for a specific sport in specified year
-    url('^referees/(\d.+)', 'refereesYearOnly'),# view referees for all sports in specified year
-    url('^referees/(\d+)$', 'refereeSchedule'),# the schedule page for referee of given id
     url('^teams/(\d+)', 'teamHomepage'),       # the home page for team of given id
     url('^teams/(\d+)', 'teamHomepage'),# the home page for team of given id
     url('^about$', 'about'),
     url('^admin$', 'admin'),
-    url('^(sports|schedule|standings|referees)/([\w-]+)/(\d{4}-\d{4})$', 'pageWithSport'),# view info for a specific sport (year specified)
-    url('^(sports|schedule|standings|referees)/(\d{4}-\d{4})$', 'pageWithSportYearOnly'), # view info for all sports (year specified)
-    url('^(sports|schedule|standings|referees)/([\w-]+)$', 'pageWithSport'),              # view info for a specific sport (no year specified)
-    url('^(sports|schedule|standings|referees)$', 'pageWithSport'),                       # view info for all sports (no year specified)
+    url('^(sports|schedule|standings|referees)/([\w-]+)$', 'pageWithSport'),# sport specified
+    url('^(sports|schedule|standings|referees)$', 'pageWithSport'),         # no sport specified
 )

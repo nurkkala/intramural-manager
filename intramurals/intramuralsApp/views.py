@@ -40,27 +40,17 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
             yearList.append(year)
     return yearList
 
-def pageWithSportYearOnly(request, page, yearSelected=None): # generate information for all sports in given school year
-    return pageWithSport(request, page, "all", yearSelected)
-
-def pageWithSport(request, page, sportName="all", yearSelected=None, yearChanged=False): # generate information for the specified sport in given school year
-    if not yearSelected:
-        yearSelected = thisYear()
+def pageWithSport(request, page, sportName="current"): # generate information for the specified sport
+    yearSelected = thisYear()
     yearStart = yearStartOf(yearSelected)
     yearEnd = yearStart.replace(yearStart.year+1)
 
-    yearChanged = False
-    if sportName == "yearChanged": # sportName is passed as 'yearChanged' if the year has been changed (sportName is then changed to 'all')
-        yearChanged = True
-        sportName = "all"
-    if sportName == "all":
-        allSports = True
-        sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
-        sportDDList = sportList
+    if sportName == "current":
+        currentSport = True
     else:
         sportName = sportName.capitalize()
-        sportList = [Sport.objects.get(Name=sportName)]
-        sportDDList =  Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct()
+    sportList = Sport.objects.filter(season__Start__range=(yearStart, yearEnd)).distinct()
+    sportDDList =  Sport.objects.exclude(Name=sportName).filter(season__Start__range=(yearStart, yearEnd)).distinct()
 
     sportDropDown = []
     for sport in sportDDList:
@@ -80,7 +70,7 @@ def pageWithSport(request, page, sportName="all", yearSelected=None, yearChanged
                     division.teamList = division.team_set.all()
 
     pageContent = page + ".html"
-    if request.is_ajax(): # year or sport has been changed
+    if request.is_ajax(): # sport has been changed
         return render_to_response(pageContent, locals())
     else: # page has been changed
         return render_to_response("content.html", locals())
