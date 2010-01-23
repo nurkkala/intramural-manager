@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+  <form>
+    <select id="sportDropDown">
+    {% if currentSports %}
+      <option>Current Sports</option>
+    {% else %}
+      <option>{{sportName}}</option>
+      <option value="/{{page}}/current">Current Sports</option>
+    {% endif %}
+    {% for sport in sportDropDown %}
+      <option value="/{{page}}/{{sport}}">{{sport}}</option>
+    {% endfor %}
+    </select>
+  </form>
+  {% include pageContent %}
+{% endblock %}
