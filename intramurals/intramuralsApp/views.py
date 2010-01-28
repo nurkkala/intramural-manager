@@ -40,6 +40,36 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
             yearList.append(year)
     return yearList
 
+def daySched(request, date=None):
+    if not date:
+        mostRecentGame = Game.objects.latest("StartTime")
+        date = mostRecentGame.StartTime
+    else:
+        month = int(date[0:2])
+        day = int(date[2:4])
+        year = int(date[4:8])
+        date = datetime.date(year, month, day)
+
+    try:
+        prevGame = mostRecentGame.get_previous_by_StartTime()
+        while prevGame.StartTime.day == mostRecentGame.StartTime.day:
+            prevGame = prevGame.get_previous_by_StartTime()
+    except:
+        prevExists = False        
+
+    try:
+        nextGame = mostRecentGame.get_next_by_StartTime()
+        while nextGame.StartTime.day == mostRecentGame.StartTime.day:
+            nextGame = prevGame.get_next_by_StartTime()
+    except:
+        nextExists = False        
+
+    gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
+    if request.is_ajax():
+        return render_to_response("scheduleContent.html", locals())
+    else:
+        return render_to_response("schedule.html", locals())
+
 def pageWithSport(request, page, sportName="current"): # generate information for the specified sport
     yearSelected = thisYear()
     yearStart = yearStartOf(yearSelected)
