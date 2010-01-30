@@ -11,8 +11,6 @@ from defaults import default
 from schedule import *
 import json
 
-
-
 def index(request):
     return render_to_response("base.html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
 
@@ -40,29 +38,34 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
             yearList.append(year)
     return yearList
 
-def daySched(request, date=None):
-    if not date:
-        mostRecentGame = Game.objects.latest("StartTime")
-        date = mostRecentGame.StartTime
+def daySched(request, specifiedDate=None):
+    date = datetime.today()
+    if not specifiedDate:
+        gameThisDay = Game.objects.latest("StartTime")
+        date = gameThisDay.StartTime
     else:
-        month = int(date[0:2])
-        day = int(date[2:4])
-        year = int(date[4:8])
-        date = datetime.date(year, month, day)
+        m = int(specifiedDate[0:2])
+        d = int(specifiedDate[2:4])
+        y = int(specifiedDate[4:8])
+        date.replace(year=y, month=m, day=d)
+        sameYear = Game.objects.filter(StartTime__year=(date.year))
+        sameMonth = sameYear.filter(StartTime__month=(date.month))
+        sameDay = sameMonth.filter(StartTime__day=(date.day))
+        gameThisDay = sameDay.latest("StartTime")
 
     try:
-        prevGame = mostRecentGame.get_previous_by_StartTime()
-        while prevGame.StartTime.day == mostRecentGame.StartTime.day:
+        prevGame = gameThisDay.get_previous_by_StartTime()
+        while prevGame.StartTime.day == gameThisDay.StartTime.day:
             prevGame = prevGame.get_previous_by_StartTime()
     except:
-        prevExists = False        
+        prevGame = False        
 
     try:
-        nextGame = mostRecentGame.get_next_by_StartTime()
-        while nextGame.StartTime.day == mostRecentGame.StartTime.day:
+        nextGame = gameThisDay.get_next_by_StartTime()
+        while nextGame.StartTime.day == gameThisDay.StartTime.day:
             nextGame = prevGame.get_next_by_StartTime()
     except:
-        nextExists = False        
+        nextGame = False        
 
     gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
     if request.is_ajax():

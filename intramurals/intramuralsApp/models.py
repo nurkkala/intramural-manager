@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.localflavor.us.models import PhoneNumberField
-from models_admin import *
+#from models_admin import *
 
 # Each person is part of one or more teams and/or is a referee.
 # Each team has one or more team members (people) and one captain (person)
