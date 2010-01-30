@@ -7,5 +7,5 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url('templates/(.*)', dish_out_template), #TODO: delete this for production (security hole)
     (r'^admin/', include(admin.site.urls)),
-    (r'asdf', include('intramuralsApp.urls')),
+    (r'', include('intramuralsApp.urls')),
 )
