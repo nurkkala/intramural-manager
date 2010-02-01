@@ -55,11 +55,12 @@ def daySched(request, gameId=None):
     try:
         nextGame = gameThisDay.get_next_by_StartTime()
         while nextGame.StartTime.day == gameThisDay.StartTime.day:
-            nextGame = prevGame.get_next_by_StartTime()
+            nextGame = nextGame.get_next_by_StartTime()
     except:
         nextGame = False        
 
     gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
+    static_pathname = 'http://cse.taylor.edu/~cos372f0901/intramurals'
     if request.is_ajax():
         return render_to_response("scheduleContent.html", locals())
     else:
@@ -68,8 +69,12 @@ def daySched(request, gameId=None):
 def sports(request):
     # Note: Right now this displays all the sports seasons in the school year.
     # It should be modified to display only the sport(s) currently being played.
+    yearSelected = thisYear()
+    yearStart = yearStartOf(yearSelected)
+    yearEnd = yearStart.replace(yearStart.year+1)
     
     seasonList = Season.objects.filter(Start__range=(yearStart, yearEnd)).distinct()
+    static_pathname = 'http://cse.taylor.edu/~cos372f0901/intramurals'
     return render_to_response("sports.html", locals())
 
 def pageWithSport(request, page, sportName="current"): # generate information for the specified sport
