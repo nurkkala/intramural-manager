@@ -38,20 +38,12 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
             yearList.append(year)
     return yearList
 
-def daySched(request, specifiedDate=None):
-    date = datetime.today()
-    if not specifiedDate:
+def daySched(request, gameId=None):
+    if not gameId:
         gameThisDay = Game.objects.latest("StartTime")
-        date = gameThisDay.StartTime
     else:
-        m = int(specifiedDate[0:2])
-        d = int(specifiedDate[2:4])
-        y = int(specifiedDate[4:8])
-        date.replace(year=y, month=m, day=d)
-        sameYear = Game.objects.filter(StartTime__year=(date.year))
-        sameMonth = sameYear.filter(StartTime__month=(date.month))
-        sameDay = sameMonth.filter(StartTime__day=(date.day))
-        gameThisDay = sameDay.latest("StartTime")
+        gameThisDay = Game.objects.get(id=gameId)
+    date = gameThisDay.StartTime
 
     try:
         prevGame = gameThisDay.get_previous_by_StartTime()
@@ -72,6 +64,13 @@ def daySched(request, specifiedDate=None):
         return render_to_response("scheduleContent.html", locals())
     else:
         return render_to_response("schedule.html", locals())
+
+def sports(request):
+    # Note: Right now this displays all the sports seasons in the school year.
+    # It should be modified to display only the sport(s) currently being played.
+    
+    seasonList = Season.objects.filter(Start__range=(yearStart, yearEnd)).distinct()
+    return render_to_response("sports.html", locals())
 
 def pageWithSport(request, page, sportName="current"): # generate information for the specified sport
     yearSelected = thisYear()

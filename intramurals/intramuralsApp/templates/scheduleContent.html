@@ -1,0 +1,31 @@
+<p>
+{% if prevGame %}
+  <a href="{{ prevGame.id }}">prev</a>
+{% endif %}
+ {{ date|date:"F j, Y" }} 
+{% if nextGame %}
+  <a href="{{ nextGame.id }}">next</a>
+{% endif %}
+</p>
+
+<table>
+  <tr>
+    <td>Time</td>
+    <td>Home</td>
+    <td></td>
+    <td>Away</td>
+    <td>Location</td>
+  </tr>
+{% for game in gameList %}
+    <tr>
+      <td>{{ game.StartTime|date:"g:i" }}</td>
+      <td>{{ game.HomeTeam }}</td>
+      <td>vs.</td>
+      <td>{{ game.AwayTeam }}</td>
+      <td>{{ game.Location }}</td>
+    </tr>
+{% endfor %}
+</table>
+<p>
+Home wears light, away wears dark
+</p>

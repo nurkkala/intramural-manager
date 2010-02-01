@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <ul id='sports-listing'>
-  {% for d in data %}
-  <li>{{d.sport.Name}}:
+  {% for season in seasonList %}
+  <li>{{season.Sport.Name}}:
+    <img src="{{season.Sport.Photo}}" />
     <ul>
-      <li>{{d.sport.Rules}}</li>
-      <li>{{d.start}} ---- {{d.end}}</li>
+      <li>Rules: {{season.Sport.Rules}}</li>
+      <li>Registration: {{season.RegistrationStart}} - {{season.RegistrationEnd}}</li>
+      <li>Season begins: {{season.Start}}</li>
     </ul>
   </li>
   {%endfor%}

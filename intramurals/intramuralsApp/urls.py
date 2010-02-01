@@ -8,10 +8,11 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^joinTeam2', 'joinTeam2'),
 ##    url('^joinTeam3', 'joinTeam3'),  TODO: actually write this view. until then, don't uncomment or the admin/ functionality will break
 
+    url('^sports$','sports'),
     url('^schedule$','daySched'),
-    url('^schedule/(.+)$','daySched'),# day specified
-    url('^(sports|standings|referees)/([\w-]+)$', 'pageWithSport'),# sport specified
-    url('^(sports|standings|referees)$', 'pageWithSport'),         # no sport specified
+    url('^schedule/(.+)$','daySched'),# game id specified
+    url('^(standings|referees)/([\w-]+)$', 'pageWithSport'),# sport specified
+    url('^(standings|referees)$', 'pageWithSport'),         # no sport specified
 
     url('^(.*)$', 'defaults'),
 
