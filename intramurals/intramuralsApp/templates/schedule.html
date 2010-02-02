@@ -2,5 +2,43 @@
 
 {% block title %}Schedule{% endblock %}
 {% block content %}Schedule page.
-{% include "scheduleContent.html" %}
+<p>
+{% if prevGame %}
+  <a href="{% if not gameId %}schedule/{% endif %}{{ prevGame.id }}">prev</a>
+{% endif %}
+ {{ date|date:"F j, Y" }} 
+{% if nextGame %}
+  <a href="{% if not gameId %}schedule/{% endif %}{{ nextGame.id }}">next</a>
+{% endif %}
+</p>
+
+<table>
+  <tr>
+    <td>Time</td>
+    <td>Home</td>
+    <td></td>
+    <td>Away</td>
+    <td>Location</td>
+    <td>Referees</td>
+  </tr>
+{% for game in gameList %}
+    <tr>
+      <td>{{ game.StartTime|date:"g:i" }}</td>
+      <td>{{ game.HomeTeam }}</td>
+      <td>vs.</td>
+      <td>{{ game.AwayTeam }}</td>
+      <td>{{ game.Location }}</td>
+      <td>
+       {% for ref in game.Referees.all %}
+         {{ ref }} {% if not forloop.last %},{% endif %}
+       {% empty %}
+         None
+       {% endfor %}
+      </td>
+    </tr>
+{% endfor %}
+</table>
+<p>
+Home wears light, away wears dark
+</p>
 {% endblock %}

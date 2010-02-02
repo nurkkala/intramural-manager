@@ -6,8 +6,8 @@
     <img src="{{season.Sport.Photo}}" />
     <ul>
       <li>Rules: {{season.Sport.Rules}}</li>
-      <li>Registration: {{season.RegistrationStart}} - {{season.RegistrationEnd}}</li>
-      <li>Season begins: {{season.Start}}</li>
+      <li>Registration: {{season.RegistrationStart|date:"P F j, Y"}} - {{season.RegistrationEnd|date:"P F j, Y"}}</li>
+      <li>Season begins: {{season.Start|date:"F j, Y"}}</li>
     </ul>
   </li>
   {%endfor%}
