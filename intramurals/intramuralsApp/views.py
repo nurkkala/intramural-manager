@@ -40,8 +40,12 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
 
 def daySched(request, gameId=None):
     if not gameId:
-        gameThisDay = Game.objects.latest("StartTime")
-    else:
+        try: # If there are any games today default to today
+            date = datetime.today()
+            gameThisDay = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))[0]
+        except: # If there are no games today default to the latest day with games
+            gameThisDay = Game.objects.latest("StartTime")
+    else: # A day has been specified by passing the id of a game in that day
         gameThisDay = Game.objects.get(id=gameId)
     date = gameThisDay.StartTime
 
@@ -60,11 +64,10 @@ def daySched(request, gameId=None):
         nextGame = False        
 
     gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
+    for game in gameList:
+        game.r = Referee.objects.all()
     static_pathname = 'http://cse.taylor.edu/~cos372f0901/intramurals'
-    if request.is_ajax():
-        return render_to_response("scheduleContent.html", locals())
-    else:
-        return render_to_response("schedule.html", locals())
+    return render_to_response("schedule.html", locals())
 
 def sports(request):
     # Note: Right now this displays all the sports seasons in the school year.
