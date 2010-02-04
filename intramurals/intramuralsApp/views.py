@@ -74,8 +74,8 @@ def sports(request):
     # It should be modified to display only the sport(s) currently being played.
     yearSelected = thisYear()
     yearStart = yearStartOf(yearSelected)
-    yearEnd = yearStart.replace(yearStart.year+1)
-    
+    yearEnd = yearStart.replace(year=yearStart.year+1)
+
     seasonList = Season.objects.filter(Start__range=(yearStart, yearEnd)).distinct()
     static_pathname = 'http://cse.taylor.edu/~cos372f0901/intramurals'
     return render_to_response("sports.html", locals())

@@ -1,8 +1,17 @@
+from datetime import datetime
 from django import forms
 from models import *
 
 class CreateTeamForm1(forms.Form):
-    sportList = [(obj.id, obj.Name) for obj in Sport.objects.all()]
+    today = datetime.today()
+    intYear = today.year
+    yearStart = today.replace(year=intYear, month=7, day=1)
+    yearEnd = yearStart.replace(year=yearStart.year+1)
+
+    sportListA = Sport.objects.filter(season__RegistrationStart__range=(yearStart, today)).distinct()
+    sportListB = sportListA.filter(season__RegistrationEnd__range=(today, yearEnd)).distinct()
+
+    sportList = [(obj.id, obj.Name) for obj in sportListB]
     leagueList = [(obj.id, obj.Name) for obj in League.objects.all()]
     
     sportId = forms.ChoiceField(sportList, label='Please select the sport: ', required = True)
