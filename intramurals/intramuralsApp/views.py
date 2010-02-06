@@ -214,6 +214,8 @@ def joinTeam2(request):
         return render_to_response("joinTeam2", locals())
 
 def defaults(req, command):
+    if command=="":
+        return render_to_response('home.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
     if (default[command]): #this is to whitelist what commands are allowed
         return render_to_response(command + '.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
     else:
