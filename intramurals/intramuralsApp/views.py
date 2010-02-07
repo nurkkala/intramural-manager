@@ -11,8 +11,15 @@ from defaults import default
 from schedule import *
 import json
 
+def renderToResponse(template, params):
+    sports = Sport.objects.all()
+    d = {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals', 'sports':sports,}
+    d.update(params)
+#    return HttpResponse(d['static_pathname'])
+    return render_to_response(template, d)
+
 def index(request):
-    return render_to_response("base.html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
+    return renderToResponse("base.html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
 
 def thisYear(): # return this school year in proper format (eg "2009-2010")
     today = datetime.today()
@@ -67,7 +74,7 @@ def daySched(request, gameId=None):
     for game in gameList:
         game.r = Referee.objects.all()
     static_pathname = 'http://cse.taylor.edu/~cos372f0901/intramurals'
-    return render_to_response("schedule.html", locals())
+    return renderToResponse("schedule.html", locals())
 
 def sports(request):
     # Note: Right now this displays all the sports seasons in the school year.
@@ -78,7 +85,7 @@ def sports(request):
 
     seasonList = Season.objects.filter(Start__range=(yearStart, yearEnd)).distinct()
     static_pathname = 'http://cse.taylor.edu/~cos372f0901/intramurals'
-    return render_to_response("sports.html", locals())
+    return renderToResponse("sports.html", locals())
 
 def pageWithSport(request, page, sportName="current"): # generate information for the specified sport
     yearSelected = thisYear()
@@ -111,7 +118,7 @@ def pageWithSport(request, page, sportName="current"): # generate information fo
                     for team in division.teamList:
                         team.record = record(team)
 
-    return render_to_response(page + ".html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
+    return renderToResponse(page + ".html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
 
 def teamHomepage(request, teamId):
     team = Team.objects.get(id=teamId)
@@ -120,14 +127,14 @@ def teamHomepage(request, teamId):
     memberList = team.Members.all()
     for opponent in opponentList:
         opponent.record = record(opponent)
-    return render_to_response("teamHomepage.html", locals())
+    return renderToResponse("teamHomepage.html", locals())
 
 def refereeSchedule(request, refId):
     referee = Referee.objects.get(id=refId)
     gameList = referee.game_set.all()
     for game in gameList:
         game.sport = teamToSport(game.HomeTeam.id)
-    return render_to_response("refereeSchedule.html", locals())
+    return renderToResponse("refereeSchedule.html", locals())
 
 def record(team):
     homeWins = len(Game.objects.filter(HomeTeam=team).filter(Outcome=1)) # games won as home team
@@ -157,12 +164,12 @@ def createTeam1(request):
             UPAY_SITE_ID = 7
             BILL_NAME = request.session['cd']['captainFirstName']
             EXT_TRANS_ID_LABEL = "This id is stored in Taylor's database to confirm that you have paid"
-            return render_to_response("confirmPart1.html", locals())
+            return renderToResponse("confirmPart1.html", locals())
         else:
-            return render_to_response("createTeam1.html", locals())
+            return renderToResponse("createTeam1.html", locals())
     else:
         form = CreateTeamForm1()
-        return render_to_response("createTeam1.html", {'form':form,})
+        return renderToResponse("createTeam1.html", {'form':form,'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals',})
 
 def createTeam2(request):
     if request.method == 'POST':
@@ -176,16 +183,16 @@ def createTeam2(request):
                 captain.save()
                 team = Team(Name=cd['teamName'], Password=request.POST['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
                 team.save()
-                return render_to_response("congrats.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':request.POST['teamPassword'],})
+                return renderToResponse("congrats.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':request.POST['teamPassword'],})
             else:
                 passwordError = True
-                return render_to_response("createTeam2.html", locals())
+                return renderToResponse("createTeam2.html", locals())
         else:
             blank_form = CreateTeamForm2()
-            return render_to_response("createTeam2.html", {"form":blank_form,})
+            return renderToResponse("createTeam2.html", {"form":blank_form,})
     else:
         form = CreateTeamForm2()
-        return render_to_response("createTeam2.html", {"passwordError":True, "form":form,})
+        return renderToResponse("createTeam2.html", {"passwordError":True, "form":form,})
 
 def joinTeam1(request):
     if request.method  == 'POST':
@@ -194,10 +201,10 @@ def joinTeam1(request):
             team = Team.objects.get(Password=request.POST["teampassword"]) 
             return
         else:
-            return render_to_response("joinTeam.html", locals())
+            return renderToResponse("joinTeam.html", locals())
     else:
         form = JoinTeamForm()
-        return render_to_response("joinTeam1.html", locals())
+        return renderToResponse("joinTeam1.html", locals())
 
 def joinTeam2(request):
     if request.method  == 'POST':
@@ -206,17 +213,17 @@ def joinTeam2(request):
             cd = form.cleaned_data
             teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
             teamMember.save()
-            return render_to_response("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
+            return renderToResponse("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
         else:
-            return render_to_response("joinTeam2.html", locals())
+            return renderToResponse("joinTeam2.html", locals())
     else:
         form = JoinTeamForm()
-        return render_to_response("joinTeam2", locals())
+        return renderToResponse("joinTeam2", locals())
 
 def defaults(req, command):
     if command=="":
-        return render_to_response('home.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
+        return renderToResponse('home.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
     if (default[command]): #this is to whitelist what commands are allowed
-        return render_to_response(command + '.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
+        return renderToResponse(command + '.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
     else:
         return HttpResponse("unknown page.")
