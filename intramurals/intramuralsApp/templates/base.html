@@ -29,10 +29,10 @@
         <div id="id_of_gallery" class="gallery">
           <div id="logo"><img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/logo_v2.png" width="87" height="70" /></div>
           <ul class="galleryBar">
-            <li><a href="{{static_pathname}}/images/slideshow/1.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo1.jpg" title="Greetings! I'm the first caption!" /></a></li>
             <li><a href="{{static_pathname}}/images/slideshow/2.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
             <li><a href="{{static_pathname}}/images/slideshow/3.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
             <li><a href="{{static_pathname}}/images/slideshow/4.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/1.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo1.jpg" title="Greetings! I'm the first caption!" /></a></li>
             <li><a href="{{static_pathname}}/images/slideshow/5.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
             <li><a href="{{static_pathname}}/images/slideshow/6.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
             <li><a href="{{static_pathname}}/images/slideshow/7.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
@@ -42,19 +42,18 @@
       </div>
       <div class="nav">
         <ul>
-          <li><a href="home">Home</a></li>
-          <li><a href="sports">Sports</a>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/schedule">Schedule</a></li>
+          <li><a href="/standings">Standings</a></li>
+<!--          <li><a href="createTeam1">Register</a></li> -->
+          <li><a href="/sports">Sports</a>
             <ul>
-              <li><a href="sports/tennis">Tennis</a></li>
-              <li><a href="sports/basketball">Basketball</a></li>
-              <li><a href="sports/soccer">Soccer</a></li>
-              <li><a href="sports/football">Football</a></li>
+	      {% for sport in sports %}
+              <li><a href="/sports/{{sport}}">{{sport}}</a></li>
+	      {% endfor %}
             </ul>            
           </li>
-          <li><a href="schedule">Schedule</a></li>
-          <li><a href="referees">Referees</a></li>
-          <li><a href="standings">Standings</a></li>
-          <li><a href="createTeam1">Register</a></li>
+<!--          <li><a href="referees">Referees</a></li> -->
         </ul>
       </div>
       <div id="container">
@@ -62,10 +61,12 @@
           {% block content %}{% endblock %}
         </div>
         <div id="sidebar">
+<!--
           Search<br />
           <input type="text" id="search" name="temp" onblur="checksearch();"/><br />
+-->
         </div>
-        <div id="footer">Copyright &copy; 2009, Taylor Intramurals. All Rights Reserved. Design created by <a href="http://www.rdgstudios.com">Ryan Gates</a>, <a href="http://www.nathanielelliott.com/">Nathaniel Elliott</a>, <a href="http://wondercreationstudios.com/">Chad Jordan</a>, and Drew Baker.</div>
+        <div id="footer">Copyright &copy; 2009, Taylor Intramurals. All Rights Reserved. Developed by Taylor University Software Studio gurus, Design created by <a href="http://www.rdgstudios.com">Ryan Gates</a>, <a href="http://www.nathanielelliott.com/">Nathaniel Elliott</a>, <a href="http://wondercreationstudios.com/">Chad Jordan</a>, and Drew Baker. Photos by Timmy Huynh.</div>
       </div>
     </div>
   </body>

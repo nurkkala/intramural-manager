@@ -1,22 +1,3 @@
 {% extends "base.html" %}
 {% block content %}
-<ul id='sports-listing'>
-  {% for season in seasonList %}
-  <li>{{season.Sport.Name}}:
-    <img src="{{season.Sport.Photo}}" />
-    <ul>
-      <li>Rules: {{season.Sport.Rules}}</li>
-      <li>Registration: {{season.RegistrationStart|date:"P F j, Y"}} - {{season.RegistrationEnd|date:"P F j, Y"}}</li>
-      <li>Season begins: {{season.Start|date:"F j, Y"}}</li>
-    </ul>
-  </li>
-  {%endfor%}
-</ul>
-<img src="{{static_pathname}}/images/png/basketball2.png" />
-<style>
-  #sports-listing
-  {
-  list-style-type:none;
-  }
-</style>
 {% endblock %}

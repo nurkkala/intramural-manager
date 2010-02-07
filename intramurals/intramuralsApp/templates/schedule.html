@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}Schedule{% endblock %}
-{% block content %}Schedule page.
+{% block content %}
+<h1>Schedule</h1>
 <p>
 {% if prevGame %}
-  <a href="{% if not gameId %}schedule/{% endif %}{{ prevGame.id }}">prev</a>
+  <a href="{% if not gameId %}schedule/{% endif %}{{ prevGame.id }}">&lt;&lt; prev</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 {% endif %}
  {{ date|date:"F j, Y" }} 
 {% if nextGame %}
@@ -12,8 +13,8 @@
 {% endif %}
 </p>
 
-<table>
-  <tr>
+<table width="100%">
+  <tr style="font-weight:bold">
     <td>Time</td>
     <td>Home</td>
     <td></td>
