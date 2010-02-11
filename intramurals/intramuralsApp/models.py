@@ -83,7 +83,6 @@ class Sport(models.Model):
 class Season(models.Model):
 	Name = models.CharField('Season Name', max_length = 50)
 	Start = models.DateTimeField('Season Start')
-	End = models.DateTimeField('Season End')
 	RegistrationStart = models.DateTimeField('Registration Start')
 	RegistrationEnd = models.DateTimeField('Registration End')
 	Sport = models.ForeignKey(Sport)
@@ -125,7 +124,7 @@ class Team(models.Model):
 	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
 	def __unicode__(self):
-		return self.Name
+		return "%s %s" % (self.Name, self.id)
 	class Meta:
 		ordering = ['Division']
 
@@ -181,6 +180,7 @@ class Game(models.Model):
 	AwayTeamScore = models.PositiveIntegerField('Away Team Score')
 	Outcome = models.IntegerField(choices=OUTCOME)
 	Referees = models.ManyToManyField(Referee, verbose_name='Referee(s)')
+	League = models.ForeignKey(League)
 	def __unicode__(self):
 		return u'%s vs. %s %s' % (self.HomeTeam, self.AwayTeam, self.Location)
 	class Meta:
