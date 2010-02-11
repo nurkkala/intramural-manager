@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template import Template, Context
 from django.core.urlresolvers import reverse
-from datetime import datetime
+from datetime import datetime, timedelta
 from models import *
 from forms import *
 from django.core import serializers
@@ -219,6 +219,19 @@ def joinTeam2(request):
     else:
         form = JoinTeamForm()
         return renderToResponse("joinTeam2", locals())
+
+def standings(request):
+    league = League.objects.filter(id=1)
+    a = isCurrentLeague(league)
+    #TODO: get list of current leagues as leagues
+    #get divisions in each league
+    #info = ( (division1, division1, d3,d4,d5),  (d1,d2,d3), ... for every league ... )
+    #   r2r('standings.html', {'leagues',info})
+    return HttpResponse(a)
+
+def isCurrentLeague(league): #returns True if given league is "current" (aka if a game has been scheduled within the past two weeks
+    games = Game.objects.filter(HomeTeam__Division__League = league ).order_by('-StartTime')
+    return games[0].StartTime >= (datetime.now() - timedelta(14))
 
 def defaults(req, command):
     if command=="":
