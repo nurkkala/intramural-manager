@@ -83,6 +83,7 @@ class Sport(models.Model):
 class Season(models.Model):
 	Name = models.CharField('Season Name', max_length = 50)
 	Start = models.DateTimeField('Season Start')
+	End = models.DateTimeField('Season End')
 	RegistrationStart = models.DateTimeField('Registration Start')
 	RegistrationEnd = models.DateTimeField('Registration End')
 	Sport = models.ForeignKey(Sport)
@@ -159,7 +160,7 @@ class Location(models.Model):
 class Game(models.Model):
 	OUTCOME = (
 		(0, 'Unplayed'),
-		(1, 'Home Win'),
+		(1, 'Home Win'), #TODO: delete home/away/tie  rename here and below to "status"
 		(2, 'Away Win'),
 		(3, 'Tie'),
 		(4, 'Cancelled'),
@@ -176,7 +177,7 @@ class Game(models.Model):
 	GameType = models.IntegerField(choices=GAMETYPE, verbose_name='Game Type')
 	HomeTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesHomeTeam', verbose_name='Home Team')
 	AwayTeam = models.ForeignKey(Team, related_name = 'IntramuralsAppGamesAwayTeam', verbose_name='Away Team')
-	HomeTeamScore = models.PositiveIntegerField('Home Team Score')
+	HomeTeamScore = models.PositiveIntegerField('Home Team Score') #TODO: default = null
 	AwayTeamScore = models.PositiveIntegerField('Away Team Score')
 	Outcome = models.IntegerField(choices=OUTCOME)
 	Referees = models.ManyToManyField(Referee, verbose_name='Referee(s)')
