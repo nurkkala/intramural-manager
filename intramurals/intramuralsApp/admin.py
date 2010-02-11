@@ -34,11 +34,6 @@ class LocationAdmin(admin.ModelAdmin):
 	fields = ('Name', 'LocationGroup', 'Description',)
 	list_filter = ('LocationGroup',)
 
-class GameAdmin(admin.ModelAdmin):
-	list_display = ('StartTime', 'HomeTeam', 'AwayTeam',)
-	list_filter = ('StartTime',)
-	filter_horizontal = ('Referees',)
-	date_hierarchy = 'StartTime'
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Attribute, AttributeAdmin)
@@ -51,4 +46,4 @@ admin.site.register(League, LeagueAdmin)
 admin.site.register(Sport)
 admin.site.register(LocationGroup, LocationGroupAdmin)
 admin.site.register(Location, LocationAdmin)
-admin.site.register(Game, GameAdmin)
+admin.site.register(Game, )

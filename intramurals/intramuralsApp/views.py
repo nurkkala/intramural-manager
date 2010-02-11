@@ -11,7 +11,7 @@ from defaults import default
 from schedule import *
 import json
 
-def renderToResponse(template, params):
+def renderToResponse(template, params={}):
     sports = Sport.objects.all()
     d = {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals', 'sports':sports,}
     d.update(params)
@@ -227,7 +227,7 @@ def standings(request):
     #get divisions in each league
     #info = ( (division1, division1, d3,d4,d5),  (d1,d2,d3), ... for every league ... )
     #   r2r('standings.html', {'leagues',info})
-    return HttpResponse(a)
+    return renderToResponse("standings.html")
 
 def isCurrentLeague(league): #returns True if given league is "current" (aka if a game has been scheduled within the past two weeks
     games = Game.objects.filter(HomeTeam__Division__League = league ).order_by('-StartTime')
