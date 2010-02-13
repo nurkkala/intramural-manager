@@ -186,3 +186,8 @@ class Game(models.Model):
 	class Meta:
 		ordering = ['StartTime']
 
+
+class current_leagues(models.Model):
+	League = models.ForeignKey(League)
+	class Meta:
+		managed = False

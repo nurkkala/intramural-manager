@@ -1,5 +1,3 @@
-CREATE VIEW current_leagues AS
-select * from intramuralsApp_league as L inner join (select id, league_id from intramuralsApp_game as G where datediff(now(), date_add(G.StartTime, interval 2 week)) < 0 ) as CG on CG.league_id = L.id;  
 
 /* Leagues */
 INSERT INTO `intramuralsApp_league` VALUES
@@ -19,7 +17,6 @@ INSERT INTO `intramuralsApp_league` VALUES
 -- (13, 'Women''s A League', 4, 1),
 -- (14, 'Women''s B League', 4, 1);
 -- */
-
 
 
 
