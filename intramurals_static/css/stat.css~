@@ -1,0 +1,179 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+}
+#stat_menu {
+	height: 32px;
+	width: 180px;
+	margin: auto;
+	z-index: 20;
+	background-color: #666666;
+}
+.Menu {
+	color: #FFFFFF;
+	font-weight: bold;
+	margin-left: 5px;
+}
+#stat_statistics {
+	float: left;
+	height: 100%;
+	width: 180px;
+	z-index: 10;
+}
+#stat_container td {
+	text-align: center;
+	vertical-align: middle;
+	padding: 2px;
+}
+
+#stat_container {
+	height: 100%;
+	width: 180px;
+	background-color: #FFFFFF;
+	border: 2px solid #000000;
+	float: left;
+	margin-top: 8px;
+	margin-right: 50px;
+	margin-bottom: 30px;
+	margin-left: 15px;
+}
+.style1 {
+	font-size: 9px;
+	font-style: oblique;
+}
+
+ul, li {
+	margin:0; 
+	padding:0; 
+	list-style:none;
+}
+.menu_class {
+	width: 44px;
+	height: 32px;
+	border:;
+	float: right;
+}
+.menu_class2 {
+	width: 44px;
+	height: 32px;
+	border:;
+	float: right;
+}
+.menu_class3 {
+	width: 44px;
+	height: 32px;
+	border:;
+	float: right;
+}
+.menu_class4 {
+	width: 44px;
+	height: 32px;
+	border:;
+	float: right;
+}
+.the_menu {
+	display:none;
+	width:180px;
+	border:;
+	margin-top: 18px;
+}
+
+.the_menu2 {
+	display:none;
+	width:180px;
+	border:;
+	margin-top: 18px;
+}
+
+.the_menu3 {
+	display:none;
+	width:180px;
+	border:;
+	margin-top: 18px;
+}
+
+.the_menu4 {
+	display:none;
+	width:180px;
+	border:;
+	margin-top: 18px;
+}
+
+.the_menu li {
+	background-color: #111;
+}
+
+.the_menu li a {
+	color:#FFFFFF;
+	text-decoration:none;
+	font-size:12px;
+	padding:10px;
+	display:block;
+	font-weight: bold;
+}
+
+.the_menu li a:hover {
+	padding:10px;
+	color: #FFF;
+	text-decoration: underline;
+}
+.the_menu2 li {
+	background-color: #111;
+}
+
+.the_menu2 li a {
+	color:#FFFFFF;
+	text-decoration:none;
+	font-size:12px;
+	padding:10px;
+	display:block;
+	font-weight: bold;
+}
+
+.the_menu2 li a:hover {
+	padding:10px;
+	color: #FFF;
+	text-decoration: underline;
+}
+.the_menu3 li {
+	background-color: #111;
+}
+
+.the_menu3 li a {
+	color:#FFFFFF;
+	text-decoration:none;
+	font-size:12px;
+	padding:10px;
+	display:block;
+	font-weight: bold;
+}
+
+.the_menu3 li a:hover {
+	padding:10px;
+	color: #FFF;
+	text-decoration: underline;
+}
+.the_menu4 li {
+	background-color: #111;
+}
+
+.the_menu4 li a {
+	color:#FFFFFF;
+	text-decoration:none;
+	font-size:12px;
+	padding:10px;
+	display:block;
+	font-weight: bold;
+}
+
+.the_menu4 li a:hover {
+	padding:10px;
+	color: #FFF;
+	text-decoration: underline;
+}
+.stat_table {
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #000000;
+}
