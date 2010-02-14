@@ -1,11 +1,3 @@
-
-CREATE OR REPLACE VIEW current_games AS
-select id, league_id from intramuralsApp_game as G where datediff(now(), date_add(G.StartTime, interval 2 week)) < 0;
-
-CREATE OR REPLACE VIEW current_leagues AS
-select L.id from intramuralsApp_league as L inner join current_games as CG on CG.league_id = L.id;  
-
-
 /* Persons */
 INSERT INTO `intramuralsApp_person` VALUES
 (1, 123456, 'Bogus', 'Dude', 'bogusdude@gmail.com', '123-456-7890',

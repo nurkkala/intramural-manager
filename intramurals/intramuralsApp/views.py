@@ -221,17 +221,8 @@ def joinTeam2(request):
         return renderToResponse("joinTeam2", locals())
 
 def standings(request):
-    league = League.objects.filter(id=1)
-    a = isCurrentLeague(league)
-    #TODO: get list of current leagues as leagues
-    #get divisions in each league
-    #info = ( (division1, division1, d3,d4,d5),  (d1,d2,d3), ... for every league ... )
-    #   r2r('standings.html', {'leagues',info})
-    return renderToResponse("standings.html")
-
-def isCurrentLeague(league): #returns True if given league is "current" (aka if a game has been scheduled within the past two weeks
-    games = Game.objects.filter(HomeTeam__Division__League = league ).order_by('-StartTime')
-    return games[0].StartTime >= (datetime.now() - timedelta(14))
+    current_information = Current.objects.all()  #Returns current leagues, divisions and teams from the view named current
+    return renderToResponse("standings.html", locals())
 
 def defaults(req, command):
     if command=="":
