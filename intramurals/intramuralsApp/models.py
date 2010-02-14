@@ -182,12 +182,18 @@ class Game(models.Model):
 	Referees = models.ManyToManyField(Referee, verbose_name='Referee(s)')
 	League = models.ForeignKey(League)
 	def __unicode__(self):
-		return u'%s vs. %s %s' % (self.HomeTeam, self.AwayTeam, self.Location)
+		return u'%s vs. %s %s' % (self.HomeTeam.Name, self.AwayTeam.Name, self.Location)
 	class Meta:
 		ordering = ['StartTime']
 
-
-class current_leagues(models.Model):
+class Current(models.Model):
+	Game = models.ForeignKey(Game)
+	Team = models.ForeignKey(Team, primary_key=True)
+	Division = models.ForeignKey(Division)
 	League = models.ForeignKey(League)
 	class Meta:
+		unique_together = ("Game", "Team", "Division", "League")
 		managed = False
+	def __unicode__(self):
+		return self.League.Name
+		

@@ -5,55 +5,12 @@
 <div id="container">
 
 
-  <div class="league">
+  <!-- this whole template assumes that we are given a table of (game, team, division, league) and that they ARE SORTED BY league then division  -->
 
+  {% for record in current_information %}
 
+  {{record}}
 
-
-
-
-
-    <div class="division">
-      <h4>Men's A League</h4>
-      <table width="180" border="0" class="stat_table" >
-        <th>
-          <td width="36"><span class="style1">Position</span></td>
-          <td width="70"><span class="style1">Team</span></td>
-          <td width="22"><span class="style1">Wins</span></td>
-          <td width="6"><span class="style1">-</span></td>
-          <td width="22"><span class="style1">Loses</span></td>
-        </th>
-        <tr>
-          <td width="36">1</td>
-          <td width="70">Samuel Morris</td>
-          <td width="22">5</td>
-          <td width="6">-</td>
-          <td width="22">9</td>
-        </tr>
-        <tr>
-          <td width="36">5</td>
-          <td width="70">Winner, no</td>
-          <td width="22">3</td>
-          <td width="6">-</td>
-          <td width="22">12</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Loswer?</td>
-          <td>0</td>
-          <td>-</td>
-          <td>19</td>
-        </tr>
-      </table>
-    </div>
-
-
-
-
-
-
-
-    <hr/>
-  </div>
+  {% endfor %}
 </div>
 {% endblock %}
