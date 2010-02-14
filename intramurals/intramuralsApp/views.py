@@ -221,7 +221,10 @@ def joinTeam2(request):
         return renderToResponse("joinTeam2", locals())
 
 def standings(request):
-    current_information = Current.objects.all()  #Returns current leagues, divisions and teams from the view named current
+    records = [{'league':cl.League, 'divisions':[{'division':d, 'teams':[t
+                                                                         for t in Team.objects.filter(Division = d)]}
+                                                 for d in Division.objects.filter(League = cl.League)]}
+               for cl in CurrentLeagues.objects.all()]
     return renderToResponse("standings.html", locals())
 
 def defaults(req, command):

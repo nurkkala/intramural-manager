@@ -186,14 +186,8 @@ class Game(models.Model):
 	class Meta:
 		ordering = ['StartTime']
 
-class Current(models.Model):
-	Game = models.ForeignKey(Game)
-	Team = models.ForeignKey(Team, primary_key=True)
-	Division = models.ForeignKey(Division)
-	League = models.ForeignKey(League)
+class CurrentLeagues(models.Model):
+	League = models.ForeignKey(League, primary_key=True)
 	class Meta:
-		unique_together = ("Game", "Team", "Division", "League")
 		managed = False
-	def __unicode__(self):
-		return self.League.Name
-		
+

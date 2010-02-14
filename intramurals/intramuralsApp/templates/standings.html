@@ -7,10 +7,19 @@
 
   <!-- this whole template assumes that we are given a table of (game, team, division, league) and that they ARE SORTED BY league then division  -->
 
-  {% for record in current_information %}
 
-  {{record}}
-
+  {% for league_list in records %}
+  <div class="league">
+    <b>{{league_list.league}}</b><br/>
+    {% for division_list in league_list.divisions %}
+    {{division_list.division}}
+    <table>
+      {% for team in division_list.teams %}
+      <tr><td>{{team}}</td></tr>
+      {% endfor %}
+    </table>
+    {% endfor %}
+  </div>
   {% endfor %}
 </div>
 {% endblock %}
