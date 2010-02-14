@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Taylor Intramurals - {% block pagetitle %}{% endblock %}</title>
+    <script src="{{static_pathname}}/js/jquery-1.3.2.min.js"></script>
+    <script src="{{static_pathname}}/js/jquery.js"></script>
+    <script src="{{static_pathname}}/js/jquery.dimensions.js"></script>
+    <script src="{{static_pathname}}/js/plugins/jquery.gallery.0.3.js"></script>
+    <script src="{{static_pathname}}/js/jquery.dimensions.js"></script>
+    <script src="{{static_pathname}}/js/plugins/jquery.gallery.0.3.js"></script> 
+    <script>
+      $(document).ready(function(){
+      $('#id_of_gallery').gallery({
+      interval: 5500,
+      height: '230px',
+      width: '800px'
+      });
+      });
+    </script>
+    <script>{% block javascript %}{% endblock %}</script>
+    <link href="{{static_pathname}}/css/style.css" rel="stylesheet" type="text/css" /> <!-- new from design team -->
+    <link href="{{static_pathname}}/css/jquery.gallery.css" rel="stylesheet" type="text/css"/> <!-- new from design team -->
+  </head>
+  
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <div id="id_of_gallery" class="gallery">
+          <div id="logo"><img src="http://cse.taylor.edu/~cos372f0901/intramurals/images/logo_v2.png" width="87" height="70" /></div>
+          <ul class="galleryBar">
+            <li><a href="{{static_pathname}}/images/slideshow/2.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/3.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/4.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/1.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo1.jpg" title="Greetings! I'm the first caption!" /></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/5.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/6.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/7.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+            <li><a href="{{static_pathname}}/images/slideshow/8.jpg"><img src="{{static_pathname}}/images/slideshow/TUI_header_photo2.jpg" title="Hello there I'm the second caption"/></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="nav">
+        <ul>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/schedule">Schedule</a></li>
+          <li><a href="/standings">Standings</a></li>
+<!--          <li><a href="createTeam1">Register</a></li> -->
+          <li><a href="/sports">Sports</a>
+            <ul>
+	      {% for sport in sports %}
+              <li><a href="/sports/{{sport}}">{{sport}}</a></li>
+	      {% endfor %}
+            </ul>            
+          </li>
+<!--          <li><a href="referees">Referees</a></li> -->
+        </ul>
+      </div>
+      <div id="container">
+        <div id="content">
+          {% block content %}{% endblock %}
+        </div>
+        <div id="sidebar">
+<!--
+          Search<br />
+          <input type="text" id="search" name="temp" onblur="checksearch();"/><br />
+-->
+        </div>
+        <div id="footer">Copyright &copy; 2009, Taylor Intramurals. All Rights Reserved. Developed by Taylor University Software Studio gurus, Design created by <a href="http://www.rdgstudios.com">Ryan Gates</a>, <a href="http://www.nathanielelliott.com/">Nathaniel Elliott</a>, <a href="http://wondercreationstudios.com/">Chad Jordan</a>, and Drew Baker. Photos by Timmy Huynh.</div>
+      </div>
+    </div>
+  </body>
+</html>
