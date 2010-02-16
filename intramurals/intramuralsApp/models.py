@@ -123,11 +123,16 @@ class Team(models.Model):
 	Division = models.ForeignKey(Division)
 	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
+
 	def __unicode__(self):
 		return "%s %s" % (self.Name, self.id)
 	class Meta:
 		ordering = ['Division']
 
+class TeamRanking(models.Model):
+	class Meta:
+		managed = False
+		
 class TeamMember(models.Model):
 	PAYMENTSTATUS = (
 			(0, 'Payment Pending'),
