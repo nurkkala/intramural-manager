@@ -75,8 +75,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'intramuralsApp',
-    'jcal',
-    'jquery_ui',
 )
 
 SERIALIZATION_MODULES = {
