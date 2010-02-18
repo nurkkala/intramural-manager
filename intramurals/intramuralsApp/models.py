@@ -130,6 +130,7 @@ class Team(models.Model):
 		ordering = ['Division']
 
 class TeamRanking(models.Model):
+	Team = models.ForeignKey(Team, primary_key=True)
 	class Meta:
 		managed = False
 		
