@@ -221,10 +221,7 @@ def joinTeam2(request):
         return renderToResponse("joinTeam2", locals())
 
 def standings(request):
-    records = [{'league':cl.League, 'divisions':[{'division':d, 'teams':[t
-                                                                         for t in Team.objects.filter(Division = d)]}
-                                                 for d in Division.objects.filter(League = cl.League)]}
-               for cl in CurrentLeagues.objects.all()]
+    records = getCurrentLeaguesDivisionsTeams()
     return renderToResponse("standings.html", locals())
 
 def defaults(req, command):
@@ -234,3 +231,11 @@ def defaults(req, command):
         return renderToResponse(command + '.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
     else:
         return HttpResponse("unknown page.")
+
+
+def getCurrentLeaguesDivisionsTeams():
+    """This function returns an object that has the current leagues, divisions for those leagues, and teams for those divisions """
+    return [{'league':cl.League, 'divisions':[{'division':d, 'teams':[t
+                                                                      for t in Team.objects.filter(Division = d)]}
+                                              for d in Division.objects.filter(League = cl.League)]}
+            for cl in CurrentLeagues.objects.all()]
