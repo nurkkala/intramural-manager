@@ -4,13 +4,10 @@ register = template.Library()
 
 
 def anchorWrap(val, href):
-    return '<a href="%s">%s</a>' % (href, val)
-anchorWrap.is_safe = True
+    return '<a href="%s">%s</a>' % (href, str(val))
 
 def teamAnchorWrap(val, teamId):
-    return anchorWrap(val, '/team/'+teamId)
-teamAnchorWrap.is_safe = True
-
+    return anchorWrap(val, '/team/'+ str(teamId))
 
 register.filter(anchorWrap)
 register.filter(teamAnchorWrap)
