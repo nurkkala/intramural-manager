@@ -5,10 +5,11 @@ from django.template import Template, Context
 from django.core.urlresolvers import reverse
 from datetime import datetime, timedelta
 from models import *
+from django.db.models import Q
 from forms import *
 from django.core import serializers
 from defaults import default
-from filters import *
+from templatetags.filters import *
 import json
 
 def renderToResponse(template, params={}):
@@ -45,9 +46,12 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
             yearList.append(year)
     return yearList
 
-def daySched(request, gameId=None):
+def schedule(request, gameId=None):
     if not gameId:
-        gameThisDay = Game.objects.latest("StartTime")
+        try:
+            gameThisDay = Game.objects.filter(StartTime__gte=datetime.today())[0]
+        except:
+            gameThisDay = Game.objects.latest("StartTime")
     else: # A day has been specified by passing the id of a game in that day
         gameThisDay = Game.objects.get(id=gameId)
     date = gameThisDay.StartTime
@@ -116,13 +120,13 @@ def pageWithSport(request, page, sportName="current"): # generate information fo
 
     return renderToResponse(page + ".html", {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
 
-def teamHomepage(request, teamId):
-    team = Team.objects.get(id=teamId)
-    team.record = record(team)
-    opponentList = team.Division.team_set.all()
-    memberList = team.Members.all()
-    for opponent in opponentList:
-        opponent.record = record(opponent)
+def teamHomePage(request, teamId):
+    currentTeamRanking = TeamRanking.objects.get(Team=teamId)
+    memberList = currentTeamRanking.Team.Members
+    gameList = Game.objects.filter(
+        Q(HomeTeam=teamId) | Q(AwayTeam=teamId)
+        )
+    teamRankingList = TeamRanking.objects.filter(Team__Division=currentTeamRanking.Team.Division)
     return renderToResponse("teamHomepage.html", locals())
 
 def refereeSchedule(request, refId):
@@ -132,20 +136,6 @@ def refereeSchedule(request, refId):
         game.sport = teamToSport(game.HomeTeam.id)
     return renderToResponse("refereeSchedule.html", locals())
 
-def record(team):
-    homeWins = len(Game.objects.filter(HomeTeam=team).filter(Outcome=1)) # games won as home team
-    awayWins = len(Game.objects.filter(AwayTeam=team).filter(Outcome=2)) # games won as away team
-    homeLosses = len(Game.objects.filter(HomeTeam=team).filter(Outcome=2)) # games lost as home team
-    awayLosses = len(Game.objects.filter(AwayTeam=team).filter(Outcome=1)) # games lost as away team
-    homeTies = len(Game.objects.filter(HomeTeam=team).filter(Outcome=3)) # games tied as home team
-    awayTies = len(Game.objects.filter(AwayTeam=team).filter(Outcome=3)) # games tied as away team
-    wins = homeWins + awayWins
-    losses = homeLosses + awayLosses
-    ties = homeTies + awayTies
-    record = str(wins) + "-" + str(losses)
-    if ties > 0:
-        record = record + "-" + str(ties)
-    return record
 
 def teamToSport(teamId):
     team = Team.objects.get(id=teamId)

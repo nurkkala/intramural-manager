@@ -23,10 +23,11 @@
     <td>Location</td>
     <td>Referees</td>
   </tr>
+{% autoescape off %}
 {% for game in gameList %}
     <tr>
       <td>{{ game.StartTime|date:"g:i" }}</td>
-      <td>{{ game.HomeTeam|anchorWrap:"asdf" }}</td>
+      <td>{{ game.HomeTeam }}</td>
       <td>vs.</td>
       <td>{{ game.AwayTeam }}</td>
       <td>{{ game.Location }}</td>
@@ -39,6 +40,7 @@
       </td>
     </tr>
 {% endfor %}
+{% endautoescape %}
 </table>
 <p>
 Home wears light, away wears dark
