@@ -3,7 +3,7 @@ create or replace view intramuralsApp_list_of_teams as
        from intramuralsApp_team;
 
 create or replace view intramuralsApp_teamranking as 
-       select list.id, W.wins as wins, L.losses as losses, T.ties as ties, (W.wins - L.losses) + (W.wins / 1000) as rank
+       select list.id as Team_id, W.wins as wins, L.losses as losses, T.ties as ties, (W.wins - L.losses) + (W.wins / 1000) as rank
        from intramuralsApp_list_of_teams as list
 	    left join intramuralsApp_wins as W on W.id = list.id
        	    left join intramuralsApp_losses as L on L.id = list.id
