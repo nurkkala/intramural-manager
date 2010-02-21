@@ -1,0 +1,13 @@
+<script>
+$("#yearDropDown").change(function (){
+    var newPage = this.options[this.selectedIndex].value
+    $("#yearContent").load(newPage);
+});
+</script>
+  <form>
+    <select id="yearDropDown">
+	{% for year in yearList %}
+      <option value="/{{page}}/yearChanged/{{year}}">{{year}}</option>
+	{% endfor %}
+    </select>
+  </form>
