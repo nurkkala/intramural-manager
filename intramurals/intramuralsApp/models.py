@@ -125,7 +125,7 @@ class Team(models.Model):
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
 
 	def __unicode__(self):
-		return "%s" % self.Name
+		return '%s' % self.Name
 	class Meta:
 		ordering = ['Division']
 
