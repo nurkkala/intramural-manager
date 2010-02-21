@@ -2,6 +2,7 @@
 
 {% block title %}Schedule{% endblock %}
 {% block content %}
+{% load filters %}
 <h1>Schedule</h1>
 <p>
 {% if prevGame %}
@@ -25,7 +26,7 @@
 {% for game in gameList %}
     <tr>
       <td>{{ game.StartTime|date:"g:i" }}</td>
-      <td>{{ game.HomeTeam }}</td>
+      <td>{{ game.HomeTeam|anchorWrap:"asdf" }}</td>
       <td>vs.</td>
       <td>{{ game.AwayTeam }}</td>
       <td>{{ game.Location }}</td>
