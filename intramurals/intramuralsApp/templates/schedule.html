@@ -2,6 +2,7 @@
 
 {% block title %}Schedule{% endblock %}
 {% block content %}
+{% load filters %}
 <h1>Schedule</h1>
 <p>
 {% if prevGame %}
@@ -22,6 +23,7 @@
     <td>Location</td>
     <td>Referees</td>
   </tr>
+{% autoescape off %}
 {% for game in gameList %}
     <tr>
       <td>{{ game.StartTime|date:"g:i" }}</td>
@@ -38,6 +40,7 @@
       </td>
     </tr>
 {% endfor %}
+{% endautoescape %}
 </table>
 <p>
 Home wears light, away wears dark
