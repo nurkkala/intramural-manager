@@ -125,12 +125,16 @@ class Team(models.Model):
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
 
 	def __unicode__(self):
-		return "%s %s" % (self.Name, self.id)
+		return '<a href="/team/%d">%s</a>' % (self.id , self.Name)
 	class Meta:
 		ordering = ['Division']
 
 class TeamRanking(models.Model):
 	Team = models.ForeignKey(Team, primary_key=True)
+	wins = models.IntegerField()
+	losses = models.IntegerField()
+	ties = models.IntegerField()
+	rank = models.FloatField()
 	class Meta:
 		managed = False
 		

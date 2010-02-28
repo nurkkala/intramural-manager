@@ -8,7 +8,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-execfile('sandbox.py')
+execfile('/home/users6/aubrown/local_html/intramural-manager/intramurals/sandbox.py')
 
 HOME_DIR = '/home/users10/cos372f0901'
 
