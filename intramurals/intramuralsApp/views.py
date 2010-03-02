@@ -213,9 +213,9 @@ def standings(request):
 
 def defaults(req, command):
     if command=="":
-        return renderToResponse('home.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
+        return renderToResponse('home.html')
     if (default[command]): #this is to whitelist what commands are allowed
-        return renderToResponse(command + '.html', {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals'})
+        return renderToResponse(command + '.html')
     else:
         return HttpResponse("unknown page.")
 

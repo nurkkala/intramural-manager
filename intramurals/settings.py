@@ -8,9 +8,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-execfile('/home/users6/aubrown/local_html/intramural-manager/intramurals/sandbox.py')
-
-HOME_DIR = '/home/users10/cos372f0901'
+import os
+execfile('intramurals/sandbox.py')
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -31,12 +30,12 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = 'intramurlsApp/media/'
+MEDIA_ROOT = '' #'intramurlsApp/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = 'http://cse.taylor.edu/~cos372f0901/intramurals/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
