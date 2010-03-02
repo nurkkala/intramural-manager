@@ -16,8 +16,6 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^team/(\d+)', 'teamHomePage'),       # the home page for team of given id
 ##    url('^about$', 'about'),  TODO: actually write this view. until then, don't uncomment or the admin/ functionality will break
 ##    url('^admin$', 'admin'),  TODO: actually write this view. until then, don't uncomment or the admin/ functionality will break
-    url('^daySched','daySched'),
-    url('^getGames', 'getGames'),
 
     url('^(.*)$', 'defaults'),
 )
