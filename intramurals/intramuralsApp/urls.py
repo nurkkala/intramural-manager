@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('intramuralsApp.views',
-    url('^$','daySched'),
+    url('^$','schedule'),
     url('^createTeam1', 'createTeam1'),
     url('^createTeam2', 'createTeam2'),
     url('^joinTeam1', 'joinTeam1'),

@@ -11,10 +11,11 @@ from django.core import serializers
 from defaults import default
 from templatetags.filters import *
 import json
+from sandbox import *
 
 def renderToResponse(template, params={}):
     sports = Sport.objects.all()
-    d = {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals', 'sports':sports,}
+    d = {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals', 'sports':sports, 'URL_PREFIX':URL_PREFIX}
     d.update(params)
 #    return HttpResponse(d['static_pathname'])
     return render_to_response(template, d)

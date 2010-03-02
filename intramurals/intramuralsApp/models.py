@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.localflavor.us.models import PhoneNumberField
+from sandbox import *
 #from models_admin import *
 
 # Each person is part of one or more teams and/or is a referee.
@@ -125,7 +126,7 @@ class Team(models.Model):
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
 
 	def __unicode__(self):
-		return '<a href="/team/%d">%s</a>' % (self.id , self.Name)
+		return '<a href="%s/team/%d">%s</a>' % (URL_PREFIX, self.id , self.Name)
 	class Meta:
 		ordering = ['Division']
 
