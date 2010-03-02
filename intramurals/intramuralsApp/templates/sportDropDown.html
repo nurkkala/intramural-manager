@@ -1,0 +1,17 @@
+<script>
+$("#sportDropDown").change(function (){
+    var newPage = this.options[this.selectedIndex].value
+    $("#sportContent").load(newPage);
+});
+</script>
+  <form>
+    <select id="sportDropDown">
+    {% if not allSports %}
+      <option value="/{{page}}/{{sportName}}/{{yearSelected}}">{{sportName}}</option>
+    {% endif %}
+      <option value="/{{page}}/all/{{yearSelected}}">All Sports</option>
+    {% for sport in sportDropDown %}
+      <option value="/{{page}}/{{sport}}/{{yearSelected}}">{{sport}}</option>
+    {% endfor %}
+    </select>
+  </form>

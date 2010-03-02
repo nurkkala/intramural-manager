@@ -1,0 +1,4 @@
+For 2nd Release
+
+*** Ensure that team names cannot be displayed with embedded javascript on any pages that are autoescaped
+*** Include multiple calendar views
