@@ -1,19 +1,15 @@
 from datetime import datetime
 from django import forms
 from models import *
+from django.db.models import Q
 
 class CreateTeamForm1(forms.Form):
-    today = datetime.today()
-    intYear = today.year
-    yearStart = today.replace(year=intYear, month=7, day=1)
-    yearEnd = yearStart.replace(year=yearStart.year+1)
+    leagues = League.objects.filter(Q(Season__RegistrationStart__lt=datetime.today()) & Q(Season__RegistrationEnd__gt=datetime.today()))
+    leagueList = [ (l.id, l.Name) for l in leagues]
+    sportList = [ (l.Season.Sport.id, l.Season.Sport.Name) for l in leagues]
 
-    sportListA = Sport.objects.filter(season__RegistrationStart__range=(yearStart, today)).distinct()
-    sportListB = sportListA.filter(season__RegistrationEnd__range=(today, yearEnd)).distinct()
+    sportList = list(set(sportList)) #this is a hack way to remove duplicates from the sportList
 
-    sportList = [(obj.id, obj.Name) for obj in sportListB]
-    leagueList = [(obj.id, obj.Name) for obj in League.objects.all()]
-    
     sportId = forms.ChoiceField(sportList, label='Please select the sport: ', required = True)
     leagueId = forms.ChoiceField(leagueList, label='Please select the league: ', required = True)
     teamName = forms.CharField(max_length=100, label='Please enter the Team Name: ', required = True)

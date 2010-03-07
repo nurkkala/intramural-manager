@@ -6,6 +6,7 @@ urlpatterns = patterns('intramuralsApp.views',
     url('^createTeam2', 'createTeam2'),
     url('^joinTeam1', 'joinTeam1'),
     url('^joinTeam2', 'joinTeam2'),
+    url('^paymentSuccess', 'paymentSuccess'),
 ##    url('^joinTeam3', 'joinTeam3'),  TODO: actually write this view. until then, don't uncomment or the admin/ functionality will break
     url('^schedule$','schedule'),
     url('^schedule/(.+)$','schedule'),# game id specified
