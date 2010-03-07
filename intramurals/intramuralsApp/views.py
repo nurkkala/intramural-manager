@@ -156,7 +156,7 @@ def createTeam1(request):
             return renderToResponse("createTeam1.html", locals())
     else:
         form = CreateTeamForm1()
-        return renderToResponse("createTeam1.html", {'form':form,'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals',})
+        return renderToResponse("createTeam1.html", locals())
 
 def createTeam2(request):
     if request.method == 'POST':
@@ -168,7 +168,7 @@ def createTeam2(request):
                 division = Division.objects.get(id=cd['leagueId'])
                 captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
                 captain.save()
-                team = Team(Name=cd['teamName'], Password=request.POST['teamPassword'], Captain=captain, Division = division, LivingUnit="Sammy II")
+                team = Team(Name=cd['teamName'], Password=request.POST['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId'])
                 team.save()
                 return renderToResponse("congrats.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':request.POST['teamPassword'],})
             else:
@@ -181,16 +181,22 @@ def createTeam2(request):
         form = CreateTeamForm2()
         return renderToResponse("createTeam2.html", {"passwordError":True, "form":form,})
 
+def paymentSuccess(request):
+    if request.session['destination'] == "join":
+        return joinTeam2(request)
+    elif request.session['destination'] == "create":
+        return createTeam2(request)
+
+#team = Team.objects.get(Password=request.POST["teamPassword"])
 def joinTeam1(request):
     if request.method  == 'POST':
         form = JoinTeamForm1(request.POST)
-        if request.POST["teampassword"]:
-            team = Team.objects.get(Password=request.POST["teampassword"]) 
-            return
+        if form.is_valid()
+            return renderToResponse("joinTeam2.html", locals())
         else:
-            return renderToResponse("joinTeam.html", locals())
+            return renderToResponse("joinTeam1.html", {'error':"Team not found with that password (it's case sensative)", 'form':form})
     else:
-        form = JoinTeamForm()
+        form = JoinTeamForm1()
         return renderToResponse("joinTeam1.html", locals())
 
 def joinTeam2(request):

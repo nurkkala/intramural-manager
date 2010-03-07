@@ -1,13 +1,6 @@
-<html>
-<head>
-  <title>Congrats</title>
-</head>
-<body>
- <div id="header">
-   <a href="/">Home</a>
-   <a href="/schedule">Schedule</a><br />
+{% extends 'base.html' %}
+{% block content %}
   <h1>{{ teamcaptain }}, thanks for creating the team {{teamname}}!</h1>
   <h2>Your team, {{ teamname }} will be scheduled for games soon!</h2>
   <p>Be sure to tell your temmates the team password: <b>{{teampassword }}</b> so they can also register </p>
-</body>
-</html>
+{% endblock %}

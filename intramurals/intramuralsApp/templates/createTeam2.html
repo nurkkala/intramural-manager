@@ -1,6 +1,6 @@
-{% extends 'createTeamBase.html' %}
+{% extends 'base.html' %}
 {% block content %}
-<form action="/createTeam2" method="post">
+<form action="createTeam2" method="post">
 
 <div id="step6" >
     <h2>Create Team Password</h2>
@@ -10,11 +10,10 @@
     {% if passwordError %}
     <span class = "error">Please make sure the two team passwords match</span>
     {% endif %}
-    <input type="button" value="Back" class="backButton"/>
-    <input id="complete" type="submit" value="Complete"/>
 </div>
+<br/><br/><br/><br/>
 <div id="step7" class="hide">
-  <input type="textbox" value="Team Member E-mail" class="teamMemberEmail" />
+  Also enter email addresses of your friends you want to invite onto the team: <input type="textbox" value="Team Member E-mail" class="teamMemberEmail" />
   <input type="button" value="Back" class="backButton"/>
   <input id="completeWithInvites" type="submit" value="Complete"/>
 </div>
