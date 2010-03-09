@@ -202,3 +202,7 @@ class CurrentLeagues(models.Model):
 	class Meta:
 		managed = False
 
+
+class OpenTeam(Team):
+	class Meta:
+		managed = False

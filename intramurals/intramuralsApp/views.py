@@ -14,8 +14,11 @@ import json
 from sandbox import *
 
 def renderToResponse(template, params={}):
+    UPAY_SITE_ID = 7
+    EXT_TRANS_ID_LABEL = "This id is stored in Taylor's database to confirm that you have paid"
+
     sports = Sport.objects.all()
-    d = {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals', 'sports':sports, 'URL_PREFIX':URL_PREFIX}
+    d = {'static_pathname':'http://cse.taylor.edu/~cos372f0901/intramurals', 'sports':sports, 'URL_PREFIX':URL_PREFIX, 'UPAY_SITE_ID':UPAY_SITE_ID, 'EXT_TRANS_ID_LABEL':EXT_TRANS_ID_LABEL,}
     d.update(params)
 #    return HttpResponse(d['static_pathname'])
     return render_to_response(template, d)
@@ -148,9 +151,9 @@ def createTeam1(request):
         form = CreateTeamForm1(request.POST)
         if form.is_valid():
             request.session['cd'] = form.cleaned_data
-            UPAY_SITE_ID = 7
             BILL_NAME = request.session['cd']['captainFirstName']
-            EXT_TRANS_ID_LABEL = "This id is stored in Taylor's database to confirm that you have paid"
+
+            request.session['postPayDestination'] = "create"
             return renderToResponse("confirmPart1.html", locals())
         else:
             return renderToResponse("createTeam1.html", locals())
@@ -182,36 +185,52 @@ def createTeam2(request):
         return renderToResponse("createTeam2.html", {"passwordError":True, "form":form,})
 
 def paymentSuccess(request):
-    if request.session['destination'] == "join":
+    if request.session['postPayDestination'] == "join":
         return joinTeam2(request)
-    elif request.session['destination'] == "create":
+    elif request.session['postPayDestination'] == "create":
         return createTeam2(request)
 
 #team = Team.objects.get(Password=request.POST["teamPassword"])
+
 def joinTeam1(request):
     if request.method  == 'POST':
         form = JoinTeamForm1(request.POST)
-        if form.is_valid()
-            return renderToResponse("joinTeam2.html", locals())
+        form.is_valid()
+        if isValidPassword(form.cleaned_data['teamPassword']):
+            request.session['postPayDestination'] = "join"
+            request.method = "FromJoinTeam1"
+            return joinTeam2(request)
         else:
             return renderToResponse("joinTeam1.html", {'error':"Team not found with that password (it's case sensative)", 'form':form})
     else:
         form = JoinTeamForm1()
         return renderToResponse("joinTeam1.html", locals())
-
+    
+def isValidPassword(password):
+    try:
+        team = OpenTeam.objects.get(Password = password)
+        return True
+    except:
+        return False
+    
+    
 def joinTeam2(request):
     if request.method  == 'POST':
-        form = JoinTeamForm(request.POST)
+        form = JoinTeamForm2(request.POST)
         if form.is_valid():
-            cd = form.cleaned_data
-            teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
-            teamMember.save()
-            return renderToResponse("congrats.html", {"teammember":teamMember.FirstName, "teamname":team.Name,})
+            request.session['cd'] = form.cleaned_data
+            return renderToResponse("confirmPart1.html", )
         else:
             return renderToResponse("joinTeam2.html", locals())
     else:
-        form = JoinTeamForm()
-        return renderToResponse("joinTeam2", locals())
+        form = JoinTeamForm2()
+        return renderToResponse("joinTeam2.html", locals())
+    
+def joinTeam3(request):
+    cd = request.session['cd']
+    teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
+    teamMember.save()
+    return renderToResponse("congrats.html", locals())
 
 def standings(request):
     records = getCurrentLeaguesDivisionsTeams()
