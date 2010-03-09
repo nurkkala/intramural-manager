@@ -1,4 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-Hello, you are trying to join a team.
+<form action="joinTeam2" method="post">
+  <div><h3>Join a Team</h3></div>
+  {{ form.as_p }}
+  <input type="submit" value="Submit" />
+</form>
 {% endblock %}

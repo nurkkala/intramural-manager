@@ -52,3 +52,16 @@ INSERT INTO `intramuralsApp_teammember` (id, Member_id, Team_id, PaymentStatus) 
 (26, 19, 8, 1),
 (27, 20, 11, 1),
 (28, 20, 12, 1);
+
+
+CREATE OR REPLACE VIEW intramuralsApp_openLeague AS
+       select l.id as iid 
+       from intramuralsApp_league as l 
+           join intramuralsApp_season as s on l.Season_id = s.id  
+       where s.RegistrationStart < now() && s.RegistrationEnd > now()) 
+
+CREATE OR REPLACE VIEW intramuralsApp_openTeam AS
+       select t.* 
+       from intramuralsApp_team as t 
+           join intramuralsApp_division as d on t.Division_id = d.id 
+	   join intramuralsApp_openLeagues as ol on ol.iid = d.League_id;

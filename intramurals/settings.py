@@ -8,8 +8,14 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-import os
-execfile('intramurals/sandbox.py')
+from os.path import abspath, dirname
+print (dirname(abspath(__file__)) + '/sandbox.py')
+
+"""Description: Matches US phone number format. 1 in the beginning is optional, area code is required, spaces or dashes can be used as optional divider between number groups. Also alphanumeric format is allowed after area code. Also, accepts campust phone numbers of 4 or 5 digits
+Matches: 1-(123)-123-1234 | 123 123 1234 | 1-800-ALPHNUM | 85555
+Non-Matches: 1.123.123.1234 | (123)-1234-123 | 123-1234"""
+
+PHONE_REGEX = r'^([0-9]( |-)?)?(\(?[0-9]{3}\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})|\d{4,5}$'  
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
