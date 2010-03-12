@@ -2,26 +2,6 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.localflavor.us.models import PhoneNumberField
 from sandbox import *
-#from models_admin import *
-
-# Each person is part of one or more teams and/or is a referee.
-# Each team has one or more team members (people) and one captain (person)
-# Each referee is part of one or more leagues.
-# Each league has one or more referees (people).
-# Each referee is assigned to one or more games.
-# Each game is assigned one or more referees.
-# Each team is part of one division.
-# Each division has one or more teams.
-# Each division is part of one league.
-# Each league has one or more divisions.
-# Each league is part of one season.
-# Each season has one or more leagues.
-# Each season is part of one sport.
-# Each sport has one or more seasons.
-# Each location is part of one location group.
-# Each location group has one or more locations
-# Each location group is used for one or more sports.
-# Each sport uses one or more locations.
 
 class Person(models.Model):
 	SHIRTSIZE = (
@@ -129,6 +109,8 @@ class Team(models.Model):
 		return '<a href="%s/team/%d">%s</a>' % (URL_PREFIX, self.id , self.Name)
 	class Meta:
 		ordering = ['Division']
+		unique_together=("Name","Division")
+		unique_together=("Password","Division")
 
 class TeamRanking(models.Model):
 	Team = models.ForeignKey(Team, primary_key=True)
@@ -203,6 +185,12 @@ class CurrentLeagues(models.Model):
 		managed = False
 
 
-class OpenTeam(Team):
+class OpenTeam(models.Model):
+	Name = models.CharField('Name', max_length = 50) # Name of Team
+	Password = models.CharField('Access Key', max_length = 50) # Team password
+	Captain = models.ForeignKey(Person, verbose_name='Team Captain')
+	Division = models.ForeignKey(Division)
+	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
+
 	class Meta:
 		managed = False

@@ -17,7 +17,7 @@ INSERT INTO `intramuralsApp_team` VALUES
 (14, 'Blackjacks', 'password', 6, 3, '1st Swallow Robin'),
 (15, 'Live Comfort Eagle', 'password', 5, 3, 'Foundation'),
 (16, 'Test team', 'password', 10, 4, '2nd North English'),
-(17, 'Wizard of Oz', 'password', 9, 4, 'Off campus'),
+(17, 'Wizard of Oz', 'curtain', 9, 4, 'Off campus'),
 (18, 'Oldies', 'password', 4, 4, '1st West Olson'),
 (19, 'Blackjacks', 'password', 6, 4, '1st Swallow Robin'),
 (20, 'Live Comfort Eagle', 'password', 5, 4, 'Foundation');
@@ -54,14 +54,14 @@ INSERT INTO `intramuralsApp_teammember` (id, Member_id, Team_id, PaymentStatus) 
 (28, 20, 12, 1);
 
 
-CREATE OR REPLACE VIEW intramuralsApp_openLeague AS
+CREATE OR REPLACE VIEW intramuralsApp_openleague AS
        select l.id as iid 
        from intramuralsApp_league as l 
            join intramuralsApp_season as s on l.Season_id = s.id  
-       where s.RegistrationStart < now() && s.RegistrationEnd > now()) 
+       where s.RegistrationStart < now() && s.RegistrationEnd > now();
 
-CREATE OR REPLACE VIEW intramuralsApp_openTeam AS
+CREATE OR REPLACE VIEW intramuralsApp_openteam AS
        select t.* 
-       from intramuralsApp_team as t 
-           join intramuralsApp_division as d on t.Division_id = d.id 
-	   join intramuralsApp_openLeagues as ol on ol.iid = d.League_id;
+       from intramuralsApp_team as t
+           join intramuralsApp_division as d on t.Division_id = d.id
+	   join intramuralsApp_openleague as ol on ol.iid = d.League_id;

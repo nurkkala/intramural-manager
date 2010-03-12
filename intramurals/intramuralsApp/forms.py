@@ -27,6 +27,9 @@ class CreateTeamForm1(forms.Form):
     legal = forms.BooleanField(widget=forms.CheckboxInput, label='I agree :', required = True)
     phoneNumber = forms.RegexField(PHONE_REGEX, label = 'Phone Number:', required=False)
     uPaySiteId = forms.HiddenInput()
+    teamPassword = forms.CharField(max_length=50, widget=forms.PasswordInput, label='Please enter a key that your teammates will use to join the team: ', required = True)
+    repeatTeamPassword = forms.CharField(max_length=50, widget=forms.PasswordInput, label = 'Please enter a key that your teammates will use to join the team: ', required = True)
+    emailList = forms.CharField(label = 'Please enter a list of e-mail addresses', required=False)
 
 class CreateTeamForm2(forms.Form):
     teamPassword = forms.CharField(max_length=50, widget=forms.PasswordInput, label='Please enter a key that your teammates will use to join the team: ', required = True)
