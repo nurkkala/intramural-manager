@@ -186,7 +186,7 @@ def createTeam2(request):
 
 def paymentSuccess(request):
     if request.session['postPayDestination'] == "join":
-        return joinTeam2(request)
+        return renderToResponse("congratsJoin.html")
     elif request.session['postPayDestination'] == "create":
         return createTeam2(request)
 
@@ -207,11 +207,8 @@ def joinTeam1(request):
         return renderToResponse("joinTeam1.html", locals())
     
 def isValidPassword(password):
-    try:
         team = OpenTeam.objects.get(Password = password)
         return True
-    except:
-        return False
     
     
 def joinTeam2(request):

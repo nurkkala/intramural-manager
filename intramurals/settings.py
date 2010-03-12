@@ -9,7 +9,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 from os.path import abspath, dirname
-print (dirname(abspath(__file__)) + '/sandbox.py')
+execfile (dirname(abspath(__file__)) + '/sandbox.py')
 
 """Description: Matches US phone number format. 1 in the beginning is optional, area code is required, spaces or dashes can be used as optional divider between number groups. Also alphanumeric format is allowed after area code. Also, accepts campust phone numbers of 4 or 5 digits
 Matches: 1-(123)-123-1234 | 123 123 1234 | 1-800-ALPHNUM | 85555
