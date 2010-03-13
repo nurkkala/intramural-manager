@@ -12,6 +12,8 @@ from defaults import default
 from templatetags.filters import *
 import json
 from sandbox import *
+from django.core.mail import send_mail
+
 
 def renderToResponse(template, params={}):
     UPAY_SITE_ID = 7
@@ -145,51 +147,50 @@ def teamToSport(teamId):
     team = Team.objects.get(id=teamId)
     sport = team.Division.League.Season.Sport
     return sport
-    
+
+
+#We need to finish the rest of the validation here
+
 def createTeam1(request):
     if request.method  == 'POST':
         form = CreateTeamForm1(request.POST)
-        if form.is_valid():
-            request.session['cd'] = form.cleaned_data
-            BILL_NAME = request.session['cd']['captainFirstName']
-
-            request.session['postPayDestination'] = "create"
-            return renderToResponse("confirmPart1.html", locals())
+        if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
+            if form.is_valid():
+                request.session['cd'] = form.cleaned_data
+                BILL_NAME = request.session['cd']['captainFirstName'] + request.session['cd']['captainLastName']
+                request.session['postPayDestination'] = "create"
+                return renderToResponse("confirmPart1.html", locals())
+            else:
+                return renderToResponse("createTeam1.html", locals())
         else:
+            form.errors.teamPassword = True
             return renderToResponse("createTeam1.html", locals())
     else:
         form = CreateTeamForm1()
         return renderToResponse("createTeam1.html", locals())
-
+            
 def createTeam2(request):
     if request.method == 'POST':
         form = CreateTeamForm2(request.POST)
         if form.is_valid():
-            if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
-                cd = request.session['cd']
-                league = League.objects.get(id=cd['leagueId'])
-                division = Division.objects.get(id=cd['leagueId'])
-                captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
-                captain.save()
-                team = Team(Name=cd['teamName'], Password=request.POST['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId'])
-                team.save()
-                return renderToResponse("congrats.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':request.POST['teamPassword'],})
-            else:
-                passwordError = True
-                return renderToResponse("createTeam2.html", locals())
+            cd = request.session['cd']
+            league = League.objects.get(id=cd['leagueId'])
+            division = Division.objects.get(id=cd['leagueId'])
+            captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
+            captain.save()
+            team = Team(Name=cd['teamName'], Password=request.POST['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId'])
+            team.save()
+            return renderToResponse("congrats.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':request.POST['teamPassword'],})
         else:
-            blank_form = CreateTeamForm2()
-            return renderToResponse("createTeam2.html", {"form":blank_form,})
-    else:
-        form = CreateTeamForm2()
-        return renderToResponse("createTeam2.html", {"passwordError":True, "form":form,})
+            form = CreateTeamForm2()
+            return renderToResponse("createTeam2.html", {"passwordError":True, "form":form,})
 
 def paymentSuccess(request):
     if request.session['postPayDestination'] == "join":
         return renderToResponse("congratsJoin.html")
     elif request.session['postPayDestination'] == "create":
         return createTeam2(request)
-
+        
 #team = Team.objects.get(Password=request.POST["teamPassword"])
 
 def joinTeam1(request):
