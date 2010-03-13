@@ -55,14 +55,35 @@
 	<input type="button" value="Back" class="backButton"/>
 	<input type="button" value="Next" class="nextButton"/>
 </div>
-<div id="step4">
-  Team Password: {{ form.teamPassword }} <-- explanation<br/>
-  Repeat Team Password: {{ form.repeatTeamPassword }}<br/>
-  Also enter email addresses of your friends you want to invite onto the team:
-<div id="inviteeList">
-<input type="text" class="inviteeEmail lastInvitee"/><br/>
+<div id="step4" class="hide">
+  <h4>Team Password</h4>
+  {{ form.teamPassword }}{% if form.errors.teamPassword %}<span class = "error">This field must be entered</span>{% endif %}
+   (Your teammates will need this password to sign up for you team, so don't mispell Mary Lou's name)<br/>
+  <h4>Repeat Team Password</h4>
+  {{ form.repeatTeamPassword }}{% if form.errors.repeatTeamPassword %}<span class = "error">This field must be entered</span>{% endif %}
+  <div id="inviteeList">
+    <h4>Invite Team Members</h4>
+    You can also enter your teammates' e-mail addresses if you want us to e-mail them the password and link to the site:
+    <input type="text" class="inviteeEmail lastInvitee"/><br/>
+    </div>
+  <input type="button" value="Back" class="backButton"/>
+  <input type="button" value="Next" class="nextButton"/>
+  <br />
 </div>
+<div id="step5" class="hide">
+	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
+		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
+		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
+		BILLING
+</textarea>
+    	<h4>I Agree</h4>{{ form.legal }}<br />{% if form.errors.legal %}<span class = "error">This field must be entered</span>{% endif %}
+	<input type="button" value="Back" class="backButton"/>
+	<input type="submit" value="Next" class="proceedToPayment"/>
+</div>
+</form>
+
 <script>
+$('.hide').hide('fast')
 addAnotherInvitee = function(){
     if( /lastInvitee/.test($(this).attr('class')) &&
         /./.test($(this).val())
@@ -79,25 +100,24 @@ removeBlankInvitee = function() {
     }
 };
 $('.lastInvitee').keypress(addAnotherInvitee).blur(removeBlankInvitee);
+
+$('.nextButton').click(function(){
+  $(this).parent('div').hide('slow');
+  currId = $(this).parent('div').get(0).id;
+  nextId = parseInt(currId.substr(4,5))+1;
+  nextId = '#step' + nextId;
+  $(nextId).show('slow');
+  });
+
+$('.backButton').click(function(){
+ $(this).parent('div').hide('slow');
+  currId = $(this).parent('div').get(0).id;
+  nextId = parseInt(currId.substr(4,5))-1;
+  nextId = '#step' + nextId;
+  $(nextId).show('slow');   
+  });
+
 </script>
-	<input type="button" value="Back" class="backButton"/>
-	<input type="button" value="Next" class="nextButton"/>
-</div>
-<div id="step5" class="hide">
-	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
-		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
-		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
-		BILLING
-		If you are transacting using 1-Click or your PayPal account, your order may be authorized and billed in gradual increments during one purchasing and renting (as applicable) session as you click the "Buy Now" button. Depending on the size of your order, this may appear as multiple orders and billings on your credit card statement.
-		If you use the Shopping Cart functionality, you will have one order that authorizes and bills as a single transaction.
-		SALES TAX
-		iTunes Store transactions will include sales tax based on the bill-to address and the sales tax rate in effect at the time your transaction is completed. If the sales tax rate for the billing address changes before the purchased or rented (as applicable) digital content is downloaded, the new tax rate in effect at the time of download will apply. We will only charge tax in states where digital goods are taxable. No customers are eligible for tax exemptions for transactions made on the iTunes Store.
-		PRE-ORDERS
-		By pre-ordering Products, you are authorizing the iTunes Store to automatically charge your account and download the product when it becomes available. You may cancel your pre-order prior to the time the item becomes available, by going to your Account page and clicking Manage Pre-Orders on your computer, or in the downloads section on your iPod touch or iPhone. Pre-orders purchased from your computer can only be managed and downloaded on your computer.
-</textarea>
-    	<h4>I Agree</h4>{{ form.legal }}<br />{% if form.errors.legal %}<span class = "error">This field must be entered</span>{% endif %}
-	<input type="button" value="Back" class="backButton"/>
-	<input type="submit" value="Next" class="proceedToPayment"/>
-</div>
-</form>
+
 {% endblock %}
+
