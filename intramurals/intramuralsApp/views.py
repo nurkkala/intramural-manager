@@ -156,11 +156,20 @@ def createTeam1(request):
         form = CreateTeamForm1(request.POST)
         if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
             if form.is_valid():
-                request.session['cd'] = form.cleaned_data
-                BILL_NAME = request.session['cd']['captainFirstName'] + ' ' + request.session['cd']['captainLastName']
                 request.session['postPayDestination'] = "create"
-                request.session['cd']['emailList'] = request.POST.getlist('inviteeEmailAddress')
+                cd = form.cleaned_data
+                captain =  Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
+                division = Division.objects.get(id=cd['leagueId'])
+                cd.update({
+                    'emailList': request.POST.getlist('inviteeEmailAddress'),
+                    'captain': captain,
+                    'team': Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId']),
+                    })
+                captain.validate()
+                request.session['cd'] = cd
+                BILL_NAME = cd['captainFirstName'] + ' ' + cd['captainLastName']
                 return renderToResponse("confirmPart1.html", locals())
+                
             else:
                 return renderToResponse("createTeam1.html", locals())
         else:
@@ -173,17 +182,14 @@ def createTeam1(request):
 def createTeam2(request):
     try:
         cd = request.session['cd']
-        league = League.objects.get(id=cd['leagueId'])
-        division = Division.objects.get(id=cd['leagueId'])
-        captain = Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
-        captain.save()
-        team = Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId'])
-        team.save()
-#        message = "You have been invited by {0} {1}  to join their team called: {2} this intramural season.  If you would like to join the team, you must first visit the website and use the passcode {3} to register.  Have a great day!" . format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
-        send_mail('Intramurals Invitation', "Hello", 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
-        return renderToResponse("congratsCreate.html", {'teamname':cd['teamName'], 'teamcaptain':cd['captainFirstName'], 'teampassword':cd['teamPassword'],})
-    except:
-        HttpResponse('K, I will')
+        cd['captain'].save()
+        cd['team'].save()
+        message = "You have been invited by {0} {1}  to join their team called: {2} this intramural season.  If you would like to join the team, you must first visit the website and use the passcode {3} to register.  Have a great day!".format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
+        send_mail('Intramurals Invitation', message, 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
+        return renderToResponse("congratsCreate.html", cd)# {'teamname':cd['teamName'], 'asdf':captain, 'teamcaptain':cd['captainFirstName'], 'teampassword':cd['teamPassword'],})
+    except Exception as details:
+        return HttpResponse(details)
+
 def paymentSuccess(request):
     if request.session['postPayDestination'] == "join":
         return renderToResponse("congratsJoin.html")

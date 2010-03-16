@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1>{{ teamcaptain }}, thanks for creating the team {{teamname}}!</h1>
-  <h2>Your team, {{ teamname }} will be scheduled for games soon!</h2>
-  <p>Be sure to tell your temmates the team password: <b>{{teampassword }}</b> so they can also register </p>
+  <h1>{{ captain }}, thanks for creating the team {{team.Name}}!</h1>
+  <h2>Your team, {{ team.Name }} will be scheduled for games soon!</h2>
+  <p>Be sure to tell your temmates the team password: <b>{{team.Password }}</b> so they can also register </p>
 {% endblock %}
