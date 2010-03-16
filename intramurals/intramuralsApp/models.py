@@ -109,8 +109,7 @@ class Team(models.Model):
 		return '<a href="%s/team/%d">%s</a>' % (URL_PREFIX, self.id , self.Name)
 	class Meta:
 		ordering = ['Division']
-		unique_together=("Name","Division")
-		unique_together=("Password","Division")
+		unique_together=(("Name","Division"),("Password","Division"))
 
 class TeamRanking(models.Model):
 	Team = models.ForeignKey(Team, primary_key=True)

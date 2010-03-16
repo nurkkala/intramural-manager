@@ -1,26 +1,26 @@
 
 /* Teams */
 INSERT INTO `intramuralsApp_team` VALUES
-(1, 'Test team', 'password', 10, 1, '2nd North English'),
-(2, 'Wizard of Oz', 'password', 9, 1, 'Off campus'),
-(3, 'Oldies', 'password', 4, 1, '1st West Olson'),
-(4, 'Blackjacks', 'password', 6, 1, '1st Swallow Robin'),
-(5, 'Live Comfort Eagle', 'password', 5, 1, 'Foundation'),
-(6, 'Test team', 'password', 10, 2, '2nd North English'),
-(7, 'Wizard of Oz', 'password', 9, 2, 'Off campus'),
-(8, 'Oldies', 'password', 4, 2, '1st West Olson'),
-(9, 'Blackjacks', 'password', 6, 2, '1st Swallow Robin'),
-(10, 'Live Comfort Eagle', 'password', 5, 2, 'Foundation'),
-(11, 'Test team', 'password', 10, 3, '2nd North English'),
-(12, 'Wizard of Oz', 'password', 9, 3, 'Off campus'),
-(13, 'Oldies', 'password', 4, 3, '1st West Olson'),
-(14, 'Blackjacks', 'password', 6, 3, '1st Swallow Robin'),
-(15, 'Live Comfort Eagle', 'password', 5, 3, 'Foundation'),
-(16, 'Test team', 'password', 10, 4, '2nd North English'),
-(17, 'Wizard of Oz', 'curtain', 9, 4, 'Off campus'),
-(18, 'Oldies', 'password', 4, 4, '1st West Olson'),
-(19, 'Blackjacks', 'password', 6, 4, '1st Swallow Robin'),
-(20, 'Live Comfort Eagle', 'password', 5, 4, 'Foundation');
+(1, 'Test team', 'a', 10, 1, '2nd North English'),
+(2, 'Wizard of Oz', 'b', 9, 1, 'Off campus'),
+(3, 'Oldies', 'c', 4, 1, '1st West Olson'),
+(4, 'Blackjacks', 'd', 6, 1, '1st Swallow Robin'),
+(5, 'Live Comfort Eagle', 'e', 5, 1, 'Foundation'),
+(6, 'Test team', 'f', 10, 2, '2nd North English'),
+(7, 'Wizard of Oz', 'g', 9, 2, 'Off campus'),
+(8, 'Oldies', 'h', 4, 2, '1st West Olson'),
+(9, 'Blackjacks', 'i', 6, 2, '1st Swallow Robin'),
+(10, 'Live Comfort Eagle', 'j', 5, 2, 'Foundation'),
+(11, 'Test team', 'k', 10, 3, '2nd North English'),
+(12, 'Wizard of Oz', 'l', 9, 3, 'Off campus'),
+(13, 'Oldies', 'm', 4, 3, '1st West Olson'),
+(14, 'Blackjacks', 'n', 6, 3, '1st Swallow Robin'),
+(15, 'Live Comfort Eagle', 'o', 5, 3, 'Foundation'),
+(16, 'Test team', 'p', 10, 4, '2nd North English'),
+(17, 'Wizard of Oz', 'q', 9, 4, 'Off campus'),
+(18, 'Oldies', 'r', 4, 4, '1st West Olson'),
+(19, 'Blackjacks', 's', 6, 4, '1st Swallow Robin'),
+(20, 'Live Comfort Eagle', 't', 5, 4, 'Foundation');
 
 /* Teams to Members */
 INSERT INTO `intramuralsApp_teammember` (id, Member_id, Team_id, PaymentStatus) VALUES
