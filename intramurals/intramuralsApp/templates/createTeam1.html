@@ -64,7 +64,7 @@
   <div id="inviteeList">
     <h4>Invite Team Members</h4>
     You can also enter your teammates' e-mail addresses if you want us to e-mail them the password and link to the site:
-    <input type="text" class="inviteeEmail lastInvitee"/><br/>
+    <input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee"/><br/>
     </div>
   <input type="button" value="Back" class="backButton"/>
   <input type="button" value="Next" class="nextButton"/>
@@ -88,7 +88,7 @@ addAnotherInvitee = function(){
     if( /lastInvitee/.test($(this).attr('class')) &&
         /./.test($(this).val())
       ) {
-        $text = $('<input type="text" class="inviteeEmail lastInvitee"/><br/>').keypress(addAnotherInvitee).blur(removeBlankInvitee);
+        $text = $('<input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee"/><br/>').keypress(addAnotherInvitee).blur(removeBlankInvitee);
         $('#inviteeList').append($text);
         $(this).removeClass('lastInvitee');
     }
