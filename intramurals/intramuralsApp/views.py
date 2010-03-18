@@ -13,6 +13,7 @@ from templatetags.filters import *
 import json
 from sandbox import *
 from django.core.mail import send_mail
+import re
 
 
 def renderToResponse(template, params={}):
@@ -53,34 +54,36 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
     return yearList
 
 def schedule(request, gameId=None):
-    if not gameId:
+    try:
+        if not gameId:
+            try:
+                gameThisDay = Game.objects.filter(StartTime__gte=datetime.today())[0]
+            except:
+                gameThisDay = Game.objects.latest("StartTime")
+        else: # A day has been specified by passing the id of a game in that day
+            gameThisDay = Game.objects.get(id=gameId)
+        date = gameThisDay.StartTime
+
         try:
-            gameThisDay = Game.objects.filter(StartTime__gte=datetime.today())[0]
+            prevGame = gameThisDay.get_previous_by_StartTime()
+            while prevGame.StartTime.day == gameThisDay.StartTime.day:
+                prevGame = prevGame.get_previous_by_StartTime()
         except:
-            gameThisDay = Game.objects.latest("StartTime")
-    else: # A day has been specified by passing the id of a game in that day
-        gameThisDay = Game.objects.get(id=gameId)
-    date = gameThisDay.StartTime
+            prevGame = False        
 
-    try:
-        prevGame = gameThisDay.get_previous_by_StartTime()
-        while prevGame.StartTime.day == gameThisDay.StartTime.day:
-            prevGame = prevGame.get_previous_by_StartTime()
-    except:
-        prevGame = False        
+        try:
+            nextGame = gameThisDay.get_next_by_StartTime()
+            while nextGame.StartTime.day == gameThisDay.StartTime.day:
+                nextGame = nextGame.get_next_by_StartTime()
+        except:
+            nextGame = False        
 
-    try:
-        nextGame = gameThisDay.get_next_by_StartTime()
-        while nextGame.StartTime.day == gameThisDay.StartTime.day:
-            nextGame = nextGame.get_next_by_StartTime()
-    except:
-        nextGame = False        
-
-    gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
-    for game in gameList:
-        game.r = Referee.objects.all()
-
-    return renderToResponse("schedule.html", locals())
+        gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
+        for game in gameList:
+            game.r = Referee.objects.all()
+    finally:
+        return renderToResponse("schedule.html", locals())
+        
 
 def sports(request):
     # Note: Right now this displays all the sports seasons in the school year.
@@ -165,15 +168,25 @@ def createTeam1(request):
                     'captain': captain,
                     'team': Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId']),
                     })
-                captain.validate()
+                try:
+                    cd['team'].save()
+                except Exception as e:
+                    if re.search('key 3$',e[1]):
+                        passTaken = 'unfortunately your password happens to be a common witch\'s curse (or someone else already choose it, but I like the first idea better)'
+                    if re.search('key 2$',e[1]):
+                        teamNameTaken = 'Jack and Jill went up a hill.... and that team name is already taken.'
+                    error = True
+                    return renderToResponse('createTeam1.html', locals())
                 request.session['cd'] = cd
                 BILL_NAME = cd['captainFirstName'] + ' ' + cd['captainLastName']
                 return renderToResponse("confirmPart1.html", locals())
                 
             else:
+                error = True
                 return renderToResponse("createTeam1.html", locals())
         else:
-            form.errors.teamPassword = True
+            error = True
+            passwordsNoMatch = 'Your passwords must match.'
             return renderToResponse("createTeam1.html", locals())
     else:
         form = CreateTeamForm1()
@@ -183,18 +196,24 @@ def createTeam2(request):
     try:
         cd = request.session['cd']
         cd['captain'].save()
+        cd['team'].Captain = cd['captain']
         cd['team'].save()
-        message = "You have been invited by {0} {1}  to join their team called: {2} this intramural season.  If you would like to join the team, you must first visit the website and use the passcode {3} to register.  Have a great day!".format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
-        send_mail('Intramurals Invitation', message, 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
-        return renderToResponse("congratsCreate.html", cd)# {'teamname':cd['teamName'], 'asdf':captain, 'teamcaptain':cd['captainFirstName'], 'teampassword':cd['teamPassword'],})
+        message = "You have been invited by {0} {1}  to join their team called \"{2}\" this intramural season.  If you would like to join the team, you must first visit the website and use the passcode {3} to register.  Have a great day!".format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
+        emailList = filter(lambda _:_ != '', cd['emailList'])
+        if len(emailList) > 0:
+            send_mail('Intramurals Invitation', message, 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
+        return renderToResponse("congratsCreate.html", cd)
     except Exception as details:
-        return HttpResponse(details)
+        return HttpResponse(emailList)
 
 def paymentSuccess(request):
-    if request.session['postPayDestination'] == "join":
-        return renderToResponse("congratsJoin.html")
-    elif request.session['postPayDestination'] == "create":
-        return createTeam2(request)
+    try:
+        if request.session['postPayDestination'] == "join":
+            return renderToResponse("congratsJoin.html")
+        elif request.session['postPayDestination'] == "create":
+            return createTeam2(request)
+    except:
+        return renderToResponse("oops.html")
         
 #team = Team.objects.get(Password=request.POST["teamPassword"])
 
