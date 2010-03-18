@@ -1,7 +1,7 @@
 /* Persons */
 INSERT INTO `intramuralsApp_person` VALUES
-(1, 123456, 'Bogus', 'Dude', 'bogusdude@gmail.com', '123-456-7890',
-'XL', 'Bergwall Hall 123'),
+(1, 0, 'no', 'captain', 'nocaptain@mailinator.com', '0', 'L',
+'nowhere'),
 (2, 123456, 'John', 'Wengatz', 'john@gmail.com', '123-456-7890', 'L',
 'Wengatz Hall 321'),
 (3, 123456, 'Austin', 'Brown', 'austin@gmail.com', '123-456-7890',
@@ -23,7 +23,9 @@ INSERT INTO `intramuralsApp_person` VALUES
 (11, 123456, 'Stuart', 'Effort', 'seffort@gmail.com', '123-456-7890',
 'XL', 'Gerig Hall 412'),
 (12, 123456, 'Charles', 'Esperanto', 'cesperanto@gmail.com',
-'123-456-7890', 'M', 'Bergwall Hall 123');
+'123-456-7890', 'M', 'Bergwall Hall 123'),
+(13, 123456, 'Bogus', 'Dude', 'bogusdude@gmail.com', '123-456-7890',
+'XL', 'Bergwall Hall 123');
 
 
 

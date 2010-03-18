@@ -26,6 +26,9 @@
 	</table>
 
 </div>
+<div>
+{% if error %}<span class="error">Unfortunately there are some fields you need to fix. Please treat this form like your Bible and read the red letters...</span>{% endif %}
+</div>
 <form action="createTeam1" method="POST">
 <div id="step1">
 	<h4>Sport</h4>
@@ -36,7 +39,7 @@
 </div>
 <div id="step2" class="hide">
 	<h4>Team name</h4>
-	{{ form.teamName }}{% if form.errors.teamName %}<span class = "error">This field must be entered</span>{% endif %}
+	{{ form.teamName }}<span class = "error">{% if form.errors.teamName %}This field must be entered. {% endif %}{{ teamNameTaken }}</span>
 	<h4>Floor/Wing</h4>
 	{{ form.locationId }}{% if form.errors.locationId %}<span class = "error">This field must be entered</span>{% endif %}
 	<input type="button" value="Back" class="backButton"/>
@@ -57,10 +60,10 @@
 </div>
 <div id="step4" class="hide">
   <h4>Team Password</h4>
-  {{ form.teamPassword }}{% if form.errors.teamPassword %}<span class = "error">This field must be entered</span>{% endif %}
+  {{ form.teamPassword }}<span class = "error">{% if form.errors.teamPassword %}This field must be entered{% endif %} {{ passTaken }}</span>
    (Your teammates will need this password to sign up for you team, so don't mispell Mary Lou's name)<br/>
   <h4>Repeat Team Password</h4>
-  {{ form.repeatTeamPassword }}{% if form.errors.repeatTeamPassword %}<span class = "error">This field must be entered</span>{% endif %}
+  {{ form.repeatTeamPassword }}<span class = "error">{% if form.errors.repeatTeamPassword %}This field must be entered. {% endif %}{{ passwordsNoMatch }}</span>
   <div id="inviteeList">
     <h4>Invite Team Members</h4>
     You can also enter your teammates' e-mail addresses if you want us to e-mail them the password and link to the site:
@@ -75,7 +78,7 @@
 		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
 		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
 		BILLING
-</textarea>
+	</textarea>
     	<h4>I Agree</h4>{{ form.legal }}<br />{% if form.errors.legal %}<span class = "error">This field must be entered</span>{% endif %}
 	<input type="button" value="Back" class="backButton"/>
 	<input type="submit" value="Next" class="proceedToPayment"/>

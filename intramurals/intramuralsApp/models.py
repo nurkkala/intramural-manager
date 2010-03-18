@@ -100,7 +100,7 @@ class Division(models.Model):
 class Team(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of Team
 	Password = models.CharField('Access Key', max_length = 50) # Team password
-	Captain = models.ForeignKey(Person, related_name = 'IntramuralsAppTeamsCaptain', verbose_name='Team Captain')
+	Captain = models.ForeignKey(Person, related_name = 'IntramuralsAppTeamsCaptain', verbose_name='Team Captain', blank=True, null=True)
 	Division = models.ForeignKey(Division)
 	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
