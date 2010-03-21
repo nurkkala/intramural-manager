@@ -128,7 +128,9 @@ class TeamMember(models.Model):
 
 	Member = models.ForeignKey(Person)
 	Team = models.ForeignKey(Team)
-	PaymentStatus = models.IntegerField(choices=PAYMENTSTATUS)
+	PaymentStatus = models.IntegerField(choices=PAYMENTSTATUS, default=0)
+	def __unicode__(self):
+		return u'%s :: %s is on team %s' % (self.PaymentStatus, self.Member, self.Team)
 
 class LocationGroup(models.Model):
 	Name = models.CharField('Location Name', max_length = 50)
@@ -190,6 +192,9 @@ class OpenTeam(models.Model):
 	Captain = models.ForeignKey(Person, verbose_name='Team Captain')
 	Division = models.ForeignKey(Division)
 	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
+	Members = models.ManyToManyField(Person, through = 'TeamMember')
 
 	class Meta:
 		managed = False
+	def __unicode__(self):
+		return u'%s' % (self.Name)

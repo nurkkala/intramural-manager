@@ -36,6 +36,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Person, PersonAdmin)
+admin.site.register(TeamMember)
 admin.site.register(Attribute, AttributeAdmin)
 admin.site.register(AttributeGroup)
 admin.site.register(Division)
