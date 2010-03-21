@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<link href="/intramurals/css/createTeam.css" type="text/css" rel="stylesheet"></link>
 <div id="errors">
 
 </div>
@@ -8,19 +9,22 @@
 	<table class="mainlayout" align="center">
 		<tr class="navigation">
 			<td class="navigationselect">
-			<h3> Step 1 </h3>
+			<h3 id="progress1" class="curProgress"> Step 1 </h3>
 			</td>
 			<td>
-			<h3> Step 2 </h3>
+			<h3 id="progress2"> Step 2 </h3>
 			</td>
 			<td>
-			<h3> Step 3 </h3>
+			<h3 id="progress3"> Step 3 </h3>
 			</td>
 			<td>
-			<h3> Step 4 </h3>
+			<h3 id="progress4"> Step 4 </h3>
 			</td>
 			<td>
-			<h3> Step 5 </h3>
+			<h3 id="progress5"> Step 5 </h3>
+			</td>
+			<td>
+			<h3 id="progress6"> Step 6 </h3>
 			</td>
 		</tr>
 	</table>
@@ -30,22 +34,35 @@
 {% if error %}<span class="error">Unfortunately there are some fields you need to fix. Please treat this form like your Bible and read the red letters...</span>{% endif %}
 </div>
 <form action="createTeam1" method="POST">
-<div id="step1">
+<div id="step1" class="step">
 	<h4>Sport</h4>
 	{{ form.sportId }}{% if form.errors.sportId %}<span class = "error">This field must be entered</span>{% endif %}
 	<h4>League</h4>
 	{{ form.leagueId }}{% if form.errors.leagueId %}<span class = "error">This field must be entered</span>{% endif %}
+	<br/>
+	<br/>
 	<input type="button" value="Next" class="nextButton"/>
 </div>
-<div id="step2" class="hide">
+<div id="step2" class="step hide">
+	<div style="float:right">
+	  <h3><u>Did a friend already create this team?</u></h3>
+	  {% for team in existing_teams %}
+	  <span><span class="existing_team_captain">{{team.Captain}}</span>: --- <span class="existing_team_name">{{team}}</span></span><br/>
+	  {% endfor %}
+	</div>
 	<h4>Team name</h4>
-	{{ form.teamName }}<span class = "error">{% if form.errors.teamName %}This field must be entered. {% endif %}{{ teamNameTaken }}</span>
+	{{ form.teamName }}<span id="teamNameError" class="error">{% if form.errors.teamName %}This field must be entered. {% endif %}{{ teamNameTaken }}</span>
 	<h4>Floor/Wing</h4>
 	{{ form.locationId }}{% if form.errors.locationId %}<span class = "error">This field must be entered</span>{% endif %}
+	<br/>
+	<br/>
 	<input type="button" value="Back" class="backButton"/>
-	<input type="button" value="Next" class="nextButton"/>
+	<input type="button" id="toStep3" value="Next" class="nextButton"/>
+<script>
+$('#step2 .nextButton')
+</script>
 </div>
-<div id="step3" class="hide">
+<div id="step3" class="step hide">
 	<h4>Enter Captain's First Name </h4>
 	{{ form.captainFirstName }} {% if form.errors.captainFirstName %}<span class = "error">This field must be entered</span>{% endif %}
 	<h4>Enter Captain's Last Name </h4>
@@ -54,11 +71,15 @@
 	{{ form.captainEmail }} {% if form.errors.captainEmail %}<span class = "error">This field must be entered</span>{% endif %}
 	<h4>Captain's School ID</h4>
 	{{ form.captainId }}{% if form.errors.captainId %}<span class = "error">This field must be entered</span>{% endif %}
+	<h4>Captain's Shrit Size</h4>
+	{{ form.shirtSize }}{% if form.errors.captainId %}<span class = "error">This field must be entered</span>{% endif %}
+	<br />
+	<br />
 	<br />
 	<input type="button" value="Back" class="backButton"/>
 	<input type="button" value="Next" class="nextButton"/>
 </div>
-<div id="step4" class="hide">
+<div id="step4" class="step hide">
   <h4>Team Password</h4>
   {{ form.teamPassword }}<span class = "error">{% if form.errors.teamPassword %}This field must be entered{% endif %} {{ passTaken }}</span>
    (Your teammates will need this password to sign up for you team, so don't mispell Mary Lou's name)<br/>
@@ -67,13 +88,13 @@
   <div id="inviteeList">
     <h4>Invite Team Members</h4>
     You can also enter your teammates' e-mail addresses if you want us to e-mail them the password and link to the site:
-    <input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee"/><br/>
+    <br/><input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee" size="30"/><br/>
     </div>
   <input type="button" value="Back" class="backButton"/>
   <input type="button" value="Next" class="nextButton"/>
   <br />
 </div>
-<div id="step5" class="hide">
+<div id="step5" class="step hide">
 	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
 		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
 		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
@@ -87,11 +108,16 @@
 
 <script>
 $('.hide').hide('fast')
+</script>
+
+<script>
+
+//---------------- specific logic -------------------------------------------------------
 addAnotherInvitee = function(){
     if( /lastInvitee/.test($(this).attr('class')) &&
         /./.test($(this).val())
       ) {
-        $text = $('<input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee"/><br/>').keypress(addAnotherInvitee).blur(removeBlankInvitee);
+        $text = $('<input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee" size="30" /><br/>').keypress(addAnotherInvitee).blur(removeBlankInvitee);
         $('#inviteeList').append($text);
         $(this).removeClass('lastInvitee');
     }
@@ -104,22 +130,68 @@ removeBlankInvitee = function() {
 };
 $('.lastInvitee').keypress(addAnotherInvitee).blur(removeBlankInvitee);
 
-$('.nextButton').click(function(){
-  $(this).parent('div').hide('slow');
-  currId = $(this).parent('div').get(0).id;
-  nextId = parseInt(currId.substr(4,5))+1;
-  nextId = '#step' + nextId;
-  $(nextId).show('slow');
-  });
 
-$('.backButton').click(function(){
- $(this).parent('div').hide('slow');
-  currId = $(this).parent('div').get(0).id;
-  nextId = parseInt(currId.substr(4,5))-1;
-  nextId = '#step' + nextId;
-  $(nextId).show('slow');   
-  });
+function validateTeamName(c) {
+  c = c || function(){}
 
+  $.ajax({
+    url:'/validateTeamName',
+    data: {Name:$('#id_teamName').val(), League_id:$('#id_leagueId').val() },
+    success:function(data, status, xhr) {
+      $('#teamNameError').html(data);
+      c(data,status,xhr)
+    }
+  });
+};
+
+$('#id_teamName').blur(validateTeamName);
+
+//----------------- general logic -------------------------------------------------------
+function changeStep(step, dir){
+  dir = dir || 1
+
+  curId = step
+  curStep = '#step' + curId;
+  curProgress = '#progress' + curId;
+  $(curStep).hide();
+  $(curProgress).toggleClass('curProgress')
+
+  nextId = curId+dir;
+  nextStep = '#step' + nextId;
+  nextProgress = '#progress' + nextId;
+  $(nextStep).show('slow');
+  $(nextProgress).toggleClass('curProgress')
+
+};
+function validateStep(step) {
+  switch(step) {
+    case 2:
+      validateTeamName(function(data,status,xhr){
+                         if(!data)
+                           changeStep(2,1)
+                         else
+                           alert('The team name you gave is already taken');
+                       });
+      break;
+    default:
+      changeStep(step,1)
+      break;
+  }
+}
+function next() {
+  curStepId = parseInt($(this).parent('div').get(0).id.substr(4,5));
+
+  validateStep(curStepId);
+};
+function back() {
+  curStepId = parseInt($(this).parent('div').get(0).id.substr(4,5));
+
+  changeStep(curStepId, -1)
+}
+
+
+$('.nextButton').click(next);
+$('.backButton').click(back);
 </script>
 
 {% endblock %}

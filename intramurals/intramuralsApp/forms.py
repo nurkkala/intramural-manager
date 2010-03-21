@@ -21,7 +21,7 @@ class CreateTeamForm1(forms.Form):
     locationId = forms.CharField(max_length=50, label='Location on campus: ', required = True)
     captainFirstName = forms.CharField(max_length=50, label = 'Captain\'s First Name: ', required = True)
     captainLastName = forms.CharField(max_length=50, label = 'Captain\'s Last Name: ', required = True)
-    captainId = forms.IntegerField(label='Captain\'s school ID: ', required = True)
+    captainId = forms.IntegerField(label='Captain\'s school ID (without the @): ', required = True)
     captainEmail = forms.EmailField(label='Captain\'s email address: ', required = True)
     legal = forms.BooleanField(widget=forms.CheckboxInput, label='I agree :', required = True)
     phoneNumber = forms.RegexField(PHONE_REGEX, label = 'Phone Number:', required=False)
@@ -29,14 +29,15 @@ class CreateTeamForm1(forms.Form):
     repeatTeamPassword = forms.CharField(max_length=50, widget=forms.PasswordInput, label='Repeat Team Password', required=True)
     emailList = forms.CharField(label = 'Please enter a list of e-mail addresses', required=False)
     uPaySiteId = forms.HiddenInput()
+    shirtSize = forms.ChoiceField(list(Person.SHIRTSIZE), label = 'Shirt Size (we won\'t tell, promise)', required=True)
 
 class JoinTeamForm1(forms.Form):
     teamPassword = forms.CharField(max_length=50, label="Enter team password so we know which team you want to sign up for (ask your captain if you don't know it)", required=True)
 
 class JoinTeamForm2(forms.Form):
-    playerFirstName = forms.CharField(max_length=40, label = 'First name:', required=True)
-    playerLastName = forms.CharField(max_length=40, label = 'Last name:', required=True)
-    playerEmail = forms.EmailField(max_length=40, label = 'E-mail address:', required=True)
+    FirstName = forms.CharField(max_length=40, label = 'First name:', required=True)
+    LastName = forms.CharField(max_length=40, label = 'Last name:', required=True)
+    Email = forms.EmailField(max_length=40, label = 'E-mail address:', required=True)
     shirtSize = forms.ChoiceField(list(Person.SHIRTSIZE), label = 'Shirt Size (we won\'t tell, promise)', required=True)
     phoneNumber = forms.RegexField(PHONE_REGEX, label = 'Phone Number:', required=False)
-    
+    schoolId = forms.IntegerField(label='school ID (without the @): ', required = True)

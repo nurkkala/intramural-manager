@@ -152,7 +152,18 @@ def teamToSport(teamId):
     return sport
 
 
-#We need to finish the rest of the validation here
+def validateTeamName(r):
+    try:
+        name = r.GET['Name']
+        league_id = r.GET['League_id']
+        division_id = Division.objects.get(League=league_id).id
+    except:
+        return HttpResponse('')
+    try:
+        t = OpenTeam.objects.get(Name=name,Division=division_id)
+        return HttpResponse('Sorry, that Team Name is already taken.')
+    except:
+        return HttpResponse('')
 
 def createTeam1(request):
     if request.method  == 'POST':
@@ -161,7 +172,7 @@ def createTeam1(request):
             if form.is_valid():
                 request.session['postPayDestination'] = "create"
                 cd = form.cleaned_data
-                captain =  Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize="XXL", Address="236 W. Reade Ave.")
+                captain =  Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize=cd['shirtSize'], Address="236 W. Reade Ave.")
                 division = Division.objects.get(id=cd['leagueId'])
                 cd.update({
                     'emailList': request.POST.getlist('inviteeEmailAddress'),
@@ -190,6 +201,7 @@ def createTeam1(request):
             return renderToResponse("createTeam1.html", locals())
     else:
         form = CreateTeamForm1()
+        existing_teams = OpenTeam.objects.all()
         return renderToResponse("createTeam1.html", locals())
             
 def createTeam2(request):
@@ -198,30 +210,35 @@ def createTeam2(request):
         cd['captain'].save()
         cd['team'].Captain = cd['captain']
         cd['team'].save()
-        message = "You have been invited by {0} {1}  to join their team called \"{2}\" this intramural season.  If you would like to join the team, you must first visit the website and use the passcode {3} to register.  Have a great day!".format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
+        message = "You have been invited by {0} {1}  to join their team called \"{2}\" this intramural season.  \n Please click the following link to join: http://taylorintramurals.net/joinTeam1?teamPassword={3}\n\nTeam Name: {2}\nTeam Password: {3}\nCaptain: {0} {1}\n\nThanks,\n-- Your Taylor Intramurals Crew".format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
         emailList = filter(lambda _:_ != '', cd['emailList'])
         if len(emailList) > 0:
             send_mail('Intramurals Invitation', message, 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
+        request.session['postPayDestination'] = False
+        request.session['cd'] = False
+        request.session['hasPaid'] = False
         return renderToResponse("congratsCreate.html", cd)
     except Exception as details:
-        return HttpResponse(emailList)
+        return renderToResponse('oops.html')
 
 def paymentSuccess(request):
+    request.session['haspaid'] = True
     try:
         if request.session['postPayDestination'] == "join":
-            return renderToResponse("congratsJoin.html")
+            return joinTeam3(request)
         elif request.session['postPayDestination'] == "create":
             return createTeam2(request)
-    except:
-        return renderToResponse("oops.html")
-        
-#team = Team.objects.get(Password=request.POST["teamPassword"])
+    except Exception as e:
+        return HttpResponse(e) #renderToResponse('oops.html')
 
 def joinTeam1(request):
-    if request.method  == 'POST':
-        form = JoinTeamForm1(request.POST)
+    if request.method  == 'POST' or request.method  == 'GET' and request.GET.has_key('teamPassword'):
+        if request.method  == 'POST':
+            form = JoinTeamForm1(request.POST)
+        if request.method  == 'GET':
+            form = JoinTeamForm1(request.GET)
         form.is_valid()
-        if isValidPassword(form.cleaned_data['teamPassword']):
+        if isValidPassword(form.cleaned_data['teamPassword'],request):
             request.session['postPayDestination'] = "join"
             request.method = "FromJoinTeam1"
             return joinTeam2(request)
@@ -231,17 +248,21 @@ def joinTeam1(request):
         form = JoinTeamForm1()
         return renderToResponse("joinTeam1.html", locals())
     
-def isValidPassword(password):
+def isValidPassword(password,request):
+    try:
         team = OpenTeam.objects.get(Password = password)
+        request.session['team'] = team
         return True
-    
+    except:
+        return False
     
 def joinTeam2(request):
+    team = request.session['team']
     if request.method  == 'POST':
         form = JoinTeamForm2(request.POST)
         if form.is_valid():
             request.session['cd'] = form.cleaned_data
-            return renderToResponse("confirmPart1.html", )
+            return renderToResponse("confirmPart1.html", locals())
         else:
             return renderToResponse("joinTeam2.html", locals())
     else:
@@ -250,9 +271,18 @@ def joinTeam2(request):
     
 def joinTeam3(request):
     cd = request.session['cd']
-    teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize="XXL", phoneNumber=cd['phoneNumber'])
+    teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize=cd['shirtSize'], PhoneNumber=cd['phoneNumber'], Email=cd['Email'])
     teamMember.save()
-    return renderToResponse("congrats.html", locals())
+    try:
+        hasPaid = request.session['hasPaid']
+    except:
+        hasPaid = False
+    TeamMember(Member = teamMember, Team_id = request.session['team'].id,PaymentStatus=(1 if hasPaid else 0)).save()
+    if hasPaid:
+        request.session['hasPaid'] = False
+        return renderToResponse("congratsJoin.html", locals())
+    else:
+        return renderToResponse("stillNeedToPay.html", locals())
 
 def standings(request):
     records = getCurrentLeaguesDivisionsTeams()
@@ -270,3 +300,24 @@ def defaults(req, command):
 def getCurrentLeaguesDivisionsTeams():
     """This function returns an object that has the current leagues, divisions for those leagues, and teams for those divisions """
     return [{'league':cl.League, 'divisions':[{'division':d, 'teams':[{'teamRanking':tr,} for tr in TeamRanking.objects.filter(Team__Division = d)]} for d in Division.objects.filter(League = cl.League)]} for cl in CurrentLeagues.objects.all()]
+
+def home(req):
+    return renderToResponse('home.html')
+
+def noCCinstructions(request):
+#    send_mail('Intramurals Invitation', message, 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
+#    send_mail('Someone can not pay with a credit/debit card', 'Jan, Jeff, and Joe,\n\nThis is an automated message sent to you because someone said on our website that they cannot pay with creadit/debit card. They have been instructed to pay Jan King the money who will manually keep track of those who paid her.', 'taylorintramurals@gmail.com', 'taylorintramurals@gmail.com')
+    return HttpResponse('yes')
+
+
+
+
+
+
+
+
+
+
+
+
+

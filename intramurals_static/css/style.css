@@ -6,7 +6,8 @@ body {
 	background-image: url(../images/gradient.png);
 	background-repeat: repeat-x;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
+	font-size: 14px;
+        line-height:20px;
 }
 
 a {
@@ -63,8 +64,9 @@ h1 {
 
 #content {
 	float: left;
-	width: 500px;
+	width: 780px;
 	margin-left: 10px;
+        min-height:200px;
 }
 
 #sidebar {
@@ -79,9 +81,10 @@ h1 {
 }
 
 #footer {
+        margin-top:50px;
 	clear: both;
 	background-color: #FFFFFF;
-	width: 790px;
+	width: 780px;
 	border-top:#000000 thin solid;
 	color: #999999;
 	font-size: 12px;
@@ -182,4 +185,24 @@ h1 {
 }
 .nav ul :hover ul :hover ul { 
 	visibility: visible;
+}
+
+.error { 
+        color:red;
+}
+
+.existing_team_captain { 
+        font-weight:bold;
+}
+.existing_team_name { 
+        font-style:italic;
+}
+
+#pichome { 
+        height:340px;
+        overflow:hidden;
+}
+
+.bigButton {
+        padding:10px;
 }
