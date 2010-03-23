@@ -229,7 +229,7 @@ def paymentSuccess(request):
         elif request.session['postPayDestination'] == "create":
             return createTeam2(request)
     except Exception as e:
-        return HttpResponse(e) #renderToResponse('oops.html')
+        return renderToResponse('oops.html')
 
 def joinTeam1(request):
     if request.method  == 'POST' or request.method  == 'GET' and request.GET.has_key('teamPassword'):
@@ -262,6 +262,8 @@ def joinTeam2(request):
         form = JoinTeamForm2(request.POST)
         if form.is_valid():
             request.session['cd'] = form.cleaned_data
+            request.session['postPayDestination'] = 'join'
+            request.session['hasPaid'] = True
             return renderToResponse("confirmPart1.html", locals())
         else:
             return renderToResponse("joinTeam2.html", locals())
@@ -273,6 +275,7 @@ def joinTeam3(request):
     cd = request.session['cd']
     teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize=cd['shirtSize'], PhoneNumber=cd['phoneNumber'], Email=cd['Email'])
     teamMember.save()
+    team = request.session['team']
     try:
         hasPaid = request.session['hasPaid']
     except:

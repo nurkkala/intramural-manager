@@ -1,11 +1,12 @@
 
-/* Referees */
+/* Referees 
 INSERT INTO `intramuralsApp_referee` VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 3, 1);
+*/
 
-/* Games to Referees */
+/* Games to Referees 
 INSERT INTO `intramuralsApp_game_Referees` VALUES
 (1, 1, 1),
 (2, 1, 2),
@@ -18,8 +19,9 @@ INSERT INTO `intramuralsApp_game_Referees` VALUES
 (9, 7, 2),
 (10, 8, 2),
 (11, 8, 3);
+*/
 
-/* Leagues to Referees */
+/* Leagues to Referees 
 INSERT INTO `intramuralsApp_league_Referees` VALUES
 (1, 1, 1),
 (2, 1, 2),
@@ -27,3 +29,4 @@ INSERT INTO `intramuralsApp_league_Referees` VALUES
 (4, 2, 1),
 (5, 2, 2),
 (6, 3, 4);
+*/

@@ -1,4 +1,4 @@
-/* Persons */
+/* Persons
 INSERT INTO `intramuralsApp_person` VALUES
 (1, 0, 'no', 'captain', 'nocaptain@mailinator.com', '0', 'L',
 'nowhere'),
@@ -27,5 +27,5 @@ INSERT INTO `intramuralsApp_person` VALUES
 (13, 123456, 'Bogus', 'Dude', 'bogusdude@gmail.com', '123-456-7890',
 'XL', 'Bergwall Hall 123');
 
-
+ */
 

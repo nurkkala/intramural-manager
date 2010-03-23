@@ -189,10 +189,10 @@ class CurrentLeagues(models.Model):
 class OpenTeam(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of Team
 	Password = models.CharField('Access Key', max_length = 50) # Team password
-	Captain = models.ForeignKey(Person, verbose_name='Team Captain')
+	Captain = models.ForeignKey(Person, verbose_name='Team Captain', related_name="Captain")
 	Division = models.ForeignKey(Division)
 	LivingUnit = models.CharField('Floor/Wing', max_length = 50)
-	Members = models.ManyToManyField(Person, through = 'TeamMember')
+#	Members = models.ManyToManyField(Person, through = 'TeamMember', related_name="Members")
 
 	class Meta:
 		managed = False
