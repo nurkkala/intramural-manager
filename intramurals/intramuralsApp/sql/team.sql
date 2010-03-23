@@ -1,5 +1,5 @@
 
-/* Teams */
+/* Teams 
 INSERT INTO `intramuralsApp_team` VALUES
 (1, 'Test team', 'a', 10, 1, '2nd North English'),
 (2, 'Wizard of Oz', 'b', 9, 1, 'Off campus'),
@@ -21,8 +21,9 @@ INSERT INTO `intramuralsApp_team` VALUES
 (18, 'Oldies', 'r', 4, 4, '1st West Olson'),
 (19, 'Blackjacks', 's', 6, 4, '1st Swallow Robin'),
 (20, 'Live Comfort Eagle', 't', 5, 4, 'Foundation');
+*/
 
-/* Teams to Members */
+/* Teams to Members 
 INSERT INTO `intramuralsApp_teammember` (id, Member_id, Team_id, PaymentStatus) VALUES
 (1, 1, 1, 1),
 (2, 1, 2, 1),
@@ -52,7 +53,7 @@ INSERT INTO `intramuralsApp_teammember` (id, Member_id, Team_id, PaymentStatus) 
 (26, 19, 8, 1),
 (27, 20, 11, 1),
 (28, 20, 12, 1);
-
+*/
 
 CREATE OR REPLACE VIEW intramuralsApp_openleague AS
        select l.id as iid 

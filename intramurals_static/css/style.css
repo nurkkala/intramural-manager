@@ -99,7 +99,7 @@ h1 {
 .nav {
 	height: 30px;
 	width: 800px;
-	background-color: #666666;
+	background-color: #6666FF;
 	margin-top: -20px;
 	z-index: 0;
 }
@@ -135,13 +135,13 @@ h1 {
 	color: #FFFFFF; 
 	width:110px; 
 	height:30px; 
-	background:#666666; 
+	background:#6666FF; 
 	padding-left: 10px; 
 	line-height:30px; 
 }
 
 .nav ul ul a.drop, .nav ul ul a.drop:visited {
-	background:#666666 110px center;
+	background:#6666FF 110px center;
 }
 
 .nav ul ul a.drop:hover {
@@ -149,7 +149,7 @@ h1 {
 }
 
 .nav ul ul ul a, .nav ul ul ul a:visited {
-	background:#666666;
+	background:#6666FF;
 }
 
 .nav ul ul ul a:hover {
@@ -206,3 +206,4 @@ h1 {
 .bigButton {
         padding:10px;
 }
+
