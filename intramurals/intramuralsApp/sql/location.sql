@@ -26,7 +26,7 @@ INSERT INTO `intramuralsApp_location` VALUES
 
 /* Location Groups */
 INSERT INTO `intramuralsApp_locationgroup` VALUES
-(1, 'Ultimate fields', '');
+(1, 'Ultimate fields');
 
 /* Location Groups to Sports */
 INSERT INTO `intramuralsApp_locationgroup_Sports` VALUES
