@@ -36,7 +36,7 @@
 <form id="mainForm" action="createTeam1" method="POST">
 <div id="step1" class="step">
 	<h4>Sport</h4>
-	{{ form.sportId }}<span class = "error">{% if form.errors.sportId %}This field must be entered{% endif %}</span>
+	{{ sport }}
 	<h4>League</h4>
 	{{ form.leagueId }}<span class = "error">{% if form.errors.leagueId %}This field must be entered{% endif %}</span>
 	<br/>

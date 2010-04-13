@@ -8,45 +8,7 @@
 <input type="hidden" value="{{UPAY_SITE_ID}}" name="UPAY_SITE_ID" />
 <input type="hidden" value="{{BILL_NAME}}" name="BILL_NAME" />
 <input type="hidden" value="{{EXT_ID_LABEL}}" name="EXT_ID_LABEL" />
-<input type="submit" id="makePayment" value="Continue to make payment >>>>" class="bigButton"/>
+<input type="submit" id="makePayment" value="Continue to make payment >>>>"/>
 </form>
-<br/>
-<button id="nocando">Absolutely can't pay with a credit/debit card?</button>
-<button id="cando" style="display:none;"><< Undo</button>
-<script>
-$('#nocando').click(function(){
-  $('#noCCemail').toggle();
-  $('#makePayment').attr('disabled','disabled');
-  $('#nocando').toggle();
-  $('#cando').toggle();
-})
-$('#cando').click(function(){
-  $('#noCCemail').toggle();
-  $('#makePayment').attr('disabled','');
-  $('#nocando').toggle();
-  $('#cando').toggle();
-})
-</script>
-
-<br/>
-<br/>
-<br/>
-<br/>
-
-<form id="noCCemail" action="/joinTeam3" style="display:none;">
-If you do not pay with credit/debit card, then you will be responsible to pay Jan King (works at KSAC) before the registration period ends.
-<button type="submit" class="bigButton">I understand, let me enter my information >> </button>
-</form>
-
-<!--
-<form id="noCCemail" action="/noCCinstructions" style="display:none;">
-<div>
-Your email address: <input type="text" size="40" name="from"/><br/>
-Please explain yourself!!!<br/><textarea name="body" cols="60" rows="4"></textarea><br/>
-<button type="submit" class="bigButton">Send</button>
-</div>
-</form>
--->
-
 </div>
 {% endblock %}

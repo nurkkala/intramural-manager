@@ -54,7 +54,7 @@
 --(28, 20, 12, 1);
 
 CREATE OR REPLACE VIEW intramuralsApp_openleague AS
-       select l.id as iid 
+       select l.*
        from intramuralsApp_league as l 
            join intramuralsApp_season as s on l.Season_id = s.id  
        where s.RegistrationStart < now() && s.RegistrationEnd > now();
@@ -63,4 +63,4 @@ CREATE OR REPLACE VIEW intramuralsApp_openteam AS
        select t.* 
        from intramuralsApp_team as t
            join intramuralsApp_division as d on t.Division_id = d.id
-	   join intramuralsApp_openleague as ol on ol.iid = d.League_id;
+	   join intramuralsApp_openleague as ol on ol.id = d.League_id;
