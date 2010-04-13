@@ -1,10 +1,10 @@
 /* Locations */
 INSERT INTO `intramuralsApp_location` VALUES
 (1, 'Reade Field','',1),
-(1, 'Soccer Field 1','',1),
-(1, 'Soccer Field 2','',1),
-(1, 'Soccer Field 3','',1),
-(1, 'Soccer Field 4','',1),
+(2, 'Soccer Field 1','',1),
+(3, 'Soccer Field 2','',1),
+(4, 'Soccer Field 3','',1),
+(5, 'Soccer Field 4','',1);
 
 --(1, 'Field 1', 'Eastmost intramural football field on southeast corner of campus', 1),
 --(2, 'Field 2', 'Center intramural football field on southeast corner of campus', 1),

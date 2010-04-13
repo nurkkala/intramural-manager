@@ -13,7 +13,12 @@ class Person(models.Model):
 		('XXL', 'XXL'),
 		('XXXL', 'XXXL')
 	)
+	GENDER = (
+		(0, 'Male'),
+		(1, 'Female'),
+	)
 
+	Gender = models.IntegerField(choices=GENDER)
 	StudentID = models.PositiveIntegerField('Student ID')
 	FirstName = models.CharField('First Name', max_length = 50)
 	LastName = models.CharField('Last Name', max_length = 50)
@@ -106,7 +111,8 @@ class Team(models.Model):
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
 
 	def __unicode__(self):
-		return '<a href="%s/team/%d">%s</a>' % (URL_PREFIX, self.id , self.Name)
+		return (self.Name)
+		#return '<a href="%s/team/%d">%s</a>' % (URL_PREFIX, self.id , self.Name)
 	class Meta:
 		ordering = ['Division']
 		unique_together=(("Name","Division"),("Password","Division"))
@@ -185,7 +191,6 @@ class CurrentLeagues(models.Model):
 	class Meta:
 		managed = False
 
-
 class OpenTeam(models.Model):
 	Name = models.CharField('Name', max_length = 50) # Name of Team
 	Password = models.CharField('Access Key', max_length = 50) # Team password
@@ -198,3 +203,22 @@ class OpenTeam(models.Model):
 		managed = False
 	def __unicode__(self):
 		return u'%s' % (self.Name)
+
+class OpenLeague(models.Model):
+	GENDER = (
+		(0, 'Male'),
+		(1, 'Female'),
+		(2, 'Coed')
+	)
+
+	Name = models.CharField('Name', max_length = 50) # Name of League
+	Attributes = models.ManyToManyField(Attribute, verbose_name='League Classification') # Attributes of League
+	Referees = models.ManyToManyField(Referee, verbose_name='Referee(s)')
+	Season = models.ForeignKey(Season)
+	Gender = models.IntegerField(choices=GENDER)
+	def __unicode__(self):
+		return self.Name
+	class Meta:
+		ordering = ['Season']
+		managed = False
+

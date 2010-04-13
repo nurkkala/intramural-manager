@@ -15,7 +15,7 @@ class CreateTeamForm1(forms.Form):
     sportList = [ (l.Season.Sport.id, l.Season.Sport.Name) for l in leagues]
     sportList = list(set(sportList)) #this is a hack way to remove duplicates from the sportList
 
-    sportId = forms.ChoiceField(sportList, label='sport: ', required = True)
+    #sportId = forms.ChoiceField(sportList, label='sport: ', required = True)
     leagueId = forms.ChoiceField(leagueList, label='league: ', required = True)
     teamName = forms.CharField(max_length=100, label=': ', required = True)
     locationId = forms.CharField(max_length=50, label='Location on campus: ', required = True)
@@ -30,6 +30,8 @@ class CreateTeamForm1(forms.Form):
     emailList = forms.CharField(label = 'Please enter a list of e-mail addresses', required=False)
     uPaySiteId = forms.HiddenInput()
     shirtSize = forms.ChoiceField(list(Person.SHIRTSIZE), label = 'Shirt Size (we won\'t tell, promise)', required=True)
+
+
 
 class JoinTeamForm1(forms.Form):
     teamPassword = forms.CharField(max_length=50, label="Enter team password so we know which team you want to sign up for (ask your captain if you don't know it)", required=True)

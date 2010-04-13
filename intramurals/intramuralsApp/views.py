@@ -10,7 +10,6 @@ from forms import *
 from django.core import serializers
 from defaults import default
 from templatetags.filters import *
-import json
 from sandbox import *
 from django.core.mail import send_mail
 import re
@@ -58,7 +57,7 @@ def schedule(request, gameId=None):
         if not gameId:
             try:
                 gameThisDay = Game.objects.filter(StartTime__gte=datetime.today())[0]
-            except:
+            except Exception as e:
                 gameThisDay = Game.objects.latest("StartTime")
         else: # A day has been specified by passing the id of a game in that day
             gameThisDay = Game.objects.get(id=gameId)
@@ -68,14 +67,14 @@ def schedule(request, gameId=None):
             prevGame = gameThisDay.get_previous_by_StartTime()
             while prevGame.StartTime.day == gameThisDay.StartTime.day:
                 prevGame = prevGame.get_previous_by_StartTime()
-        except:
+        except Exception as e:
             prevGame = False        
 
         try:
             nextGame = gameThisDay.get_next_by_StartTime()
             while nextGame.StartTime.day == gameThisDay.StartTime.day:
                 nextGame = nextGame.get_next_by_StartTime()
-        except:
+        except Exception as e:
             nextGame = False        
 
         gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
@@ -157,15 +156,16 @@ def validateTeamName(r):
         name = r.GET['Name']
         league_id = r.GET['League_id']
         division_id = Division.objects.get(League=league_id).id
-    except:
+    except Exception as e:
         return HttpResponse('')
     try:
         t = OpenTeam.objects.get(Name=name,Division=division_id)
         return HttpResponse('Sorry, that Team Name is already taken.')
-    except:
+    except Exception as e:
         return HttpResponse('')
 
-def createTeam1(request):
+def createTeam1(request, sportId):
+    sport = Sport.objects.get(id=sportId)
     if request.method  == 'POST':
         form = CreateTeamForm1(request.POST)
         if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
@@ -175,23 +175,23 @@ def createTeam1(request):
                 captain =  Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize=cd['shirtSize'], Address="236 W. Reade Ave.")
                 division = Division.objects.get(id=cd['leagueId'])
                 cd.update({
-                    'emailList': request.POST.getlist('inviteeEmailAddress'),
-                    'captain': captain,
-                    'team': Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId']),
-                    })
+                        'emailList': request.POST.getlist('inviteeEmailAddress'),
+                        'captain': captain,
+                        'team': Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId']),
+                        })
                 try:
                     cd['team'].save()
                 except Exception as e:
                     if re.search('key 3$',e[1]):
-                        passTaken = 'unfortunately your password happens to be a common witch\'s curse (or someone else already choose it, but I like the first idea better)'
+                        passTaken = 'That password will not work, please choose another'
                     if re.search('key 2$',e[1]):
-                        teamNameTaken = 'Jack and Jill went up a hill.... and that team name is already taken.'
+                        teamNameTaken = 'That team name is already taken.'
                     error = True
                     return renderToResponse('createTeam1.html', locals())
                 request.session['cd'] = cd
                 BILL_NAME = cd['captainFirstName'] + ' ' + cd['captainLastName']
                 return renderToResponse("confirmPart1.html", locals())
-                
+            
             else:
                 error = True
                 return renderToResponse("createTeam1.html", locals())
@@ -200,7 +200,7 @@ def createTeam1(request):
             passwordsNoMatch = 'Your passwords must match.'
             return renderToResponse("createTeam1.html", locals())
     else:
-        form = CreateTeamForm1()
+        form = CreateTeamForm1(1)
         existing_teams = OpenTeam.objects.all()
         return renderToResponse("createTeam1.html", locals())
             
@@ -218,7 +218,8 @@ def createTeam2(request):
         request.session['cd'] = False
         request.session['hasPaid'] = False
         return renderToResponse("congratsCreate.html", cd)
-    except Exception as details:
+    
+    except Exception as e:
         return renderToResponse('oops.html')
 
 def paymentSuccess(request):
@@ -253,7 +254,7 @@ def isValidPassword(password,request):
         team = OpenTeam.objects.get(Password = password)
         request.session['team'] = team
         return True
-    except:
+    except Exception as e:
         return False
     
 def joinTeam2(request):
@@ -278,7 +279,7 @@ def joinTeam3(request):
     team = request.session['team']
     try:
         hasPaid = request.session['hasPaid']
-    except:
+    except Exception as e:
         hasPaid = False
     TeamMember(Member = teamMember, Team_id = request.session['team'].id,PaymentStatus=(1 if hasPaid else 0)).save()
     if hasPaid:
@@ -312,6 +313,11 @@ def noCCinstructions(request):
 #    send_mail('Someone can not pay with a credit/debit card', 'Jan, Jeff, and Joe,\n\nThis is an automated message sent to you because someone said on our website that they cannot pay with creadit/debit card. They have been instructed to pay Jan King the money who will manually keep track of those who paid her.', 'taylorintramurals@gmail.com', 'taylorintramurals@gmail.com')
     return HttpResponse('yes')
 
+def chooseSport(request):
+    return renderToResponse('chooseSport.html', {'curSports':list(set([ol.Season.Sport for ol in OpenLeague.objects.all()])),})
+
+def register(request, sportId):
+    return renderToResponse('register.html', locals())
 
 
 
