@@ -33,7 +33,7 @@
 <div>
 {% if error %}<span class="error">Please Retry. Unfortunately there are some fields that need to be fixed.</span>{% endif %}
 </div>
-<form id="mainForm" action="createTeam1" method="POST">
+<form id="mainForm" action="/createTeam1/{{sportId}}" method="POST">
 <div id="step1" class="step">
 	<h4>Sport</h4>
 	{{ sport }}
@@ -53,7 +53,7 @@
 	<h4>Team name</h4>
 	{{ form.teamName }}<span id="teamNameError" class="error">{% if form.errors.teamName %}This field must be entered. {% endif %}{{ teamNameTaken }}</span>
 	<h4>Floor/Wing</h4>
-	{{ form.locationId }}<span class="error">{% if form.errors.locationId %}This field must be entered{% endif %}</span>
+	{{ form.address }}<span class="error">{% if form.errors.locationId %}This field must be entered{% endif %}</span>
 	<br/>
 	<br/>
 	<input type="button" value="Back" class="backButton"/>
@@ -66,7 +66,9 @@ $('#step2 .nextButton')
 	<h4>Enter Captain's First Name </h4>
 	{{ form.captainFirstName }} <span id="captainFirstNameError" class="error">{% if form.errors.captainFirstName %}This field must be entered{% endif %}</span>
 	<h4>Enter Captain's Last Name </h4>
-	{{ form.captainLastName }}<span id="captainLastName" class="error">{% if form.errors.captainLastName %}This field must be entered{% endif %}</span>
+	{{ form.captainLastName }}<span id="captainLastNameError" class="error">{% if form.errors.captainLastName %}This field must be entered{% endif %}</span>
+	<h4>Enter Gender</h4>
+	{{ form.captainGender }}<span id="captainGenderError" class="error">{% if form.errors.captainGender %}This field must be entered{% endif %}</span>
 	<h4>Captain's Email Address</h4>
 	{{ form.captainEmail }} <span id="captainEmailError" class="error"> {% if form.errors.captainEmail %}This field must be entered{% endif %}</span>
 	<h4>Captain's School ID</h4> (without '@')
@@ -85,21 +87,19 @@ $('#step2 .nextButton')
    (Your teammates will need this password to sign up for you team)<br/>
   <h4>Repeat Team Password</h4>
   {{ form.repeatTeamPassword }}<span id="repeatTeamPassword" class="error">{% if form.errors.repeatTeamPassword %}This field must be entered. {% endif %}{{ passwordsNoMatch }}</span>
+<!--
   <div id="inviteeList">
     <h4>Invite Team Members</h4>
     You can also enter your teammates' e-mail addresses if you want us to e-mail them the password and link to the site:
     <br/><input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee" size="30"/><br/>
-    </div>
+  </div>
+-->
   <input type="button" value="Back" class="backButton"/>
   <input type="button" value="Next" class="nextButton"/>
   <br />
 </div>
 <div id="step5" class="step hide">
-	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
-		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
-		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
-		BILLING
-	</textarea>
+	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ toa }}</textarea>
     	<h4>I Agree</h4>{{ form.legal }}<br /><span id="legalError" class="error">{% if form.errors.legal %}This field must be entered{% endif %}</span>
 	<input type="button" value="Back" class="backButton"/>
 	<input type="submit" id="submit" value="Next" class="nextButton proceedToPayment"/>
