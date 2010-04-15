@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule{% endblock %}
+{% block content %}
+{% load filters %}
+<h1>Schedule</h1>
+<p>
+{% if prevGame %}
+  <a href="{% if not gameId %}schedule/{% endif %}{{ prevGame.id }}">&lt;&lt; prev</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{% endif %}
+ {{ date|date:"F j, Y" }} 
+{% if nextGame %}
+  <a href="{% if not gameId %}schedule/{% endif %}{{ nextGame.id }}">next</a>
+{% endif %}
+</p>
+
+{% if gameList %}
+<table width="100%">
+  <tr style="font-weight:bold">
+    <td>Time</td>
+    <td>Home</td>
+    <td></td>
+    <td>Away</td>
+    <td>Location</td>
+    <td>Referees</td>
+  </tr>
+{% autoescape off %}
+{% for game in gameList %}
+    <tr>
+      <td>{{ game.StartTime|date:"g:i" }}</td>
+      <td>{{ game.HomeTeam }}</td>
+      <td>vs.</td>
+      <td>{{ game.AwayTeam }}</td>
+      <td>{{ game.Location }}</td>
+      <td>
+       {% for ref in game.Referees.all %}
+         {{ ref }} {% if not forloop.last %},{% endif %}
+       {% empty %}
+         None
+       {% endfor %}
+      </td>
+    </tr>
+{% endfor %}
+{% endautoescape %}
+</table>
+<p>
+Home wears light, away wears dark
+</p>
+{% else %}
+no games scheduled!!
+{% endif %}
+{% endblock %}

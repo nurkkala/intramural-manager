@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="joinTeam2" method="post">
+  <div><h3>Join a Team</h3></div>
+ <h3> You are about to join the team <u>{{team.Name}}</u>.  If that 's not the right team, please try again.</h3>
+  {{ form.as_p }}
+  <input type="submit" value="Submit" />
+</form>
+{% endblock %}

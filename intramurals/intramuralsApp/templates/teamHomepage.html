@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Team Homepage{% endblock %}
+{% block title %}Team Homepage{% endblock %}
+{% block content %}
+{% load filters %}
+{% autoescape off %}
+<span class="teamName">Team Name: {{ currentTeamRanking.Team.Name }} </span><br />
+<span class="currentTeamRanking">Record: {{ currentTeamRanking.wins }}-{{currentTeamRanking.losses}}-{{currentTeamRanking.ties}} </span><br /><span class="currentTeamRankingLivingUnit">Floor/Wing: {{ currentTeamRanking.LivingUnit }} </span><br />
+<span class="sportName">Sport: {{ currentTeamRanking.Team.Division.League.Season.Sport }} </span><br />
+<span class="leagueName">League: {{ currentTeamRanking.Team.Division.League }} </span><br />
+<span class="pageLink">Standings</span><br />
+<span class="teamCaptain">Team Captain: {{ currentTeamRanking.Team.Captain }} </span><br />
+<table class="standings">
+  {% for teamRanking in teamRankingList %}
+      <tr><td>{{teamRanking.Team}}</td><td>{{teamRanking.wins}}</td><td>{{teamRanking.losses}}</td><td>{{teamRanking.ties}}</td></tr>
+  {% endfor %}
+</table>
+
+<div class="teamMembers">Team Members 
+  <ul>
+  {% for member in memberList.all %}
+      <li>{{ forloop.counter }}. {{ member }}</li>
+  {% endfor %}
+  </ul>
+</div>
+
+<table width="100%">
+  <tr style="font-weight:bold">
+    <td>Time</td>
+    <td>Home</td>
+    <td></td>
+    <td>Away</td>
+    <td>Location</td>
+    <td>Referees</td>
+  </tr>
+{% for game in gameList %}
+    <tr>
+      <td>{{ game.StartTime|date:"g:i" }}</td>
+      <td>{{ game.HomeTeam|teamAnchorWrap:game.HomeTeam_id }}</td>
+      <td>vs.</td>
+      <td>{{ game.AwayTeam }}</td>
+      <td>{{ game.Location }}</td>
+      <td>
+       {% for ref in game.Referees.all %}
+         {{ ref }} {% if not forloop.last %},{% endif %}
+       {% empty %}
+         None
+       {% endfor %}
+      </td>
+    </tr>
+{% endfor %}
+{% endautoescape %}
+</table>
+
+
+
+{% endblock %}

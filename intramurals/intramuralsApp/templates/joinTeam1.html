@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+  <form action="joinTeam1" method="post">
+  <div><h3>Join a Team</h3></div>
+  {{form.teamPassword.label}}{{form.teamPassword}}{{form.teamPassword.errors}}
+    <input type="submit" value="Submit" />
+<br/>
+<span class="error">{{error}}</span>
+  </form>
+</div>
+{% endblock %}

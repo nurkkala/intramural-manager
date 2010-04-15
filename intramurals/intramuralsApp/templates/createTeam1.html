@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% block content %}
+<link href="/intramurals/css/createTeam.css" type="text/css" rel="stylesheet"></link>
+<div id="errors">
+
+</div>
+<h1>Create a Team</h1>
+<div id="progress">
+	<table class="mainlayout" align="center">
+		<tr class="navigation">
+			<td class="navigationselect">
+			<h3 id="progress1" class="curProgress"> Step 1 </h3>
+			</td>
+			<td>
+			<h3 id="progress2"> Step 2 </h3>
+			</td>
+			<td>
+			<h3 id="progress3"> Step 3 </h3>
+			</td>
+			<td>
+			<h3 id="progress4"> Step 4 </h3>
+			</td>
+			<td>
+			<h3 id="progress5"> Step 5 </h3>
+			</td>
+			<td>
+			<h3 id="progress6"> Step 6 </h3>
+			</td>
+		</tr>
+	</table>
+
+</div>
+<div>
+{% if error %}<span class="error">Please Retry. Unfortunately there are some fields that need to be fixed.</span>{% endif %}
+</div>
+<form id="mainForm" action="createTeam1" method="POST">
+<div id="step1" class="step">
+	<h4>Sport</h4>
+	{{ sport }}
+	<h4>League</h4>
+	{{ form.leagueId }}<span class = "error">{% if form.errors.leagueId %}This field must be entered{% endif %}</span>
+	<br/>
+	<br/>
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step2" class="step hide">
+	<div style="float:right">
+	  <h3><u>Did a friend already create this team?</u></h3>
+	  {% for team in existing_teams %}
+	  <span><span class="existing_team_captain">{{team.Captain}}</span>: --- <span class="existing_team_name">{{team}}</span></span><br/>
+	  {% endfor %}
+	</div>
+	<h4>Team name</h4>
+	{{ form.teamName }}<span id="teamNameError" class="error">{% if form.errors.teamName %}This field must be entered. {% endif %}{{ teamNameTaken }}</span>
+	<h4>Floor/Wing</h4>
+	{{ form.locationId }}<span class="error">{% if form.errors.locationId %}This field must be entered{% endif %}</span>
+	<br/>
+	<br/>
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" id="toStep3" value="Next" class="nextButton"/>
+<script>
+$('#step2 .nextButton')
+</script>
+</div>
+<div id="step3" class="step hide">
+	<h4>Enter Captain's First Name </h4>
+	{{ form.captainFirstName }} <span id="captainFirstNameError" class="error">{% if form.errors.captainFirstName %}This field must be entered{% endif %}</span>
+	<h4>Enter Captain's Last Name </h4>
+	{{ form.captainLastName }}<span id="captainLastName" class="error">{% if form.errors.captainLastName %}This field must be entered{% endif %}</span>
+	<h4>Captain's Email Address</h4>
+	{{ form.captainEmail }} <span id="captainEmailError" class="error"> {% if form.errors.captainEmail %}This field must be entered{% endif %}</span>
+	<h4>Captain's School ID</h4> (without '@')
+	{{ form.captainId }}<span id="captainIdError" class="error">{% if form.errors.captainId %}This field must be entered{% endif %}</span>
+	<h4>Captain's Shirt Size</h4>
+	{{ form.shirtSize }}<span id="shirtSizeError" class="error">{% if form.errors.captainId %}This field must be entered{% endif %}</span>
+	<br />
+	<br />
+	<br />
+	<input type="button" value="Back" class="backButton"/>
+	<input type="button" value="Next" class="nextButton"/>
+</div>
+<div id="step4" class="step hide">
+  <h4>Team Password</h4>
+  {{ form.teamPassword }}<span id="teamPasswordError" class="error">{% if form.errors.teamPassword %}This field must be entered{% endif %} {{ passTaken }}</span>
+   (Your teammates will need this password to sign up for your team)<br/>
+  <h4>Repeat Team Password</h4>
+  {{ form.repeatTeamPassword }}<span id="repeatTeamPassword" class="error">{% if form.errors.repeatTeamPassword %}This field must be entered. {% endif %}{{ passwordsNoMatch }}</span>
+  <div id="inviteeList">
+    <h4>Invite Team Members</h4>
+    You can also enter your teammates' e-mail addresses if you want us to e-mail them the password and link to the site:
+    <br/><input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee" size="30"/><br/>
+    </div>
+  <input type="button" value="Back" class="backButton"/>
+  <input type="button" value="Next" class="nextButton"/>
+  <br />
+</div>
+<div id="step5" class="step hide">
+	<textarea name="Terms of Agreement" cols="100" rows="20" readonly="readonly">{{ termsOfAgreement }}PLEASE NOTE
+		We are unable to accept credit cards issued by banks outside of the United States or prepaid gift cards issued by credit card companies. Debit cards and check cards have daily spending limits that may prevent the processing of your order.
+		If a transaction has been declined online due to credit card issues, or issues with your PayPal account, please ensure all data is correct and resubmit. If the transaction is not accepted online, you will be unable to use that card or your PayPal account (as the case may be) for your transaction and should use another credit card.
+		BILLING
+	</textarea>
+    	<h4>I Agree</h4>{{ form.legal }}<br /><span id="legalError" class="error">{% if form.errors.legal %}This field must be entered{% endif %}</span>
+	<input type="button" value="Back" class="backButton"/>
+	<input type="submit" id="submit" value="Next" class="nextButton proceedToPayment"/>
+</div>
+<div class="hide">
+<input type="submit" />
+</div>
+</form>
+
+<script>
+$('.hide').hide('fast')
+</script>
+
+<script>
+
+//---------------- specific logic -------------------------------------------------------
+addAnotherInvitee = function(){
+    if( /lastInvitee/.test($(this).attr('class')) &&
+        /./.test($(this).val())
+      ) {
+        $text = $('<input type="text" name="inviteeEmailAddress" class="inviteeEmail lastInvitee" size="30" /><br/>').keypress(addAnotherInvitee).blur(removeBlankInvitee);
+        $('#inviteeList').append($text);
+        $(this).removeClass('lastInvitee');
+    }
+};
+removeBlankInvitee = function() {
+    if($(this).val() == '' && ! /lastInvitee/.test($(this).attr('class')) ) {
+        $(this).next('br').remove();
+        $(this).remove();
+    }
+};
+$('.lastInvitee').keypress(addAnotherInvitee).blur(removeBlankInvitee);
+
+
+function validateTeamName(c) {
+  if(typeof(c) != 'function') c = function(){}
+
+  if($('#id_teamName').val() == '')
+    c()
+  else
+    $.ajax({
+      url:'/validateTeamName',
+      data: {Name:$('#id_teamName').val(), League_id:$('#id_leagueId').val() },
+      success:function(data, status, xhr) {
+        $('#teamNameError').html(data);
+        c(data,status,xhr)
+      }
+    });
+};
+function validateCaptainEmail() {
+  if(! /.+@.+\./.test($('#id_captainEmail').val()) ) {
+    $('#captainEmailError').val('Please enter a valid email address')
+    return false;
+  }
+  return true;
+}
+
+
+$('#id_teamName').blur(validateTeamName);
+$('#id_captainEmail').blur(validateCaptainEmail);
+//$('#submit').click(function(){$('#mainForm').submit(function(){return true;})});
+
+//----------------- general logic -------------------------------------------------------
+function changeStep(step, dir){
+  dir = dir || 1
+
+  curId = step
+  curStep = '#step' + curId;
+  curProgress = '#progress' + curId;
+  $(curStep).hide();
+  $(curProgress).toggleClass('curProgress')
+
+  nextId = curId+dir;
+  nextStep = '#step' + nextId;
+  nextProgress = '#progress' + nextId;
+  $(nextStep).show('slow');
+  $(nextProgress).toggleClass('curProgress')
+
+};
+
+function validateStep(step) {
+  switch(step) {
+    case 2:
+      if($('#id_locationId').val() == '')
+        alert('you must enter a Floor/Wing')
+      else
+      validateTeamName(function(data,status,xhr){
+                         if($('#id_teamName').val() == '')
+                           alert('You must enter a team name');
+                         else if(!data)
+                           changeStep(2,1)
+                         else
+                           alert('The team name you gave is already taken');
+                       });
+      break;
+    case 3:
+      if($('#id_captainFirstName').val() == '' || $('#id_captainLastName').val() == '' || $('#id_captainId').val() == '')
+        alert('Please enter all data');
+      else if (!validateCaptainEmail())
+        alert('Please enter a valid email address')
+      else if(! /^\d{8}$/.test($('#id_captainId').val()))
+        alert('You have to enter your 8-digit school id (without "@")')
+      else
+        changeStep(step,1);
+      break;
+    case 4:
+      if($('#id_teamPassword').val() =='' || $('#id_repeatTeamPassword').val() =='')
+        alert('Please enter all data');
+      else if($('#id_teamPassword').val() != $('#id_repeatTeamPassword').val())
+        alert('Your passwords must match');
+      else
+        changeStep(step,1);
+      break;
+    case 5:
+      break;
+    default:
+      changeStep(step,1);
+      break;
+  }
+}
+$(document.body).keypress(function(e) {
+  if (e.keyCode == 13)
+    return false;
+})
+ready=false;
+$('#mainForm').submit(function(){
+      if(! $('#id_legal').attr('checked')) {
+        alert('You must agree to the Terms of Agreement');
+        return false;
+      }
+      return true;
+      //if(!ready) return false; else return true;
+});
+function next() {
+  curStepId = parseInt($(this).parent('div').get(0).id.substr(4,5));
+
+  validateStep(curStepId);
+};
+function back() {
+  curStepId = parseInt($(this).parent('div').get(0).id.substr(4,5));
+
+  changeStep(curStepId, -1)
+}
+
+
+$('.nextButton').click(next);
+$('.backButton').click(back);
+</script>
+
+{% endblock %}
+

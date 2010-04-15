@@ -1,0 +1,208 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	background-color: #FFFFFF;
+	background-image: url(../images/gradient.png);
+	background-repeat: repeat-x;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+        line-height:20px;
+}
+
+a {
+	color: #333333;
+	text-decoration: underline;
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: bold;
+	border-bottom: #000000 thin solid;
+}
+
+#wrapper {
+	width: 800px;
+	background-color: #FFFFFF;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 0px; /* Change this for the distance from the top of the page -8px is right against the top */
+	min-height: 400px;
+}
+
+#header {
+	height: 250px;
+	width: 800px;
+	background-color: #EEEEEE;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#logo {
+	position: absolute;
+	top: 120px;
+	left: 0px;
+	padding-left: 60px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 20px;
+	background-image: url(../images/transparent.png);
+	background-repeat: repeat;
+	-moz-border-radius-topright: 30px; 
+	-webkit-border-top-right-radius: 30px;
+	-moz-border-radius-bottomright: 30px;
+	-webkit-border-bottom-right-radius: 30px;
+}
+
+#container {
+	width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 10px;
+	padding: 5px;
+}
+
+#content {
+	float: left;
+	width: 780px;
+	margin-left: 10px;
+        min-height:200px;
+}
+
+#sidebar {
+	float: right;
+	width: 230px;
+	margin-top: -15px;
+	margin-right: 10px;
+	padding-top: 20px;
+	border-left: #000000 thin solid;
+	padding-left: 20px;
+	min-height: 200px;
+}
+
+#footer {
+        margin-top:50px;
+	clear: both;
+	background-color: #FFFFFF;
+	width: 780px;
+	border-top:#000000 thin solid;
+	color: #999999;
+	font-size: 12px;
+	padding-top: 10px;
+	padding-left: 10px;
+	font-size: 10px;
+}
+
+#footer a {
+	color: #999999;
+}
+.nav {
+	height: 30px;
+	width: 800px;
+	background-color: #6666FF;
+	margin-top: -20px;
+	z-index: 0;
+}
+
+.nav ul {
+	padding-left: 20px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin: 0;
+	list-style-type:none;
+	z-index: 1;
+}
+
+.nav ul ul {
+	visibility:hidden;
+	position: absolute;
+	height:0;
+	top: 30px;
+	left:-20px; 
+	width:110px;
+}
+
+.nav li {
+	float: left;
+	width: 110px;
+	position: relative;
+	z-index: 15;
+}
+.nav a, .nav a:visited, #nolink {
+	display:block;
+	text-decoration:none; 
+	color: #FFFFFF; 
+	width:110px; 
+	height:30px; 
+	background:#6666FF; 
+	padding-left: 10px; 
+	line-height:30px; 
+}
+
+.nav ul ul a.drop, .nav ul ul a.drop:visited {
+	background:#6666FF 110px center;
+}
+
+.nav ul ul a.drop:hover {
+	background:#FFFFFF 110px center;
+}
+
+.nav ul ul ul a, .nav ul ul ul a:visited {
+	background:#6666FF;
+}
+
+.nav ul ul ul a:hover {
+	background:#FFFFFF;
+}
+
+.nav ul ul ul{
+	left:110px; 
+	top: 0px; 
+	width:110px;
+}
+
+.nav ul ul a, .nav ul ul a:visited {
+	background:#898989; 
+	color: #FFFFFF; 
+	height:auto; 
+	line-height:1em; 
+	padding: 7px 10px; 
+	width: 110px;
+}
+
+.nav a:hover, .nav ul ul a:hover, #nolink:hover {
+	color: #000000; 
+	background: #CCCCCC;
+}
+
+.nav ul li:hover ul,
+.nav ul a:hover ul { 
+	visibility: visible; 
+}
+.nav ul :hover ul ul {
+	visibility: hidden;
+}
+.nav ul :hover ul :hover ul { 
+	visibility: visible;
+}
+
+.error { 
+        color:red;
+}
+
+.existing_team_captain { 
+        font-weight:bold;
+}
+.existing_team_name { 
+        font-style:italic;
+}
+
+#pichome { 
+        height:340px;
+        overflow:hidden;
+}
+
+.chooseSportContent {
+        text-align:center;
+}
