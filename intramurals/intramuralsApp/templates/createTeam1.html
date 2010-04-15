@@ -82,7 +82,7 @@ $('#step2 .nextButton')
 <div id="step4" class="step hide">
   <h4>Team Password</h4>
   {{ form.teamPassword }}<span id="teamPasswordError" class="error">{% if form.errors.teamPassword %}This field must be entered{% endif %} {{ passTaken }}</span>
-   (Your teammates will need this password to sign up for you team)<br/>
+   (Your teammates will need this password to sign up for your team)<br/>
   <h4>Repeat Team Password</h4>
   {{ form.repeatTeamPassword }}<span id="repeatTeamPassword" class="error">{% if form.errors.repeatTeamPassword %}This field must be entered. {% endif %}{{ passwordsNoMatch }}</span>
   <div id="inviteeList">
