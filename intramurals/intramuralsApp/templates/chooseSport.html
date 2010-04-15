@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Register{% endblock %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<h1>Registration</h1>
+<h2>Would you like to play...</h2>
+<span class="chooseSportContent">
+<div>
+{% for sport in curSports %}
+<span><a href="/register/{{sport.id}}">{{sport}}<img src="/intramurals/images/png/{{sport}}1.png"></img></a></span>
+{% endfor %}
+</div>
+<span>
+{% endblock %}
