@@ -17,7 +17,7 @@ class Person(models.Model):
 		  ('Third East Wengatz','Third East Wengatz'),
 		  ('Third West Wengatz','Third West Wengatz'),
 		  ('Third Center Wengatz','Third Center Wengatz'),
-		  ('First EastOlson','First EastOlson'),
+		  ('First East Olson','First East Olson'),
 		  ('First West Olson','First West Olson'),
 		  ('Second East Olson','Second East Olson'),
 		  ('Second West Olson','Second West Olson'),

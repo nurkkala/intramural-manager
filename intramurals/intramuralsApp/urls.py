@@ -2,6 +2,8 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('intramuralsApp.views',
     url('^$','home'),
+    url('touchnetResponse','touchnetResponse'),
+    url('^paymentCancelled','paymentCancelled'),
     url('^createTeam1/(\d+)', 'createTeam1'),
     url('^createTeam2', 'createTeam2'),
     url('^joinTeam1/(\d+)', 'joinTeam1'),

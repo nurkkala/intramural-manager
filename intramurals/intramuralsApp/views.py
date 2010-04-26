@@ -14,6 +14,8 @@ from templatetags.filters import *
 from sandbox import *
 from django.core.mail import send_mail
 import re
+import traceback, sys
+from django.http import HttpResponseRedirect
 
 PHONE_REGEX = r'^([0-9]( |-)?)?(\(?[0-9]{3}\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})|\d{4,5}$'  
 """Description: Matches US phone number format. 1 in the beginning is optional, area code is required, spaces or dashes can be used as optional divider between number groups. Also alphanumeric format is allowed after area code. Also, accepts campust phone numbers of 4 or 5 digits
@@ -251,11 +253,19 @@ def createTeam2(request):
     return renderToResponse("congratsCreate.html", cd)
 
 def paymentSuccess(request):
-        request.session['haspaid'] = True
+    request.session['haspaid'] = True
+    try:
+        raise Exception('forced exception')
         if request.session['postPayDestination'] == "join":
             return joinTeam3(request)
         elif request.session['postPayDestination'] == "create":
             return createTeam2(request)
+    except Exception as e:
+        strerr =  '     type(e): ' + str(type(e))
+        strerr += '      e.args: ' + str(e.args)
+        strerr += '           e: ' + str(e)
+        #strerr += '           e: ' + str(traceback.format_tb(sys.exc_info()))
+        return HttpResponseRedirect('http://cse.taylor.edu/~cos372f0901/email_from_django.php?err_message='+strerr)
 
 def joinTeam1(request, sportId):
     sport = Sport.objects.get(id=sportId)
@@ -331,11 +341,23 @@ def defaults(req, command):
         return HttpResponse("unknown page.")
 
 
+def touchnetResponse(request):
+    """This function deals with Touchnets Response in regard to user payment"""
+    dest= "From Touchnet Response "
+    FILE = open("touchnetLog","a")
+    FILE.writelines(dest)
+    FILE.close()
+    return
+
 def getCurrentLeaguesDivisionsTeams():
     """This function returns an object that has the current leagues, divisions for those leagues, and teams for those divisions """
     return [{'league':cl.League, 'divisions':[{'division':d, 'teams':[{'teamRanking':tr,} for tr in TeamRanking.objects.filter(Team__Division = d)]} for d in Division.objects.filter(League = cl.League)]} for cl in CurrentLeagues.objects.all()]
 
-def home(req):
+def home(request):
+    dest= "From home "
+    FILE = open("touchnetLog","a")
+    FILE.writelines(dest)
+    FILE.close()
     return renderToResponse('home.html')
 
 def noCCinstructions(request):
