@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -6,13 +7,19 @@ from django.core.urlresolvers import reverse
 from datetime import datetime, timedelta
 from models import *
 from django.db.models import Q
-from forms import *
+from forms import JoinTeamForm1, JoinTeamForm2
+from django import forms
 from django.core import serializers
 from defaults import default
 from templatetags.filters import *
 from sandbox import *
 from django.core.mail import send_mail
 import re
+
+PHONE_REGEX = r'^([0-9]( |-)?)?(\(?[0-9]{3}\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})|\d{4,5}$'  
+"""Description: Matches US phone number format. 1 in the beginning is optional, area code is required, spaces or dashes can be used as optional divider between number groups. Also alphanumeric format is allowed after area code. Also, accepts campust phone numbers of 4 or 5 digits
+   Matches: 1-(123)-123-1234 | 123 123 1234 | 1-800-ALPHNUM | 85555
+   Non-Matches: 1.123.123.1234 | (123)-1234-123 | 123-1234"""
 
 
 def renderToResponse(template, params={}):
@@ -166,18 +173,43 @@ def validateTeamName(r):
 
 def createTeam1(request, sportId):
     sport = Sport.objects.get(id=sportId)
+    toa = gettoa(sport.Name)
+    class CreateTeam1Form(forms.Form):
+        leagues = OpenLeague.objects.filter(Season__Sport=sportId)
+        leagueList = [ (l.id, l.Name) for l in leagues]
+        sportList = [ (l.Season.Sport.id, l.Season.Sport.Name) for l in leagues]
+        sportList = list(set(sportList)) #this is a hack way to remove duplicates from the sportList
+        
+        #sportId = forms.ChoiceField(sportList, label='sport: ', required = True)
+        leagueId = forms.ChoiceField(leagueList, label='league: ', required = True)
+        address = forms.ChoiceField(Person.FLOORS, label='Location on campus: ', required=True)
+        teamName = forms.CharField(max_length=100, label=': ', required = True)
+        #locationId = forms.CharField(max_length=50, label='Location on campus: ', required = True)
+        captainFirstName = forms.CharField(max_length=50, label = 'Captain\'s First Name: ', required = True)
+        captainLastName = forms.CharField(max_length=50, label = 'Captain\'s Last Name: ', required = True)
+        captainGender = forms.ChoiceField(Person.GENDER, label='Gender: ', required=True)
+        captainId = forms.IntegerField(label='Captain\'s school ID (without the @): ', required = True)
+        captainEmail = forms.EmailField(label='Captain\'s email address: ', required = True)
+        legal = forms.BooleanField(widget=forms.CheckboxInput, label='I agree :', required = True)
+        phoneNumber = forms.RegexField(PHONE_REGEX, label = 'Phone Number:', required=False)
+        teamPassword = forms.CharField(max_length=50, label='Team Password: ', widget=forms.PasswordInput, required = True)
+        repeatTeamPassword = forms.CharField(max_length=50, widget=forms.PasswordInput, label='Repeat Team Password', required=True)
+        emailList = forms.CharField(label = 'Please enter a list of e-mail addresses', required=False)
+        uPaySiteId = forms.HiddenInput()
+        shirtSize = forms.ChoiceField(list(Person.SHIRTSIZE), label = 'Shirt Size (we won\'t tell, promise)', required=True)
+
     if request.method  == 'POST':
-        form = CreateTeamForm1(request.POST)
+        form = CreateTeam1Form(request.POST)
         if request.POST['teamPassword'] == request.POST["repeatTeamPassword"]:
             if form.is_valid():
                 request.session['postPayDestination'] = "create"
                 cd = form.cleaned_data
-                captain =  Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize=cd['shirtSize'], Address="236 W. Reade Ave.")
-                division = Division.objects.get(id=cd['leagueId'])
+                captain =  Person(StudentID=cd['captainId'], FirstName=cd['captainFirstName'], LastName=cd['captainLastName'], Email=cd['captainEmail'], ShirtSize=cd['shirtSize'], Address="236 W. Reade Ave.", Gender=cd['captainGender'])
+                division = Division.objects.get(League=cd['leagueId'])
                 cd.update({
-                        'emailList': request.POST.getlist('inviteeEmailAddress'),
+                       #'emailList': request.POST.getlist('inviteeEmailAddress'),
                         'captain': captain,
-                        'team': Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['locationId']),
+                        'team': Team(Name=cd['teamName'], Password=cd['teamPassword'], Captain=captain, Division = division, LivingUnit=cd['address']),
                         })
                 try:
                     cd['team'].save()
@@ -200,27 +232,25 @@ def createTeam1(request, sportId):
             passwordsNoMatch = 'Your passwords must match.'
             return renderToResponse("createTeam1.html", locals())
     else:
-        form = CreateTeamForm1(1)
-        existing_teams = OpenTeam.objects.all()
+
+        form = CreateTeam1Form()
+
+        #existing_teams = OpenTeam.objects.all()
         return renderToResponse("createTeam1.html", locals())
             
 def createTeam2(request):
-    try:
-        cd = request.session['cd']
-        cd['captain'].save()
-        cd['team'].Captain = cd['captain']
-        cd['team'].save()
-        message = "You have been invited by {0} {1}  to join their team called \"{2}\" this intramural season.  \n Please click the following link to join: http://taylorintramurals.net/joinTeam1?teamPassword={3}\n\nTeam Name: {2}\nTeam Password: {3}\nCaptain: {0} {1}\n\nThanks,\n-- Your Taylor Intramurals Crew".format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
-        emailList = filter(lambda _:_ != '', cd['emailList'])
-        if len(emailList) > 0:
-            send_mail('Intramurals Invitation', message, 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
-        request.session['postPayDestination'] = False
-        request.session['cd'] = False
-        request.session['hasPaid'] = False
-        return renderToResponse("congratsCreate.html", cd)
-    
-    except Exception as e:
-        return renderToResponse('oops.html')
+    cd = request.session['cd']
+    cd['captain'].save()
+    cd['team'].Captain = cd['captain']
+    cd['team'].save()
+    message = "You have been invited by {0} {1}  to join their team called \"{2}\" this intramural season.  \n Please click the following link to join: http://taylorintramurals.net/joinTeam1?teamPassword={3}\n\nTeam Name: {2}\nTeam Password: {3}\nCaptain: {0} {1}\n\nThanks,\n-- Your Taylor Intramurals Crew".format(cd['captainFirstName'], cd['captainLastName'],cd['teamName'],cd['teamPassword'])
+    emailList = filter(lambda _:_ != '', cd['emailList'])
+    #if len(emailList) > 0:
+        #send_mail('Intramurals Invitation', message, 'taylorintramurals@gmail.com', cd['emailList'], fail_silently=False)
+    request.session['postPayDestination'] = False
+    request.session['cd'] = False
+    request.session['hasPaid'] = False
+    return renderToResponse("congratsCreate.html", cd)
 
 def paymentSuccess(request):
     request.session['haspaid'] = True
@@ -230,9 +260,14 @@ def paymentSuccess(request):
         elif request.session['postPayDestination'] == "create":
             return createTeam2(request)
     except Exception as e:
-        return renderToResponse('oops.html')
+        strerr =  '     type(e): ' + str(type(e))
+        strerr += '      e.args: ' + str(e.args)
+        strerr += '           e: ' + str(e)
+        #strerr += '           e: ' + str(traceback.format_tb(sys.exc_info()))
+        return HttpResponseRedirect('http://cse.taylor.edu/~cos372f0901/email_from_django.php?err_message='+strerr)
 
-def joinTeam1(request):
+def joinTeam1(request, sportId):
+    sport = Sport.objects.get(id=sportId)
     if request.method  == 'POST' or request.method  == 'GET' and request.GET.has_key('teamPassword'):
         if request.method  == 'POST':
             form = JoinTeamForm1(request.POST)
@@ -242,7 +277,7 @@ def joinTeam1(request):
         if isValidPassword(form.cleaned_data['teamPassword'],request):
             request.session['postPayDestination'] = "join"
             request.method = "FromJoinTeam1"
-            return joinTeam2(request)
+            return joinTeam2(request, sportId)
         else:
             return renderToResponse("joinTeam1.html", {'error':"Team not found with that password (it's case sensative)", 'form':form})
     else:
@@ -257,36 +292,40 @@ def isValidPassword(password,request):
     except Exception as e:
         return False
     
-def joinTeam2(request):
+def joinTeam2(request, sportId):
+    sport = Sport.objects.get(id=sportId)
+    class JoinTeam2Form(forms.Form):
+        FirstName = forms.CharField(max_length=40, label = 'First name:', required=True)
+        LastName = forms.CharField(max_length=40, label = 'Last name:', required=True)
+        gender = forms.ChoiceField(Person.GENDER, label='Gender: ', required=True)
+        address = forms.ChoiceField(Person.FLOORS, label='Location on campus: ', required=True)
+        Email = forms.EmailField(max_length=40, label = 'E-mail address:', required=True)
+        shirtSize = forms.ChoiceField(list(Person.SHIRTSIZE), label = 'Shirt Size (we won\'t tell, promise)', required=True)
+        phoneNumber = forms.RegexField(PHONE_REGEX, label = 'Phone Number:', required=False)
+        schoolId = forms.IntegerField(label='school ID (without the @): ', required = True)
+        toa = forms.CharField(initial=gettoa(sport), widget=forms.Textarea, label='')
+        legal = forms.BooleanField(widget=forms.CheckboxInput, label='I agree :', required = True)
     team = request.session['team']
     if request.method  == 'POST':
-        form = JoinTeamForm2(request.POST)
+        form = JoinTeam2Form(request.POST)
         if form.is_valid():
             request.session['cd'] = form.cleaned_data
             request.session['postPayDestination'] = 'join'
-            request.session['hasPaid'] = True
             return renderToResponse("confirmPart1.html", locals())
         else:
             return renderToResponse("joinTeam2.html", locals())
     else:
-        form = JoinTeamForm2()
+        form = JoinTeam2Form()
         return renderToResponse("joinTeam2.html", locals())
     
 def joinTeam3(request):
     cd = request.session['cd']
-    teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize=cd['shirtSize'], PhoneNumber=cd['phoneNumber'], Email=cd['Email'])
+    teamMember = Person(StudentID=cd['schoolId'], FirstName=cd['FirstName'], LastName=cd['LastName'], ShirtSize=cd['shirtSize'], PhoneNumber=cd['phoneNumber'], Email=cd['Email'], Gender=cd['gender'], Address=cd['address'])
     teamMember.save()
     team = request.session['team']
-    try:
-        hasPaid = request.session['hasPaid']
-    except Exception as e:
-        hasPaid = False
-    TeamMember(Member = teamMember, Team_id = request.session['team'].id,PaymentStatus=(1 if hasPaid else 0)).save()
-    if hasPaid:
-        request.session['hasPaid'] = False
-        return renderToResponse("congratsJoin.html", locals())
-    else:
-        return renderToResponse("stillNeedToPay.html", locals())
+    TeamMember(Member = teamMember, Team_id = request.session['team'].id,PaymentStatus=1).save()
+    sport = request.session['team'].Division.League.Season.Sport.Name
+    return renderToResponse("congratsJoin.html", locals())
 
 def standings(request):
     records = getCurrentLeaguesDivisionsTeams()
@@ -317,9 +356,52 @@ def chooseSport(request):
     return renderToResponse('chooseSport.html', {'curSports':list(set([ol.Season.Sport for ol in OpenLeague.objects.all()])),})
 
 def register(request, sportId):
+    sport = Sport.objects.get(id=sportId)
     return renderToResponse('register.html', locals())
 
+def gettoa(sport):
+    return """
 
+INTRAMURALS ACTIVITIES RELEASE 
+
+WAIVER, RELEASE OF ANY AND ALL LIABILTY, AND INDEMNIFICATION IN CONNECTION WITH PARTICIPATION IN ATHLETIC ACTIVITIES 
+
+TO BE READ AND SIGNED BY STUDENT AND/OR PARENTS PRIOR TO PARTICIPATION IN ANY INTRAMURALS ACTIVITY 
+ 
+
+   For good and valuable consideration, including but not limited to inducing TAYLOR UNIVERSITY (.Taylor.) to permit the following described activity to be conducted on that portion of its premises specified by Taylor: INTRAMURAL %s (.Activity.), each of the Taylor students executing this document, desiring to participate in the Activity, hereby acknowledges and agrees that such participation is subject to and specifically conditioned upon the undersigned executing this document and agreeing to be legally bound by the following terms: 
+
+      REPRESENTATIONS AND ACKNOWLEDGEMENTS 
+
+I acknowledge and agree that:
+
+1. Notwithstanding the efforts of Taylor with respect to my safety, my participation in the Activity may cause or result in injury to my person and/or my property, I, nevertheless, desire to participate in the Activity;
+
+2. The undersigned.s participation in the Activity is not a part of the duties and responsibilities of the undersigned as a student or employee of Taylor nor anything incidental thereto;
+
+3. The undersigned.s participation in the Activity is the voluntary act of the undersigned entered into solely for the enjoyment and benefit of the undersigned; and
+
+4. The undersigned is not receiving any credit or compensation from Taylor for any of the time spent by the undersigned in preparing for or engaging in the Activity. 
+
+RELEASES AND COVENANTS NOT TO SUE 
+
+   The undersigned hereby releases and discharges Taylor, together with its successors, assigns, trustees, officers, employees, representatives, and agents, of and from any and all claims or liability of any type whatsoever, including but not limited to property damage, physical injury, mental anguish, embarrassment, defamation, and invasion of privacy, which the undersigned may suffer arising out of, based upon, resulting from, or in any way connected with the Activity or the undersigned.s participation therein, including but not limited to, any claim caused, or alleged to be caused, in whole or part, by sole, joint, several, or comparative negligence, breach of contract, breach of warranty, or other breach of duty by Taylor, or its successors, assigns, trustees, officers, employees, representatives or agents, or whether such claim, damage, or expense is asserted under a negligence, contract or warranty theory, a strict or other product liability theory, or any other legal theory.  The undersigned further agrees and covenants not to sue Taylor, its successors, assigns, trustees, officers, employees, representatives or agents, for any claim arising out of, based upon, resulting from, or in any way connected with the undersigned.s participation in the Activity. 
+
+INDEMNIFICATION 
+
+   The undersigned hereby agrees and covenants to defend, indemnify, and hold harmless Taylor, together with its successors, assigns, trustees, officers, employees, representatives and agents, and each of them, from and against all claims, damages, and expenses, including, but not limited to attorneys. fees and legal costs of defense, arising out of, based upon, resulting from, or in any way connected with or alleged to arise, be based upon, result from, or be in any way connected with the undersigned.s participation in the Activity, irrespective of whether or not such claim, damage or expense is caused or alleged to be caused, in whole or part, by the sole, joint, several, or comparative negligence, breach of contract, breach of warranty, or other breach of duty by Taylor, or its successors, assigns, trustees, officers, employees, representatives and agents, or whether such claim, damage or expense in asserted under negligence, contract or warranty theory, a strict or other product liability theory, or any other legal theory. 
+
+SUMMARY 
+
+   The undersigned hereby acknowledges and agrees that the undersigned understands that the foregoing releases, covenants not to sue, and indemnification mean that if the undersigned is injured or any property of the undersigned or any part thereof is damaged while the undersigned is participating in the Activity or going to or from the activity: 
+
+   1. THE UNDERSIGNED WILL NOT BE ABLE TO RECOVER FROM TAYLOR FOR ANY SUCH INJURIES, LOSSES OR DAMAGES, EVEN IF SUCH INJURIES OR DAMAGES ARE DUE TO THE ACTS OR OMISSIONS OF TAYLOR, OR ITS SUCCESSORS, ASSIGNS, TRUSTEES, OFFICERS, EMPLOYEES, REPRESENTATIVES OR AGENTS; AND
+
+ 
+
+   2. THE UNDERSIGNED WILL NOT BE ABLE TO MAKE A CLAIM OR FILE A LAWSUIT AGAINST TAYLOR OR ITS SUCCESSORS, ASSIGNS, TRUSTEES, OFFICERS, EMPLOYEES, REPRESENTATIVES OR AGENTS, EVEN THOUGH SUCH INJURIES, LOSSES OR DAMAGES ARE THE FAULT OF TAYLOR, ITS SUCCESSORS, ASSIGNS, TRUSTEES, OFFICERS, EMPLOYEES, REPRESENTATIVES, AND AGENTS.
+
+""" % sport
 
 
 
