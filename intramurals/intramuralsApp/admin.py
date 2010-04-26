@@ -3,7 +3,7 @@ from intramuralsApp.models import *
 
 class PersonAdmin(admin.ModelAdmin):
 	list_display = ('name', 'Email',)	
-	fields = ('StudentID', 'FirstName', 'LastName', 'Email', 'PhoneNumber', 'Address', 'ShirtSize',)
+	fields = ('StudentID', 'FirstName', 'LastName', 'Email', 'PhoneNumber', 'Address', 'ShirtSize', 'Gender')
 
 class AttributeAdmin(admin.ModelAdmin):
 	list_display = ('AttributeGroup',)
