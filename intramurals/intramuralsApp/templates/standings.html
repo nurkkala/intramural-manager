@@ -12,14 +12,15 @@
   <div class="league">
     <b>{{league_list.league}}</b><br/>
     {% for division_list in league_list.divisions %}
-    {{division_list.division}}
     <table>
 {% autoescape off %}
+      <tr><th>Team</th><th>Wins</th><th>Losses</th><th>Ties</th></tr>
       {% for team_list in division_list.teams %}
       <tr><td>{{team_list.teamRanking.Team}}</td><td>{{team_list.teamRanking.wins}}</td><td>{{team_list.teamRanking.losses}}</td><td>{{team_list.teamRanking.ties}}</td></tr>
       {% endfor %}
 {% endautoescape %}
     </table>
+    <hr/>
     {% endfor %}
   </div>
   {% endfor %}

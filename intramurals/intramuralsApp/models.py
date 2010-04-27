@@ -150,8 +150,8 @@ class Team(models.Model):
 	Members = models.ManyToManyField(Person, through = 'TeamMember')
 
 	def __unicode__(self):
-		return (self.Name)
-		#return '<a href="%s/team/%d">%s</a>' % (URL_PREFIX, self.id , self.Name)
+		#return (self.Name)
+		return '<a href="%s/team/%d">%s</a>' % (URL_PREFIX, self.id , self.Name)
 	class Meta:
 		ordering = ['Division']
 		unique_together=(("Name","Division"),("Password","Division"))
