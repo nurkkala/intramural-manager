@@ -9,7 +9,7 @@ urlpatterns = patterns('intramuralsApp.views',
     #url('^joinTeam3', 'joinTeam3'),
     #url('^paymentSuccess', 'paymentSuccess'),
     url('^schedule$','schedule'),
-    url('^schedule/(.+)$','schedule'),# game id specified
+    url('^schedule/(\d+)$','schedule'),# game id specified
     url('^standings','standings'),
     url('^(standings|referees)/([\w-]+)$', 'pageWithSport'),# sport specified
     url('^(standings|referees)$', 'pageWithSport'),         # no sport specified

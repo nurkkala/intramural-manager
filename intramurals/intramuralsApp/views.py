@@ -59,7 +59,10 @@ def yearListOf(sportName, yearSelected): # list of school years in which the par
             yearList.append(year)
     return yearList
 
-def schedule(request, gameId=None):
+def scheduleChooseSport(request):
+    return renderToResponse('scheduleChooseSport.html',{'curSports':list(set([ol.Season.Sport for ol in OpenLeague.objects.all()])),})
+
+def schedule(request, gameId=None, ):
     try:
         if not gameId:
             try:

@@ -206,3 +206,6 @@ h1 {
 .chooseSportContent {
         text-align:center;
 }
+.field-name {
+	color:red;
+}

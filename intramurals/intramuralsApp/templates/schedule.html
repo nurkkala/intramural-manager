@@ -6,17 +6,18 @@
 <h1>Schedule</h1>
 <p>
 {% if prevGame %}
-  <a href="{% if not gameId %}schedule/{% endif %}{{ prevGame.id }}">&lt;&lt; prev</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="/schedule/{{ prevGame.id }}">&lt;&lt; prev</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 {% endif %}
  {{ date|date:"F j, Y" }} 
 {% if nextGame %}
-  <a href="{% if not gameId %}schedule/{% endif %}{{ nextGame.id }}">next</a>
+  <a href="/schedule/{{ nextGame.id }}">next</a>
 {% endif %}
 </p>
 
 {% if gameList %}
 <table width="100%">
   <tr style="font-weight:bold">
+    <td>Sport</td>
     <td>Time</td>
     <td>Home</td>
     <td></td>
@@ -27,6 +28,7 @@
 {% autoescape off %}
 {% for game in gameList %}
     <tr>
+      <td>{{ game.League.Season.Sport }}</td>
       <td>{{ game.StartTime|date:"g:i" }}</td>
       <td>{{ game.HomeTeam }}</td>
       <td>vs.</td>
