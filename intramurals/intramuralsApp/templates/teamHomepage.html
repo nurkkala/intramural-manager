@@ -31,6 +31,7 @@
 <hr/>
 <table width="100%">
   <tr style="font-weight:bold">
+    <td>Date</td>
     <td>Time</td>
     <td>Home</td>
     <td></td>
@@ -40,6 +41,7 @@
   </tr>
 {% for game in gameList %}
     <tr>
+      <td>{{ game.StartTime|date:"D d M Y" }}</td>
       <td>{{ game.StartTime|date:"g:i" }}</td>
       <td>{{ game.HomeTeam|teamAnchorWrap:game.HomeTeam_id }}</td>
       <td>vs.</td>
