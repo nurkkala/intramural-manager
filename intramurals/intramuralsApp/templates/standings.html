@@ -10,19 +10,23 @@
 
   {% for league_list in records %}
   <div class="league">
-    <b>{{league_list.league}}</b><br/>
-    <table>
-    <tr><th>Team</th><th>Wins</th><th>Losses</th></tr>
+    <fieldset style="width:90%;">
+<legend> <span class="league-title">{{league_list.league}}</span></legend>
     {% for division_list in league_list.divisions %}
-      {% autoescape off %}
-        {% for team_list in division_list.teams %}
-        <tr><td>{{team_list.teamRanking.Team}}</td><td>{{team_list.teamRanking.wins}}</td><td>{{team_list.teamRanking.losses}}</td></tr>
-        {% endfor %}
-      {% endautoescape %}
+        <br/>
+        <span class="division-title">Division {{ forloop.counter }}</span>
+        <table>
+        <tr><th>Team</th><th>Wins</th><th>Losses</th></tr>
+        {% autoescape off %}
+          {% for team_list in division_list.teams %}
+          <tr><td>{{team_list.teamRanking.Team}}</td><td>{{team_list.teamRanking.wins}}</td><td>{{team_list.teamRanking.losses}}</td></tr>
+          {% endfor %}
+        {% endautoescape %}
+        </table>
+        <br/>
     {% endfor %}
-    </table>
+    </fieldset> <br/>
     </div>
-    <hr/>
   {% endfor %}
 </div>
 {% endblock %}

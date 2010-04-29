@@ -342,10 +342,9 @@ def defaults(req, command):
     else:
         return HttpResponse("unknown page.")
 
-
 def getCurrentLeaguesDivisionsTeams():
     """This function returns an object that has the current leagues, divisions for those leagues, and teams for those divisions """
-    return [{'league':cl.League, 'divisions':[{'division':d, 'teams':[{'teamRanking':tr,} for tr in TeamRanking.objects.filter(Team__Division = d)]} for d in Division.objects.filter(League = cl.League)]} for cl in CurrentLeagues.objects.all()]
+    return [{'league':cl.League, 'divisions':[{'division':d, 'teams':[{'teamRanking':tr,} for tr in TeamRanking.objects.filter(Team__Division = d)]} for d in filter(lambda _:len(Team.objects.filter(Division=_))>0, Division.objects.filter(League = cl.League))]} for cl in CurrentLeagues.objects.all()]
 
 def home(req):
     return renderToResponse('home.html')
