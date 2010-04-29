@@ -87,7 +87,7 @@ def schedule(request, gameId=None, ):
         except Exception as e:
             nextGame = False        
 
-        gameList = Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))
+        gameList = [{'game':g, 'homewin':'winner' if g.HomeTeamScore > g.AwayTeamScore else '', 'awaywin':'winner' if g.HomeTeamScore < g.AwayTeamScore else ''} for g in Game.objects.filter(StartTime__year=(date.year)).filter(StartTime__month=(date.month)).filter(StartTime__day=(date.day))]
         for game in gameList:
             game.r = Referee.objects.all()
     finally:
