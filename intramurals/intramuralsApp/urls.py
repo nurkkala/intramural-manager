@@ -2,12 +2,12 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('intramuralsApp.views',
     url('^$','home'),
-    #url('^createTeam1/(\d+)', 'createTeam1'),
-    #url('^createTeam2', 'createTeam2'),
-    #url('^joinTeam1/(\d+)', 'joinTeam1'),
-    #url('^joinTeam2/(\d+)', 'joinTeam2'),
-    #url('^joinTeam3', 'joinTeam3'),
-    #url('^paymentSuccess', 'paymentSuccess'),
+    url('^createTeam1/(\d+)', 'createTeam1'),
+    url('^createTeam2', 'createTeam2'),
+    url('^joinTeam1/(\d+)', 'joinTeam1'),
+    url('^joinTeam2/(\d+)', 'joinTeam2'),
+    url('^joinTeam3', 'joinTeam3'),
+    url('^paymentSuccess', 'paymentSuccess'),
     url('^schedule$','schedule'),
     url('^schedule/(\d+)$','schedule'),# game id specified
     url('^standings','standings'),
@@ -21,7 +21,7 @@ urlpatterns = patterns('intramuralsApp.views',
 
     url('^validateTeamName$', 'validateTeamName'),
     url('^noCCinstructions$', 'noCCinstructions'),
-#    url('^register/?$','chooseSport'),
-#    url('^register/(\d+)','register'),
+    url('^register/?$','chooseSport'),
+    url('^register/(\d+)','register'),
     url('^(.*)$', 'defaults'),
 )
