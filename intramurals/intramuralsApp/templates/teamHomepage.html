@@ -6,18 +6,19 @@
 {% load filters %}
 {% autoescape off %}
 <span class="teamName"><span class="field-name">Team Name:</span> {{ currentTeamRanking.Team.Name }} </span><br />
-<span class="currentTeamRanking"><span class="field-name">Record:</span> {{ currentTeamRanking.wins }}-{{currentTeamRanking.losses}}-{{currentTeamRanking.ties}} </span><br /><span class="currentTeamRankingLivingUnit">Floor/Wing: {{ currentTeamRanking.LivingUnit }} </span><br />
+<span class="currentTeamRanking"><span class="field-name">Record:</span> {{ currentTeamRanking.wins }}-{{currentTeamRanking.losses}} </span><br /><span class="currentTeamRankingLivingUnit">Floor/Wing: {{ currentTeamRanking.LivingUnit }} </span><br />
 <span class="sportName"><span class="field-name">Sport:</span> {{ currentTeamRanking.Team.Division.League.Season.Sport }} </span><br />
 <span class="leagueName"><span class="field-name">League:</span> {{ currentTeamRanking.Team.Division.League }} </span><br />
 <span class="teamCaptain"><span class="field-name">Team Captain:</span> {{ currentTeamRanking.Team.Captain }} </span><br />
 <hr/>
 <table class="standings">
-  <tr><th>Team</th><th>Wins</th><th>Losses</th><th>Ties</th></tr>
+  <tr><th>Team</th><th>Wins</th><th>Losses</th></tr>
   {% for teamRanking in teamRankingList %}
-      <tr><td>{{teamRanking.Team}}</td><td>{{teamRanking.wins}}</td><td>{{teamRanking.losses}}</td><td>{{teamRanking.ties}}</td></tr>
+      <tr><td>{{teamRanking.Team}}</td><td>{{teamRanking.wins}}</td><td>{{teamRanking.losses}}</td></tr>
   {% endfor %}
 </table>
 
+<!--
 <div class="teamMembers">Team Members 
   <ul>
   {% for member in memberList.all %}
@@ -25,6 +26,7 @@
   {% endfor %}
   </ul>
 </div>
+-->
 
 <hr/>
 <table width="100%">

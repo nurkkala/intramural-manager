@@ -11,18 +11,18 @@
   {% for league_list in records %}
   <div class="league">
     <b>{{league_list.league}}</b><br/>
-    {% for division_list in league_list.divisions %}
     <table>
-{% autoescape off %}
-      <tr><th>Team</th><th>Wins</th><th>Losses</th><th>Ties</th></tr>
-      {% for team_list in division_list.teams %}
-      <tr><td>{{team_list.teamRanking.Team}}</td><td>{{team_list.teamRanking.wins}}</td><td>{{team_list.teamRanking.losses}}</td><td>{{team_list.teamRanking.ties}}</td></tr>
-      {% endfor %}
-{% endautoescape %}
-    </table>
-    <hr/>
+    <tr><th>Team</th><th>Wins</th><th>Losses</th></tr>
+    {% for division_list in league_list.divisions %}
+      {% autoescape off %}
+        {% for team_list in division_list.teams %}
+        <tr><td>{{team_list.teamRanking.Team}}</td><td>{{team_list.teamRanking.wins}}</td><td>{{team_list.teamRanking.losses}}</td></tr>
+        {% endfor %}
+      {% endautoescape %}
     {% endfor %}
-  </div>
+    </table>
+    </div>
+    <hr/>
   {% endfor %}
 </div>
 {% endblock %}
