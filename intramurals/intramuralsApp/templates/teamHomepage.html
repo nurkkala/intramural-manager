@@ -41,9 +41,9 @@
     <tr>
       <td>{{ game.StartTime|date:"D d M Y" }}</td>
       <td>{{ game.StartTime|date:"g:i" }}</td>
-      <td>{{ game.HomeTeam|teamAnchorWrap:game.HomeTeam_id }}</td>
+      <td class = "{{game.homewin}}">{{ game.HomeTeam}}</td>
       <td>vs.</td>
-      <td>{{ game.AwayTeam }}</td>
+      <td class = "{{game.awaywin}}">{{ game.AwayTeam }}</td>
       <td>{{ game.Location }}</td>
       <td>
        {% for ref in game.Referees.all %}

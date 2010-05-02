@@ -141,9 +141,10 @@ def pageWithSport(request, page, sportName="current"): # generate information fo
 def teamHomePage(request, teamId):
     currentTeamRanking = TeamRanking.objects.get(Team=teamId)
     memberList = currentTeamRanking.Team.Members
-    gameList = Game.objects.filter(
-        Q(HomeTeam=teamId) | Q(AwayTeam=teamId)
-        )
+    gameList = Game.objects.filter( Q(HomeTeam=teamId) | Q(AwayTeam=teamId))
+    for game in gameList:
+        game.homewin ="winner" if game.HomeTeamScore > game.AwayTeamScore else ""
+        game.awaywin ="winner" if game.HomeTeamScore < game.AwayTeamScore else ""
     teamRankingList = TeamRanking.objects.filter(Team__Division=currentTeamRanking.Team.Division)
     return renderToResponse("teamHomepage.html", locals())
 
