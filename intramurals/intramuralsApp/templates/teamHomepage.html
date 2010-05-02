@@ -17,15 +17,16 @@
       <tr><td>{{teamRanking.Team}}</td><td>{{teamRanking.wins}}</td><td>{{teamRanking.losses}}</td></tr>
   {% endfor %}
 </table>
-
-<div class="teamMembers">Team Members 
+<fieldset>
+<div>
+<legend style="font-weight:bold;">Team Members </legend>
   <ul>
   {% for member in memberList.all %}
       <li>{{ forloop.counter }}. {{ member }}</li>
   {% endfor %}
   </ul>
 </div>
-
+</fieldset>
 <hr/>
 <table width="100%">
   <tr style="font-weight:bold">
